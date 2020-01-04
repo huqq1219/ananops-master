@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：AliyunMqConfiguration.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.config;
 
 import com.ananops.PublicUtil;
@@ -18,7 +26,7 @@ import javax.annotation.Resource;
 /**
  * The class Aliyun mq configuration.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Slf4j
 @Configuration
@@ -27,7 +35,7 @@ public class AliyunMqConfiguration {
 	private UacPushMessageListener uacPushMessageListener;
 
 	@Resource
-	private AnanopsProperties AnanopsProperties;
+	private AnanopsProperties ananOpsProperties;
 
 	@Resource
 	private TaskExecutor taskExecutor;
@@ -41,8 +49,8 @@ public class AliyunMqConfiguration {
 	 */
 	@Bean
 	public DefaultMQPushConsumer defaultMQPushConsumer() throws MQClientException {
-		DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(AnanopsProperties.getAliyun().getRocketMq().getConsumerGroup());
-		consumer.setNamesrvAddr(AnanopsProperties.getAliyun().getRocketMq().getNamesrvAddr());
+		DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(ananOpsProperties.getAliyun().getRocketMq().getConsumerGroup());
+		consumer.setNamesrvAddr(ananOpsProperties.getAliyun().getRocketMq().getNamesrvAddr());
 		consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
 
 		String[] strArray = AliyunMqTopicConstants.ConsumerTopics.UAC.split(GlobalConstant.Symbol.COMMA);

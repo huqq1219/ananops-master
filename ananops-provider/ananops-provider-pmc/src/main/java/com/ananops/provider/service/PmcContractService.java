@@ -44,4 +44,12 @@ public interface PmcContractService extends IService<PmcContract> {
      * @return
      */
     PageInfo getContractListWithPage(BaseQuery baseQuery);
+
+    /**
+     * 获取甲乙双方签订的合同
+     * @param partyAId
+     * @param partyBId
+     * @return
+     */
+    List<PmcContract> getContactByAB(Long partyAId, Long partyBId);
 }

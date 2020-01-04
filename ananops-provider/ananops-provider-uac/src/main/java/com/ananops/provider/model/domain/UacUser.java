@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacUser.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,7 +24,7 @@ import java.util.Date;
 /**
  * The class Uac user.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

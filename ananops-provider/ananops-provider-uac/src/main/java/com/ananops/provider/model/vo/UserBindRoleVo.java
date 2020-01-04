@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UserBindRoleVo.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.model.vo;
 
 import com.ananops.provider.model.dto.user.BindRoleDto;
@@ -11,7 +19,7 @@ import java.util.Set;
 /**
  * The class Role bind user dto.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Data
 @ApiModel(value = "角色绑定用户")

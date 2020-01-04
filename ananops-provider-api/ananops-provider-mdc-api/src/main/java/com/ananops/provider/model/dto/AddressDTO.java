@@ -1,3 +1,4 @@
+
 package com.ananops.provider.model.dto;
 
 import io.swagger.annotations.ApiModel;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 /**
  * The class Address dto.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Data
 @ApiModel

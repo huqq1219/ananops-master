@@ -1,3 +1,5 @@
+
+
 package com.ananops.provider.service;
 
 import com.ananops.provider.model.dto.GlobalExceptionLogDto;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 /**
  * The interface Mdc product feign api.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @FeignClient(value = "ananops-provider-mdc", configuration = OAuth2FeignAutoConfiguration.class, fallback = MdcExceptionLogFeignHystrix.class)
 public interface MdcExceptionLogFeignApi {

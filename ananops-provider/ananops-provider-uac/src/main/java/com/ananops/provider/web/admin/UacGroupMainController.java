@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacGroupMainController.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.web.admin;
 
 
@@ -5,7 +13,7 @@ import com.ananops.base.dto.LoginAuthDto;
 import com.ananops.core.annotation.LogAnnotation;
 import com.ananops.core.support.BaseController;
 import com.ananops.provider.model.domain.UacGroup;
-import com.ananops.provider.model.user.IdStatusDto;
+import com.ananops.provider.model.dto.user.IdStatusDto;
 import com.ananops.provider.model.vo.MenuVo;
 import com.ananops.provider.service.UacGroupService;
 import com.ananops.wrapper.WrapMapper;
@@ -22,7 +30,7 @@ import java.util.List;
 /**
  * 组织管理主页面
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @RestController
 @RequestMapping(value = "/group", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -84,7 +92,7 @@ public class UacGroupMainController extends BaseController {
 	 * @return the wrapper
 	 */
 	@PostMapping(value = "/getTree")
-	@ApiOperation(httpMethod = "POST", value = "获取菜单树")
+	@ApiOperation(httpMethod = "POST", value = "获取组织树")
 	public Wrapper<List<MenuVo>> getTree() {
 		Long userId = super.getLoginAuthDto().getUserId();
 		List<MenuVo> tree = uacGroupService.getGroupTreeListByUserId(userId);
@@ -100,7 +108,7 @@ public class UacGroupMainController extends BaseController {
 	 */
 	@PostMapping(value = "/save")
 	@LogAnnotation
-	@ApiOperation(httpMethod = "POST", value = "修改组织信息")
+	@ApiOperation(httpMethod = "POST", value = "编辑组织信息")
 	public Wrapper editGroup(@ApiParam(name = "group", value = "组织信息") @RequestBody UacGroup group) {
 		LoginAuthDto loginAuthDto = super.getLoginAuthDto();
 		uacGroupService.saveUacGroup(group, loginAuthDto);

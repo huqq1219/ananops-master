@@ -1,3 +1,5 @@
+
+
 package com.ananops.provider.model.dto;
 
 
@@ -10,7 +12,7 @@ import lombok.EqualsAndHashCode;
 /**
  * The class Product req dto.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

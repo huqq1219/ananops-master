@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacUserCommonController.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.web.admin;
 
 import com.ananops.PublicUtil;
@@ -9,7 +17,6 @@ import com.ananops.provider.model.domain.UacUser;
 import com.ananops.provider.model.dto.user.*;
 import com.ananops.provider.model.vo.MenuVo;
 import com.ananops.provider.model.vo.UserVo;
-import com.ananops.provider.model.vo.role.AndroidUacRoleVo;
 import com.ananops.provider.service.UacRoleService;
 import com.ananops.provider.service.UacUserService;
 import com.ananops.provider.utils.Md5Util;
@@ -26,12 +33,11 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 用户管理-公共方法.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @RestController
 @RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -50,9 +56,9 @@ public class UacUserCommonController extends BaseController {
 	 * @return the wrapper
 	 */
 	@PostMapping(value = "/queryUserInfo/{loginName}")
-	@ApiOperation(httpMethod = "POST", value = "根据loginName查询用户详细信息")
+	@ApiOperation(httpMethod = "POST", value = "根据userId查询用户详细信息")
 	public Wrapper<UserVo> queryUserInfo(@PathVariable String loginName) {
-		logger.info("根据loginName查询用户详细信息");
+		logger.info("根据userId查询用户详细信息");
 		UserVo userVo = new UserVo();
 		UacUser uacUser = uacUserService.findByLoginName(loginName);
 		uacUser = uacUserService.findUserInfoByUserId(uacUser.getId());
@@ -64,25 +70,6 @@ public class UacUserCommonController extends BaseController {
 		}
 		userVo.setAuthTree(authTree);
 		return WrapMapper.ok(userVo);
-	}
-
-	/**
-	 * 根据userId查询用户角色信息（连表查询）.
-	 *
-	 * @return the wrapper
-	 */
-	@PostMapping(value = "/queryUserRoleInfo/{loginName}")
-	@ApiOperation(httpMethod = "POST", value = "根据loginName查询用户角色信息")
-	public Wrapper<AndroidUacRoleVo> queryUserRoleInfo(@PathVariable String loginName) {
-		AndroidUacRoleVo androidUacRoleVo = new AndroidUacRoleVo();
-		logger.info("根据loginName查询用户角色信息");
-		UacUser uacUser = uacUserService.findByLoginName(loginName);
-		List<UacRole> roleList = uacRoleService.findAllRoleInfoByUserId(uacUser.getId());
-		androidUacRoleVo.setUserId(uacUser.getId());
-		if (PublicUtil.isNotEmpty(roleList)) {
-			androidUacRoleVo.setRoles(new HashSet<>(roleList));
-		}
-		return WrapMapper.ok(androidUacRoleVo);
 	}
 
 
@@ -241,7 +228,7 @@ public class UacUserCommonController extends BaseController {
 	 * @return the auth tree by role id
 	 */
 	@PostMapping(value = "/getOwnAuthTree")
-	@ApiOperation(httpMethod = "POST", value = "获取权限树")
+	@ApiOperation(httpMethod = "POST", value = "获取菜单树")
 	public Wrapper<List<MenuVo>> getOwnAuthTree() {
 		List<MenuVo> tree = uacRoleService.getOwnAuthTree(getLoginAuthDto().getUserId());
 		return WrapMapper.ok(tree);

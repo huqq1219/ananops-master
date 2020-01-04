@@ -1,3 +1,4 @@
+
 package com.ananops;
 
 import liquibase.integration.spring.SpringLiquibase;
@@ -14,9 +15,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 /**
- * The class Paas cloud mdc application.
+ * The class AnanOps cloud mdc application.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @EnableRetry
 @EnableCaching

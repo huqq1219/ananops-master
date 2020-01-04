@@ -1,3 +1,5 @@
+
+
 package com.ananops.provider.model.dto;
 
 import io.swagger.annotations.ApiModel;
@@ -10,7 +12,7 @@ import java.math.BigDecimal;
 /**
  * The class Product dto.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Data
 @ApiModel

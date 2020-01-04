@@ -39,7 +39,7 @@ import java.util.Objects;
 /**
  * The class Elastic job auto configuration.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Configuration
 @ConditionalOnExpression("'${elaticjob.zookeeper.server-lists}'.length() > 0")
@@ -57,10 +57,10 @@ public class ElasticJobAutoConfiguration {
 	@PostConstruct
 	public void init() {
 		//获取作业任务
-		Map<String, ElasticJob> elasticJobMap = applicationContext.getBeansOfType(ElasticJob.class);//从spring容器中获取所有的ElasticJob
+		Map<String, ElasticJob> elasticJobMap = applicationContext.getBeansOfType(ElasticJob.class);
 		//循环解析任务
 		for (ElasticJob elasticJob : elasticJobMap.values()) {
-			Class<? extends ElasticJob> jobClass = elasticJob.getClass();//获取任务的类
+			Class<? extends ElasticJob> jobClass = elasticJob.getClass();
 			//获取作业任务注解配置
 			ElasticJobConfig elasticJobConfig = jobClass.getAnnotation(ElasticJobConfig.class);
 			//获取Lite作业配置
@@ -128,10 +128,10 @@ public class ElasticJobAutoConfiguration {
 				.failover(elasticJobConfig.failover())
 				.misfire(elasticJobConfig.misfire())
 				.description(elasticJobConfig.description());
-		if (StringUtils.isNotBlank(elasticJobConfig.jobExceptionHandler())) {//如果出现任务异常
+		if (StringUtils.isNotBlank(elasticJobConfig.jobExceptionHandler())) {
 			builder.jobProperties(JobProperties.JobPropertiesEnum.JOB_EXCEPTION_HANDLER.getKey(), elasticJobConfig.jobExceptionHandler());
 		}
-		if (StringUtils.isNotBlank(elasticJobConfig.executorServiceHandler())) {//如果出现执行器异常
+		if (StringUtils.isNotBlank(elasticJobConfig.executorServiceHandler())) {
 			builder.jobProperties(JobProperties.JobPropertiesEnum.EXECUTOR_SERVICE_HANDLER.getKey(), elasticJobConfig.executorServiceHandler());
 		}
 		return builder.build();

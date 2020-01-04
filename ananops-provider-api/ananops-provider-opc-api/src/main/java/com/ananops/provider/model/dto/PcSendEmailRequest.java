@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：PcSendEmailRequest.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.model.dto;
 
 import lombok.Data;
@@ -8,7 +16,7 @@ import java.util.Set;
 /**
  * The class Pc send email request.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Data
 public class PcSendEmailRequest implements Serializable {

@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacGrantAuth4RoleController.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.web.admin;
 
 import com.ananops.core.annotation.LogAnnotation;
@@ -22,7 +30,7 @@ import javax.annotation.Resource;
 /**
  * 角色授权.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @RestController
 @RequestMapping(value = "/role", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

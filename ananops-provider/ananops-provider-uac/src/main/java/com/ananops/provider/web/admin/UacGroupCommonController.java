@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacGroupCommonController.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.web.admin;
 
 import com.ananops.base.dto.LoginAuthDto;
@@ -24,7 +32,7 @@ import java.util.Map;
 /**
  * 组织相关公用接口
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @RestController
 @RequestMapping(value = "/group", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

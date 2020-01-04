@@ -1,4 +1,15 @@
-package com.ananops.security.server;
+ /*
+  * Copyright (c) 2019. ananops.net All Rights Reserved.
+  * 项目名称：ananops平台
+  * 类名称：TokenJwtEnhancer.java
+  * 创建人：ananops
+  * 联系方式：ananops.net@gmail.com
+
+
+  *  * 平台官网: http://ananops.com
+  */
+
+ package com.ananops.security.server;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;

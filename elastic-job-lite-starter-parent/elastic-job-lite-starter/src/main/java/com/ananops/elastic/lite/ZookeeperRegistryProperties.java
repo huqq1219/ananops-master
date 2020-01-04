@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * The class Zookeeper registry properties.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Data
 @ConfigurationProperties(prefix = "ananops.zk")

@@ -1,3 +1,14 @@
+/*
+ * Copyright (c) 2019. ananops.net All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：ZookeeperInitRunner.java
+ * 创建人：ananops
+ * 联系方式：ananops.net@gmail.com
+
+
+ *  * 平台官网: http://ananops.com
+ */
+
 package com.ananops.core.config;
 
 import com.ananops.config.properties.AnanopsProperties;
@@ -21,7 +32,7 @@ import java.net.InetAddress;
 @Slf4j
 public class ZookeeperInitRunner implements CommandLineRunner {
 	@Resource
-	private AnanopsProperties AnanopsProperties;
+	private AnanopsProperties ananOpsProperties;
 	@Value("${spring.application.name}")
 	private String applicationName;
 
@@ -36,7 +47,7 @@ public class ZookeeperInitRunner implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		String hostAddress = InetAddress.getLocalHost().getHostAddress();
 		log.info("###ZookeeperInitRunner，init. HostAddress={}, applicationName={}", hostAddress, applicationName);
-		RegistryCenterFactory.startup(AnanopsProperties, hostAddress, applicationName);//进入注册中心
+		RegistryCenterFactory.startup(ananOpsProperties, hostAddress, applicationName);//进入注册中心
 		log.info("###ZookeeperInitRunner，finish<<<<<<<<<<<<<");
 	}
 

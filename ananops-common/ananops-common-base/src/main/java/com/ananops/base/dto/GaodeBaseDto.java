@@ -1,3 +1,4 @@
+
 package com.ananops.base.dto;
 
 import io.swagger.annotations.ApiModel;

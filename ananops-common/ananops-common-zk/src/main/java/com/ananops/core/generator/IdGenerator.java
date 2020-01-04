@@ -1,9 +1,11 @@
+
+
 package com.ananops.core.generator;
 
 /**
  * The interface Id generator.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 public interface IdGenerator {
 

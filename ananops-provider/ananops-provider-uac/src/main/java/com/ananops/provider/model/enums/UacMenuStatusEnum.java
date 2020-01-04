@@ -4,7 +4,7 @@ package com.ananops.provider.model.enums;
 /**
  * The enum Uac menu status enum.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 public enum UacMenuStatusEnum {
 	/**

@@ -57,15 +57,15 @@
         </dependency>
         <dependency>
             <groupId>com.ananops.provider.api</groupId>
+            <artifactId>ananops-provider-pmc-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ananops.provider.api</groupId>
             <artifactId>ananops-provider-uac-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.ananops.provider.api</groupId>
             <artifactId>ananops-provider-mdc-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.ananops.provider.api</groupId>
-            <artifactId>ananops-provider-omc-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.ananops.provider.api</groupId>

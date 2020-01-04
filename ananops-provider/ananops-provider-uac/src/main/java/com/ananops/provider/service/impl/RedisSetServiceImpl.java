@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：RedisSetServiceImpl.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.service.impl;
 
 import com.ananops.provider.service.RedisSetService;
@@ -12,7 +20,7 @@ import java.util.Set;
 /**
  * The class Redis set service.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Slf4j
 @Service

@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacGroupTypeEnum.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.model.enums;
 
 import com.google.common.collect.Lists;
@@ -10,7 +18,7 @@ import java.util.Map;
 /**
  * The enum Uac group type enum.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 public enum UacGroupTypeEnum {
 

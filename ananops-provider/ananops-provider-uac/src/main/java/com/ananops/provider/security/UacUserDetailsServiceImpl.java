@@ -16,7 +16,7 @@ import java.util.Collection;
 /**
  * The class Uac user details service.
  * 获取数据库的User信息 包括授予的权限即url形式
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Component
 @Slf4j

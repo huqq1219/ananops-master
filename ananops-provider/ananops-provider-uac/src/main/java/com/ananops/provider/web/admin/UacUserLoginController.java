@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacUserLoginController.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.web.admin;
 
 import com.google.common.base.Preconditions;
@@ -27,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 登录相关.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @RestController
 @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -1,3 +1,4 @@
+
 package com.ananops.provider.model.dto;
 
 import io.swagger.annotations.ApiModel;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * The class Product category dto.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Data
 @ApiModel

@@ -1,3 +1,4 @@
+
 package com.ananops.discovery.eureka;
 
 import org.springframework.boot.SpringApplication;
@@ -5,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
- * The class ananops eureka application.
+ * The class AnanOps cloud eureka application.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @EnableEurekaServer
 @SpringBootApplication

@@ -17,6 +17,7 @@ import com.ananops.provider.model.enums.TaskStatusEnum;
 import com.ananops.provider.service.ImcInspectionItemService;
 import com.ananops.provider.service.ImcInspectionTaskService;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -177,6 +178,11 @@ public class ImcInspectionTaskServiceImpl extends BaseService<ImcInspectionTask>
         Example example = new Example(ImcInspectionTask.class);
         Example.Criteria criteria = example.createCriteria();
         Integer status = taskQueryDto.getStatus();
+        String taskName = taskQueryDto.getTaskName();
+        if(StringUtils.isNotBlank(taskName)){
+            taskName = "%" + taskName + "%";
+            criteria.andLike("taskName",taskName);
+        }
         criteria.andEqualTo("status",status);
         if(imcInspectionTaskMapper.selectCountByExample(example)==0){//当前状态没有对应的任务
             throw new BusinessException(ErrorCodeEnum.GL9999091);
@@ -215,6 +221,11 @@ public class ImcInspectionTaskServiceImpl extends BaseService<ImcInspectionTask>
         Example example = new Example(ImcInspectionTask.class);
         Example.Criteria criteria = example.createCriteria();
         Long projectId = taskQueryDto.getProjectId();
+        String taskName = taskQueryDto.getTaskName();
+        if(StringUtils.isNotBlank(taskName)){
+            taskName = "%" + taskName + "%";
+            criteria.andLike("taskName",taskName);
+        }
         criteria.andEqualTo("projectId",projectId);
         if(imcInspectionTaskMapper.selectCountByExample(example)==0){//当前状态没有对应的任务
             throw new BusinessException(ErrorCodeEnum.GL9999091);
@@ -231,17 +242,34 @@ public class ImcInspectionTaskServiceImpl extends BaseService<ImcInspectionTask>
     public List<ImcInspectionTask> getTaskByUserId(TaskQueryDto taskQueryDto){
         Integer role = taskQueryDto.getRole();
         PageHelper.startPage(taskQueryDto.getPageNum(),taskQueryDto.getPageSize());
-        switch (role){
-            case 1://如果角色是甲方用户
-                return imcInspectionTaskMapper.queryTaskByUserId(taskQueryDto.getUserId());
-            case 2://如果角色是服务商
-                return this.getTaskByFacilitatorId(taskQueryDto);
-            case 3://如果角色是服务商管理员
-                return imcInspectionTaskMapper.queryTaskByFacilitatorManagerId(taskQueryDto.getUserId());
-            case 4://如果角色是服务商组织
-                return imcInspectionTaskMapper.queryTaskByFacilitatorGroupId(taskQueryDto.getUserId());
-            default:
-                throw new BusinessException(ErrorCodeEnum.GL9999089);
+        String taskName = taskQueryDto.getTaskName();
+        if(StringUtils.isNotBlank(taskName)){
+            taskName = "%" + taskName + "%";
+            switch (role){
+                case 1://如果角色是甲方用户
+                    return imcInspectionTaskMapper.queryTaskByUserIdAndTaskName(taskQueryDto.getUserId(),taskName);
+                case 2://如果角色是服务商
+                    return this.getTaskByFacilitatorId(taskQueryDto);
+                case 3://如果角色是服务商管理员
+                    return imcInspectionTaskMapper.queryTaskByFacilitatorManagerIdAndTaskName(taskQueryDto.getUserId(),taskName);
+                case 4://如果角色是服务商组织
+                    return imcInspectionTaskMapper.queryTaskByFacilitatorGroupIdAndTaskName(taskQueryDto.getUserId(),taskName);
+                default:
+                    throw new BusinessException(ErrorCodeEnum.GL9999089);
+            }
+        }else{
+            switch (role){
+                case 1://如果角色是甲方用户
+                    return imcInspectionTaskMapper.queryTaskByUserId(taskQueryDto.getUserId());
+                case 2://如果角色是服务商
+                    return this.getTaskByFacilitatorId(taskQueryDto);
+                case 3://如果角色是服务商管理员
+                    return imcInspectionTaskMapper.queryTaskByFacilitatorManagerId(taskQueryDto.getUserId());
+                case 4://如果角色是服务商组织
+                    return imcInspectionTaskMapper.queryTaskByFacilitatorGroupId(taskQueryDto.getUserId());
+                default:
+                    throw new BusinessException(ErrorCodeEnum.GL9999089);
+            }
         }
     }
 
@@ -253,19 +281,35 @@ public class ImcInspectionTaskServiceImpl extends BaseService<ImcInspectionTask>
     public List<ImcInspectionTask> getTaskByUserIdAndStatus(TaskQueryDto taskQueryDto){
         Integer role = taskQueryDto.getRole();
         PageHelper.startPage(taskQueryDto.getPageNum(),taskQueryDto.getPageSize());
-        switch (role){
-            case 1://如果角色是甲方用户
-                return imcInspectionTaskMapper.queryTaskByUserIdAndStatus(taskQueryDto.getUserId(),taskQueryDto.getStatus());
-            case 2://如果角色是服务商
-                return this.getTaskByFacilitatorIdAndStatus(taskQueryDto);
-            case 3://如果角色是服务商管理员
-                return imcInspectionTaskMapper.queryTaskByFacilitatorManagerIdAndStatus(taskQueryDto.getUserId(),taskQueryDto.getStatus());
-            case 4://如果角色是服务商组织
-                return imcInspectionTaskMapper.queryTaskByFacilitatorGroupIdAndStatus(taskQueryDto.getUserId(),taskQueryDto.getStatus());
-            default:
-                throw new BusinessException(ErrorCodeEnum.GL9999089);
+        String taskName = taskQueryDto.getTaskName();
+        if(StringUtils.isNotBlank(taskName)){
+            taskName = "%" + taskName + "%";
+            switch (role){
+                case 1://如果角色是甲方用户
+                    return imcInspectionTaskMapper.queryTaskByUserIdAndStatusAndTaskName(taskQueryDto.getUserId(),taskQueryDto.getStatus(),taskName);
+                case 2://如果角色是服务商
+                    return this.getTaskByFacilitatorIdAndStatus(taskQueryDto);
+                case 3://如果角色是服务商管理员
+                    return imcInspectionTaskMapper.queryTaskByFacilitatorManagerIdAndStatusAndTaskName(taskQueryDto.getUserId(),taskQueryDto.getStatus(),taskName);
+                case 4://如果角色是服务商组织
+                    return imcInspectionTaskMapper.queryTaskByFacilitatorGroupIdAndStatusAndTaskName(taskQueryDto.getUserId(),taskQueryDto.getStatus(),taskName);
+                default:
+                    throw new BusinessException(ErrorCodeEnum.GL9999089);
+            }
+        }else{
+            switch (role){
+                case 1://如果角色是甲方用户
+                    return imcInspectionTaskMapper.queryTaskByUserIdAndStatus(taskQueryDto.getUserId(),taskQueryDto.getStatus());
+                case 2://如果角色是服务商
+                    return this.getTaskByFacilitatorIdAndStatus(taskQueryDto);
+                case 3://如果角色是服务商管理员
+                    return imcInspectionTaskMapper.queryTaskByFacilitatorManagerIdAndStatus(taskQueryDto.getUserId(),taskQueryDto.getStatus());
+                case 4://如果角色是服务商组织
+                    return imcInspectionTaskMapper.queryTaskByFacilitatorGroupIdAndStatus(taskQueryDto.getUserId(),taskQueryDto.getStatus());
+                default:
+                    throw new BusinessException(ErrorCodeEnum.GL9999089);
+            }
         }
-
     }
 
     /**
@@ -277,6 +321,11 @@ public class ImcInspectionTaskServiceImpl extends BaseService<ImcInspectionTask>
         Long facilitatorId = taskQueryDto.getUserId();
         Example example = new Example(ImcInspectionTask.class);
         Example.Criteria criteria = example.createCriteria();
+        String taskName = taskQueryDto.getTaskName();
+        if(StringUtils.isNotBlank(taskName)){
+            taskName = "%" + taskName + "%";
+            criteria.andLike("taskName",taskName);
+        }
         criteria.andEqualTo("facilitatorId",facilitatorId);
         return imcInspectionTaskMapper.selectByExample(example);
     }
@@ -291,6 +340,11 @@ public class ImcInspectionTaskServiceImpl extends BaseService<ImcInspectionTask>
         Integer status = taskQueryDto.getStatus();
         Example example = new Example(ImcInspectionTask.class);
         Example.Criteria criteria = example.createCriteria();
+        String taskName = taskQueryDto.getTaskName();
+        if(StringUtils.isNotBlank(taskName)){
+            taskName = "%" + taskName + "%";
+            criteria.andLike("taskName",taskName);
+        }
         criteria.andEqualTo("facilitatorId",facilitatorId);
         criteria.andEqualTo("status",status);
         return imcInspectionTaskMapper.selectByExample(example);

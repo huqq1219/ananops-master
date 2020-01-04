@@ -1,3 +1,4 @@
+
 package com.ananops.provider.model.dto.role;
 
 import io.swagger.annotations.ApiModel;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * The class Role bind user req dto.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Data
 @ApiModel(value = "角色绑定用户")

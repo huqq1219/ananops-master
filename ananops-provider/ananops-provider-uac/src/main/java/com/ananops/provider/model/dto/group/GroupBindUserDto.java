@@ -1,6 +1,13 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：GroupBindUserDto.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.model.dto.group;
 
-import com.ananops.provider.model.domain.UacUser;
 import com.ananops.provider.model.dto.role.BindUserDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +19,7 @@ import java.util.Set;
 /**
  * The class Group bind user dto.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Data
 @ApiModel(value = "GroupBindUserDto")

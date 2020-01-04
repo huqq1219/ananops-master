@@ -1,13 +1,4 @@
-/*
- * Copyright (c) 2018. ananops.net All Rights Reserved.
- * 项目名称：ananops快速搭建企业级分布式微服务平台
- * 类名称：HandleUserTokenJobListener.java
- * 创建人：刘兆明
- * 联系方式：ananops.net@gmail.com
- * 开源地址: https://github.com/ananops
- * 博客地址: http://blog.ananops.net
- * 项目官网: http://ananops.net
- */
+
 
 package com.ananops.provider.job.listener;
 
@@ -25,10 +16,10 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * The class Handle user token job listener.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Slf4j
-public class HandleUserTokenJobListener implements ElasticJobListener {//事件监听器
+public class HandleUserTokenJobListener implements ElasticJobListener {
 
 	@Resource
 	private OpcRpcService opcRpcService;
@@ -44,7 +35,7 @@ public class HandleUserTokenJobListener implements ElasticJobListener {//事件�
 	 * @param shardingContexts the sharding contexts
 	 */
 	@Override
-	public void beforeJobExecuted(ShardingContexts shardingContexts) {//定时任务执行前
+	public void beforeJobExecuted(ShardingContexts shardingContexts) {
 		log.info("beforeJobExecuted - shardingContexts={}", shardingContexts);
 		startTime.set(System.currentTimeMillis());
 	}
@@ -55,7 +46,7 @@ public class HandleUserTokenJobListener implements ElasticJobListener {//事件�
 	 * @param shardingContexts the sharding contexts
 	 */
 	@Override
-	public void afterJobExecuted(ShardingContexts shardingContexts) {//定时任务执行后
+	public void afterJobExecuted(ShardingContexts shardingContexts) {
 		log.info("afterJobExecuted - shardingContexts={}", shardingContexts);
 		endTimestamp.set(System.currentTimeMillis());
 		long exeTime = endTimestamp.get() - startTime.get();
@@ -63,7 +54,7 @@ public class HandleUserTokenJobListener implements ElasticJobListener {//事件�
 		this.sendDingTalk(message);
 	}
 
-	private void sendDingTalk(String message) {//定时任务执行后就发送消息
+	private void sendDingTalk(String message) {
 		log.info("开始发送消息. message={}", message);
 		ChatRobotMsgDto chatRobotMsgDto = ChatRobotMsgFactory.createChatRobotTextMsg(webhookToken, message, false, null);
 		boolean result = opcRpcService.sendChatRobotMsg(chatRobotMsgDto);

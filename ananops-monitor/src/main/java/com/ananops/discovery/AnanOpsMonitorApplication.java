@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：PaginationPlugin.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.discovery;
 
 import com.hazelcast.config.Config;
@@ -14,9 +22,9 @@ import org.springframework.cloud.netflix.turbine.EnableTurbine;
 import org.springframework.context.annotation.Bean;
 
 /**
- * The class ananops monitor application.
+ * The class AnanOps cloud monitor application.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @SpringBootApplication
 @EnableDiscoveryClient

@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：CheckUserNameDto.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.model.dto.user;
 
 import io.swagger.annotations.ApiModel;
@@ -10,7 +18,7 @@ import java.io.Serializable;
 /**
  * The class Check user name dto.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Data
 @ApiModel(value = "校验真实姓名唯一性Dto ")

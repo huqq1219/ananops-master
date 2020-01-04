@@ -1,3 +1,5 @@
+
+
 package com.ananops.provider.model.constant;
 
 import lombok.AccessLevel;
@@ -6,7 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * The class Mdc api constant.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MdcApiConstant {
@@ -14,7 +16,7 @@ public class MdcApiConstant {
 	/**
 	 * The enum Product status enum.
 	 *
-	 * @author ananops.net@gmail.com
+	 * @author ananops.com@gmail.com
 	 */
 	public enum ProductStatusEnum {
 		/**

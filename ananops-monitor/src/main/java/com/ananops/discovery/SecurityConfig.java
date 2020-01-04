@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：PaginationPlugin.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.discovery;
 
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 /**
  * The class Security config.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {

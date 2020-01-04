@@ -1,0 +1,11 @@
+server:
+  port: 9400
+spring:
+  profiles:
+    active: dev
+  application:
+    name: ananops-provider-activiti
+  datasource:
+    username: root
+    password: 123456
+

@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：ChatRobotMsgFactory.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.model.factory;
 
 
@@ -10,7 +18,7 @@ import lombok.NoArgsConstructor;
 /**
  * 钉钉消息对象创建工厂.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ChatRobotMsgFactory {

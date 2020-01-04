@@ -1,3 +1,5 @@
+
+
 package com.ananops.gateway.filter;
 
 import com.netflix.zuul.ZuulFilter;
@@ -18,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * The class Renew filter.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Component
 @Slf4j

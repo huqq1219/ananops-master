@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacPushMessageListener.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.mq.consumer.listener;
 
 import com.ananops.PublicUtil;
@@ -21,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * The class Uac push message listener.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Slf4j
 @Component

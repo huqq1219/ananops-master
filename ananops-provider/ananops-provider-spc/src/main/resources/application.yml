@@ -1,0 +1,10 @@
+server:
+  port: 9205
+spring:
+  profiles:
+    active: dev
+  application:
+    name: ananops-provider-spc
+  datasource:
+    username: root
+    password: 123456

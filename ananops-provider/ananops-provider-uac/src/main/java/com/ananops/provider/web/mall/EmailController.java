@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：EmailController.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.web.mall;
 
 import com.ananops.base.dto.LoginAuthDto;
@@ -21,7 +29,7 @@ import javax.annotation.Resource;
 /**
  * The class Email controller.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @RestController
 @RequestMapping(value = "/email", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

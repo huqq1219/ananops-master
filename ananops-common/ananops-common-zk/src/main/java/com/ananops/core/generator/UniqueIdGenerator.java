@@ -1,9 +1,10 @@
+
 package com.ananops.core.generator;
 
 /**
  * 分布式唯一ID生成器
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 public class UniqueIdGenerator implements IdGenerator {
 

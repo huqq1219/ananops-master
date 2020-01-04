@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：OpcOssFeignApi.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.service;
 
 import com.ananops.provider.model.dto.oss.*;
@@ -18,7 +26,7 @@ import java.util.List;
 /**
  * The interface Opc oss feign api.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @FeignClient(value = "ananops-provider-opc", configuration = OAuth2FeignAutoConfiguration.class, fallback = OpcOssFeignApiHystrix.class)
 public interface OpcOssFeignApi {
@@ -72,7 +80,7 @@ public interface OpcOssFeignApi {
 	/**
 	 * The class Multipart support config.
 	 *
-	 * @author ananops.net @gmail.com
+	 * @author ananops.com @gmail.com
 	 */
 	class MultipartSupportConfig {
 		/**

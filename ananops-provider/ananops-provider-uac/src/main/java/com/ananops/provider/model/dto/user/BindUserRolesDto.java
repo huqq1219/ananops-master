@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：BindUserRolesDto.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.model.dto.user;
 
 import io.swagger.annotations.ApiModel;
@@ -10,7 +18,7 @@ import java.util.List;
 /**
  * The class Bind user roles dto.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @ApiModel
 @Data

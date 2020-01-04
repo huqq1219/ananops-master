@@ -1,3 +1,4 @@
+
 package com.ananops.provider.service;
 
 import com.ananops.provider.model.dto.ProductDto;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * The interface Mdc product feign api.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @FeignClient(value = "ananops-provider-mdc", configuration = OAuth2FeignAutoConfiguration.class, fallback = MdcProductFeignHystrix.class)
 public interface MdcProductFeignApi {

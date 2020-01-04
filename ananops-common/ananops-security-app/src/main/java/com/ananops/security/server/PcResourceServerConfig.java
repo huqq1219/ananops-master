@@ -1,10 +1,21 @@
+/*
+ * Copyright (c) 2019. ananops.net All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：PcResourceServerConfig.java
+ * 创建人：ananops
+ * 联系方式：ananops.net@gmail.com
+
+
+ *  * 平台官网: http://ananops.com
+ */
+
 package com.ananops.security.server;
 
 import com.ananops.security.app.authentication.openid.OpenIdAuthenticationSecurityConfig;
 import com.ananops.security.core.authentication.FormAuthenticationConfig;
 import com.ananops.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.ananops.security.core.authorize.AuthorizeConfigManager;
-//import com.ananops.security.core.code.ValidateCodeSecurityConfig;
+import com.ananops.security.core.code.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,8 +58,8 @@ public class PcResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Autowired
 	private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
-//	@Autowired
-//	private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+	@Autowired
+	private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
 	@Autowired
 	private SpringSocialConfigurer pcSocialSecurityConfig;
@@ -89,9 +100,8 @@ public class PcResourceServerConfig extends ResourceServerConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		formAuthenticationConfig.configure(http);	//完成表单登录的配置
 		http.headers().frameOptions().disable();
-		http
-//				.apply(validateCodeSecurityConfig)
-//				.and()
+		http.apply(validateCodeSecurityConfig)
+				.and()
 				.apply(smsCodeAuthenticationSecurityConfig)
 				.and()
 				.apply(pcSocialSecurityConfig)

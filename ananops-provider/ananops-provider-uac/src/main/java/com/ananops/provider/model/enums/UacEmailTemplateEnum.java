@@ -3,7 +3,7 @@ package com.ananops.provider.model.enums;
 /**
  * The enum Uac email template enum.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 public enum UacEmailTemplateEnum {
 

@@ -44,6 +44,16 @@
     an_imc_inspection_task as task , an_imc_user_task as userTask
     WHERE 1=1 AND userTask.user_id = #{userId} AND task.id = userTask.task_id
   </select>
+  <!--  根据甲方用户id和任务名模糊查询对应的巡检任务-->
+  <select id="queryTaskByUserIdAndTaskName" resultType="com.ananops.provider.model.domain.ImcInspectionTask">
+    SELECT
+    <include refid="Base_Column_List">
+      <property name="alias" value="task"></property>
+    </include>
+    FROM
+    an_imc_inspection_task as task , an_imc_user_task as userTask
+    WHERE 1=1 AND userTask.user_id = #{userId} AND task.id = userTask.task_id AND task.task_name like #{taskName}
+  </select>
 <!--根据甲方用户id查询指定状态的巡检任务-->
   <select id="queryTaskByUserIdAndStatus" resultType="com.ananops.provider.model.domain.ImcInspectionTask">
     SELECT
@@ -53,6 +63,16 @@
     FROM
     an_imc_inspection_task as task , an_imc_user_task as userTask
     WHERE 1=1 AND userTask.user_id = #{userId} AND task.id = userTask.task_id AND task.status = #{status}
+  </select>
+  <!--根据甲方用户id和任务名模糊查询指定状态的巡检任务-->
+  <select id="queryTaskByUserIdAndStatusAndTaskName" resultType="com.ananops.provider.model.domain.ImcInspectionTask">
+    SELECT
+    <include refid="Base_Column_List">
+      <property name="alias" value="task"></property>
+    </include>
+    FROM
+    an_imc_inspection_task as task , an_imc_user_task as userTask
+    WHERE 1=1 AND userTask.user_id = #{userId} AND task.id = userTask.task_id AND task.status = #{status} AND task.task_name like #{taskName}
   </select>
 <!--根据服务商管理员的id查询对应的巡检任务-->
   <select id="queryTaskByFacilitatorManagerId" resultType="com.ananops.provider.model.domain.ImcInspectionTask">
@@ -64,6 +84,16 @@
     an_imc_inspection_task as task , an_imc_facilitator_manager_task as facilitatorManagerTask
     WHERE 1=1 AND facilitatorManagerTask.facilitator_manager_id = #{facilitatorManagerId} AND task.id = facilitatorManagerTask.task_id
   </select>
+  <!--根据服务商管理员的id和任务名模糊查询对应的巡检任务-->
+  <select id="queryTaskByFacilitatorManagerIdAndTaskName" resultType="com.ananops.provider.model.domain.ImcInspectionTask">
+    SELECT
+    <include refid="Base_Column_List">
+      <property name="alias" value="task"></property>
+    </include>
+    FROM
+    an_imc_inspection_task as task , an_imc_facilitator_manager_task as facilitatorManagerTask
+    WHERE 1=1 AND facilitatorManagerTask.facilitator_manager_id = #{facilitatorManagerId} AND task.id = facilitatorManagerTask.task_id AND task.task_name like #{taskName}
+  </select>
 <!--根据服务商管理员的id查询指定状态的巡检任务-->
   <select id="queryTaskByFacilitatorManagerIdAndStatus" resultType="com.ananops.provider.model.domain.ImcInspectionTask">
     SELECT
@@ -73,6 +103,17 @@
     FROM
     an_imc_inspection_task as task , an_imc_facilitator_manager_task as facilitatorManagerTask
     WHERE 1=1 AND facilitatorManagerTask.facilitator_manager_id = #{facilitatorManagerId} AND task.id = facilitatorManagerTask.task_id AND task.status = #{status}
+  </select>
+  <!--根据服务商管理员的id和任务名模糊查询指定状态的巡检任务-->
+  <select id="queryTaskByFacilitatorManagerIdAndStatusAndTaskName" resultType="com.ananops.provider.model.domain.ImcInspectionTask">
+    SELECT
+    <include refid="Base_Column_List">
+      <property name="alias" value="task"></property>
+    </include>
+    FROM
+    an_imc_inspection_task as task , an_imc_facilitator_manager_task as facilitatorManagerTask
+    WHERE 1=1 AND facilitatorManagerTask.facilitator_manager_id = #{facilitatorManagerId} AND task.id = facilitatorManagerTask.task_id AND task.status = #{status}
+    AND task.task_name like #{taskName}
   </select>
 <!--根据服务商组织的id查询对应的巡检任务-->
   <select id="queryTaskByFacilitatorGroupId" resultType="com.ananops.provider.model.domain.ImcInspectionTask">
@@ -84,6 +125,16 @@
     an_imc_inspection_task as task , an_imc_facilitator_group_task as facilitatorGroupTask
     WHERE 1=1 AND facilitatorGroupTask.facilitator_group_id = #{facilitatorGroupId} AND task.id = facilitatorGroupTask.task_id
   </select>
+  <!--根据服务商组织的id和任务名模糊查询对应的巡检任务-->
+  <select id="queryTaskByFacilitatorGroupIdAndTaskName" resultType="com.ananops.provider.model.domain.ImcInspectionTask">
+    SELECT
+    <include refid="Base_Column_List">
+      <property name="alias" value="task"></property>
+    </include>
+    FROM
+    an_imc_inspection_task as task , an_imc_facilitator_group_task as facilitatorGroupTask
+    WHERE 1=1 AND facilitatorGroupTask.facilitator_group_id = #{facilitatorGroupId} AND task.id = facilitatorGroupTask.task_id AND task.task_name like #{taskName}
+  </select>
 <!--根据服务商组织的id查询指定状态下的巡检任务-->
   <select id="queryTaskByFacilitatorGroupIdAndStatus" resultType="com.ananops.provider.model.domain.ImcInspectionTask">
     SELECT
@@ -93,5 +144,16 @@
     FROM
     an_imc_inspection_task as task , an_imc_facilitator_group_task as facilitatorGroupTask
     WHERE 1=1 AND facilitatorGroupTask.facilitator_group_id = #{facilitatorGroupId} AND task.id = facilitatorGroupTask.task_id AND task.status = #{status}
+  </select>
+  <!--根据服务商组织的id和任务名模糊查询指定状态下的巡检任务-->
+  <select id="queryTaskByFacilitatorGroupIdAndStatusAndTaskName" resultType="com.ananops.provider.model.domain.ImcInspectionTask">
+    SELECT
+    <include refid="Base_Column_List">
+      <property name="alias" value="task"></property>
+    </include>
+    FROM
+    an_imc_inspection_task as task , an_imc_facilitator_group_task as facilitatorGroupTask
+    WHERE 1=1 AND facilitatorGroupTask.facilitator_group_id = #{facilitatorGroupId} AND task.id = facilitatorGroupTask.task_id AND task.status = #{status}
+    AND task.task_name like #{taskName}
   </select>
 </mapper>

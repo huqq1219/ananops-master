@@ -1,3 +1,5 @@
+
+
 package com.ananops.core.registry.base;
 
 import com.google.common.base.Preconditions;
@@ -7,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * The class Reliable message register dto.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Data
 public class ReliableMessageRegisterDto {

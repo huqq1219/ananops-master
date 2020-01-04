@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacUserTypeEnum.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.model.enums;
 
 import java.util.Arrays;
@@ -7,7 +15,7 @@ import java.util.List;
 /**
  * The enum Uac user type enum.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 public enum UacUserTypeEnum {
 

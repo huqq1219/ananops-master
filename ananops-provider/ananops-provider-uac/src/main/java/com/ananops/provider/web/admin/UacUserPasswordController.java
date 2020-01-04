@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacUserPasswordController.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.web.admin;
 
 
@@ -5,7 +13,7 @@ import com.ananops.base.dto.LoginAuthDto;
 import com.ananops.core.annotation.LogAnnotation;
 import com.ananops.core.support.BaseController;
 import com.ananops.provider.model.dto.user.UserModifyPwdDto;
-import com.ananops.provider.model.user.UserRegisterDto;
+import com.ananops.provider.model.dto.user.UserRegisterDto;
 import com.ananops.provider.service.UacUserService;
 import com.ananops.wrapper.WrapMapper;
 import com.ananops.wrapper.Wrapper;
@@ -24,7 +32,7 @@ import javax.annotation.Resource;
 /**
  * 用户密码.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @RestController
 @RequestMapping(value = "/user", produces = {"application/json;charset=UTF-8"})

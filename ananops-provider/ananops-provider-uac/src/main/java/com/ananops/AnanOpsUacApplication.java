@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：AnanOpsUacApplication.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops;
 
 import com.ananops.provider.service.impl.PcSmsCodeSender;
@@ -15,9 +23,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 /**
- * The class ananops uac application.
+ * The class AnanOps cloud uac application.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @EnableHystrix
 @EnableFeignClients

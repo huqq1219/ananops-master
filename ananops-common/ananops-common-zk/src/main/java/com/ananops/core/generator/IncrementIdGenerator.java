@@ -1,3 +1,5 @@
+
+
 package com.ananops.core.generator;
 
 import com.ananops.base.constant.GlobalConstant;
@@ -33,7 +35,7 @@ public class IncrementIdGenerator implements IdGenerator {
 	public Long nextId() {
 		String app = this.registerDto.getApp();
 		String host = this.registerDto.getHost();
-		//以uac服务为例 path="/ananops/registry/id/ananops-provider-uac/10.0.75.1"
+
 		CoordinatorRegistryCenter regCenter = this.registerDto.getCoordinatorRegistryCenter();
 		String path = GlobalConstant.ZK_REGISTRY_ID_ROOT_PATH + GlobalConstant.Symbol.SLASH + app + GlobalConstant.Symbol.SLASH + host;
 		if (regCenter.isExisted(path)) {

@@ -1,3 +1,5 @@
+
+
 package com.ananops.config.properties;
 
 import lombok.Data;

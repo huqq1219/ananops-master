@@ -1,3 +1,5 @@
+
+
 package com.ananops.gateway;
 
 import com.didispace.swagger.butler.EnableSwaggerButler;
@@ -13,9 +15,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 /**
- * The class ananops gateway application.
+ * The class AnanOps cloud gateway application.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @SpringBootApplication
 @EnableDiscoveryClient

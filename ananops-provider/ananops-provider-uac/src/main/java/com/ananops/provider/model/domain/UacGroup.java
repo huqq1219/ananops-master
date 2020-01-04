@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * The class Uac group.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -40,7 +40,7 @@ public class UacGroup extends BaseEntity {
 	private Integer status;
 
 	/**
-	 * 组织类型 1：仓库 2：基地
+	 * 组织类型
 	 */
 	private String type;
 

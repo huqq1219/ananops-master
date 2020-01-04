@@ -1,10 +1,16 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacRoleService.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.service;
 
 import com.ananops.base.dto.LoginAuthDto;
 import com.ananops.core.support.IService;
 import com.ananops.provider.model.domain.UacRole;
-import com.ananops.provider.model.domain.UacUser;
-import com.ananops.provider.model.dto.group.GroupBindUacUserDto;
 import com.ananops.provider.model.dto.role.RoleBindActionDto;
 import com.ananops.provider.model.dto.role.RoleBindMenuDto;
 import com.ananops.provider.model.dto.role.RoleBindUserDto;
@@ -19,7 +25,7 @@ import java.util.List;
 /**
  * The interface Uac role service.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 public interface UacRoleService extends IService<UacRole> {
 
@@ -94,16 +100,6 @@ public interface UacRoleService extends IService<UacRole> {
 	 * @return the role bind user dto by role id
 	 */
 	RoleBindUserDto getRoleBindUserDto(Long roleId, Long currentUserId);
-
-	/**
-	 * 角色绑定用户获取穿梭框信息.
-	 *
-	 * @param roleId        the role id
-	 * @param currentUserId the current user id
-	 *
-	 * @return the role bind user dto by role id
-	 */
-	List<UacUser> getRoleBindUacUserDto(Long roleId, Long currentUserId);
 
 	/**
 	 * 角色绑定用户.

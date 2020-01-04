@@ -1,11 +1,11 @@
 server:
-  port: 8090
+  port: 8080
 
 spring:
   profiles:
     active: dev
   application:
-    name: @pom.artifactId@
+    name: ananops-discovery
   rabbitmq:
     host: ananops-mq-rabbit
     port: 5672
@@ -21,7 +21,3 @@ security:
     name: admin
     password: admin
 
-info:
-  软件著作权: ananops企业级分布式微服务平台
-  著作登记号: 2018SR320076
-  关于我们: http://ananops.com

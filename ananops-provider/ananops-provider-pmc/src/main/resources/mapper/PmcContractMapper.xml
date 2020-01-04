@@ -23,6 +23,7 @@
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
     <result column="is_postpone" property="isPostpone" jdbcType="INTEGER" />
     <result column="payment_type" property="paymentType" jdbcType="INTEGER" />
+    <result column="payment_money" property="paymentMoney" jdbcType="DECIMAL" />
     <result column="project_money" property="projectMoney" jdbcType="DECIMAL" />
     <result column="payment_time" property="paymentTime" jdbcType="TIMESTAMP" />
     <result column="device_count" property="deviceCount" jdbcType="INTEGER" />

@@ -1,9 +1,17 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacConstant.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.model.constant;
 
 /**
  * The class Uac constant.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 public class UacConstant {
 
@@ -15,7 +23,7 @@ public class UacConstant {
 	/**
 	 * token变量
 	 *
-	 * @author ananops.net @gmail.com
+	 * @author ananops.com @gmail.com
 	 */
 	public static final class Token {
 		/**
@@ -34,7 +42,7 @@ public class UacConstant {
 		/**
 		 * The constant AUTH_TOKEN_KEY.
 		 */
-		public static final String AUTH_TOKEN_KEY = "PAAS_TOKEN_KEY";
+		public static final String AUTH_TOKEN_KEY = "ANANOPS_TOKEN_KEY";
 		/**
 		 * The constant REGISTER_TOKEN_KEY.
 		 */
@@ -52,7 +60,7 @@ public class UacConstant {
 		/**
 		 * The class Jwt.
 		 *
-		 * @author ananops.net @gmail.com
+		 * @author ananops.com @gmail.com
 		 */
 		public static final class Jwt {
 			/**
@@ -69,7 +77,7 @@ public class UacConstant {
 	/**
 	 * The class User.
 	 *
-	 * @author ananops.net @gmail.com
+	 * @author ananops.com @gmail.com
 	 */
 	public static final class User {
 		/**
@@ -81,17 +89,17 @@ public class UacConstant {
 	/**
 	 * The class Cookie.
 	 *
-	 * @author ananops.net @gmail.com
+	 * @author ananops.com @gmail.com
 	 */
 	public static final class Cookie {
 		/**
 		 * 用户名密码加密秘钥
 		 */
-		public static final String ananops_DOMAIN = "ananops.com";
+		public static final String ANANOPS_DOMAIN = "ananops.com";
 		/**
 		 * token 前缀
 		 */
-		public static final String ananops_PATH = "/ ";
+		public static final String ANANOPS_PATH = "/ ";
 
 	}
 }

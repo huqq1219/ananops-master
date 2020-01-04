@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @param <T> the type parameter
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Slf4j
 public abstract class AbstractBaseDataflowJob<T> implements DataflowJob<T> {

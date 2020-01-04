@@ -2,13 +2,13 @@ package com.ananops.elastic.lite;
 
 /**
  * The class Global constant.
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 public class GlobalConstant {
 
 	/**
 	 * The class Symbol.
-	 * @author ananops.net@gmail.com
+	 * @author ananops.com@gmail.com
 	 */
 	public static final class Symbol {
 		/**

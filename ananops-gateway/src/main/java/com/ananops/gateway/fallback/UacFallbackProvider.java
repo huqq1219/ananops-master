@@ -1,3 +1,5 @@
+
+
 package com.ananops.gateway.fallback;
 
 import com.netflix.hystrix.exception.HystrixTimeoutException;
@@ -15,7 +17,7 @@ import java.io.InputStream;
 /**
  * The class Uac fallback provider.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Component
 @Slf4j

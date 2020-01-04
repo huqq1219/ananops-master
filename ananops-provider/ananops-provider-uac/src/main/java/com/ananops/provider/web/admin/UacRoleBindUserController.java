@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacRoleBindUserController.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.web.admin;
 
 import com.ananops.base.dto.LoginAuthDto;
@@ -19,7 +27,7 @@ import javax.annotation.Resource;
 /**
  * 角色绑定用户.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @RestController
 @RequestMapping(value = "/role", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -39,7 +47,7 @@ public class UacRoleBindUserController extends BaseController {
 	@LogAnnotation
 	@PostMapping(value = "/bindUser")
 	@ApiOperation(httpMethod = "POST", value = "角色绑定用户")
-	public Wrapper bindUser(@ApiParam(name = "roleBindUserReqDto", value = "角色绑定用户") @RequestBody RoleBindUserReqDto roleBindUserReqDto) {
+	public Wrapper bindUser(@ApiParam(name = "uacRoleBindUserReqDto", value = "角色绑定用户") @RequestBody RoleBindUserReqDto roleBindUserReqDto) {
 		logger.info("roleBindUser={}", roleBindUserReqDto);
 		LoginAuthDto loginAuthDto = getLoginAuthDto();
 		uacRoleService.bindUser4Role(roleBindUserReqDto, loginAuthDto);

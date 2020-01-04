@@ -1,3 +1,4 @@
+
 package com.ananops.provider.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,7 +17,7 @@ import java.util.Date;
 /**
  * The class Global exception log dto.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Data
 @NoArgsConstructor

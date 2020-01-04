@@ -1,3 +1,5 @@
+
+
 package com.ananops.core.config;
 
 import com.ananops.config.properties.AnanopsProperties;
@@ -26,18 +28,18 @@ import java.util.concurrent.Executor;
 public class AsyncTaskExecutorConfiguration implements AsyncConfigurer {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	@Resource
-	private AnanopsProperties AnanopsProperties;
+	private AnanopsProperties ananOpsProperties;
 
 	@Override
 	@Bean(name = "taskExecutor")
 	public Executor getAsyncExecutor() {
 		log.debug("Creating Async Task Executor");
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(AnanopsProperties.getTask().getCorePoolSize());
-		executor.setMaxPoolSize(AnanopsProperties.getTask().getMaxPoolSize());
-		executor.setQueueCapacity(AnanopsProperties.getTask().getQueueCapacity());
-		executor.setKeepAliveSeconds(AnanopsProperties.getTask().getKeepAliveSeconds());
-		executor.setThreadNamePrefix(AnanopsProperties.getTask().getThreadNamePrefix());
+		executor.setCorePoolSize(ananOpsProperties.getTask().getCorePoolSize());
+		executor.setMaxPoolSize(ananOpsProperties.getTask().getMaxPoolSize());
+		executor.setQueueCapacity(ananOpsProperties.getTask().getQueueCapacity());
+		executor.setKeepAliveSeconds(ananOpsProperties.getTask().getKeepAliveSeconds());
+		executor.setThreadNamePrefix(ananOpsProperties.getTask().getThreadNamePrefix());
 		return new ExceptionHandlingAsyncTaskExecutor(executor);
 	}
 

@@ -1,3 +1,5 @@
+
+
 package com.ananops.security.app.authentication.openid;
 
 import com.ananops.security.core.properties.SecurityConstants;

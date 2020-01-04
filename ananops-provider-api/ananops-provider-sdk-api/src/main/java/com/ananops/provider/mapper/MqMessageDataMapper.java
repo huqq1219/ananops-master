@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：MqMessageDataMapper.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.mapper;
 
 import com.ananops.base.dto.MessageQueryDto;
@@ -12,7 +20,7 @@ import java.util.List;
 /**
  * The interface Mq message data mapper.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Component
 @Mapper

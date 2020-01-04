@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：LinkDto.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.model.dto.robot;
 
 import io.swagger.annotations.ApiModel;
@@ -9,7 +17,7 @@ import java.io.Serializable;
 /**
  * The class Link dto.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Data
 @ApiModel(value = "link类型")

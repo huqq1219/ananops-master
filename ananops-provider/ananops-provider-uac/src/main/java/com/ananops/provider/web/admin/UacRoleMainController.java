@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacRoleMainController.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.web.admin;
 
 import com.github.pagehelper.PageHelper;
@@ -31,7 +39,7 @@ import java.util.List;
 /**
  * 角色管理主页面.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @RestController
 @RequestMapping(value = "/role", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -56,7 +64,7 @@ public class UacRoleMainController extends BaseController {
 
 		logger.info("查询角色列表roleQuery={}", role);
 		PageHelper.startPage(role.getPageNum(), role.getPageSize());
-		role.setOrderBy("u.created_time desc");
+		role.setOrderBy("created_time desc");
 		List<RoleVo> roleVoList = uacRoleService.queryRoleListWithPage(role);
 		return WrapMapper.ok(new PageInfo<>(roleVoList));
 	}

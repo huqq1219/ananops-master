@@ -19,7 +19,7 @@ import java.util.Set;
 /**
  * The class Uac permission service.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Slf4j
 @Component("permissionService")

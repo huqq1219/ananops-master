@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：MqProducerStoreAspect.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.aspect;
 
 import com.ananops.base.enums.ErrorCodeEnum;
@@ -24,7 +32,7 @@ import java.lang.reflect.Method;
 /**
  * The class Mq producer store aspect.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Slf4j
 @Aspect

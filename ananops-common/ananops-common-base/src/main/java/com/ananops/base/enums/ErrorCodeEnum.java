@@ -1,3 +1,4 @@
+
 package com.ananops.base.enums;
 
 
@@ -80,18 +81,19 @@ public enum ErrorCodeEnum {
 	 */
 	GL99990002(99990002, "微服务不在线,或者网络超时"),
 	/**
-	 * Gl 99990003 error code enum.
+	 * MDMC 99990003 error code enum.
 	 */
 	GL99990003(99990003,"用户id不能为空"),
 
 	/**
-	 * Gl 99990004 error code enum.
+	 * MDMC 99990004 error code enum.
 	 */
 	GL99990004(99990004,"任务id不能为空"),
-//	 1001 用户中心
+
 	/**
 	 * Uac 10010001 error code enum.
 	 */
+//	 1001 用户中心
 	UAC10010001(10010001, "会话超时,请刷新页面重试"),
 	/**
 	 * Uac 10010002 error code enum.
@@ -621,10 +623,14 @@ public enum ErrorCodeEnum {
 	/**
 	 * Tpc 100500015 error code enum.
 	 */
-
 	TPC100500015(10050015, "消息PID不能为空, messageKey=%s"),
 
 	//1008 项目管理
+	/**
+	 *
+	 */
+	PMC10081000(10081000, "删除失败, Id=%s"),
+
 	/**
 	 * Pdc 10081001 error code enum.
 	 */
@@ -662,13 +668,55 @@ public enum ErrorCodeEnum {
 	/**
 	 * Pdc 10021023 error code enum.
 	 */
-	PMC10081023(10081023, "改巡检任务无项目信息, projectId=%s"),
+	PMC10081023(10081023, "该巡检任务无项目信息, projectId=%s"),
 
+	/**
+	 * Pdc 10021024 error code enum.
+	 */
+	PMC10081024(10081024, "该巡检巡检详情无巡检任务信息, InspectTaskId=%s"),
 
+	PMC10081025(10081025, "更新失败, InspectDetailId=%s"),
 
+	/**
+	 * 服务商管理
+	 *
+	 * Spc 100850010 error code enum.
+	 */
+	SPC100850010(100850010, "企业统一信用代码不能为空"),
+	/**
+	 * Spc 100850011 error code enum.
+	 */
+	SPC100850011(100850011, "企业法人姓名不能为空"),
+	/**
+	 * Spc 100850012 error code enum.
+	 */
+	SPC100850012(100850012, "企业基本开户行账号不能为空"),
+	/**
+	 * Spc 100850013 error code enum.
+	 */
+	SPC100850013(100850013, "企业基本开户行影印件未上传"),
+	/**
+	 * Spc 100850014 error code enum.
+	 */
+	SPC100850014(100850014, "企业营业执照类型不能为空"),
+	/**
+	 * Spc 100850015 error code enum.
+	 */
+	SPC100850015(100850015, "企业营业执照有效期不能为空"),
+	/**
+	 * Spc 100850016 error code enum.
+	 */
+	SPC100850016(100850016, "企业营业执照影印件未上传"),
+	/**
+	 * Spc 100850017 error code enum.
+	 */
+	SPC100850017(100850017, "工程师姓名不能为空"),
+	/**
+	 * Spc 100850018 error code enum.
+	 */
+	SPC100850018(100850018, "工程师身份证号码不能为空"),
+	
 	;
-
-
 	private int code;
 	private String msg;
 

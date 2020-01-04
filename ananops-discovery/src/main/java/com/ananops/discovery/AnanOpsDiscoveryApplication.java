@@ -1,3 +1,5 @@
+
+
 package com.ananops.discovery;
 
 import org.springframework.boot.SpringApplication;
@@ -6,9 +8,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.config.server.EnableConfigServer;
 
 /**
- * The class ananops discovery application.
+ * The class AnanOps cloud discovery application.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @SpringBootApplication
 @EnableConfigServer

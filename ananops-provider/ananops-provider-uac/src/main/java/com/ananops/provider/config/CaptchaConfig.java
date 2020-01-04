@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：CaptchaConfig.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.config;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
@@ -10,7 +18,7 @@ import java.util.Properties;
 /**
  * The class Captcha config.
  * 验证码配置
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Configuration
 public class CaptchaConfig {

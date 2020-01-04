@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ananops.provider.mapper.SpcEngineerPerformanceMapper" >
+  <resultMap id="BaseResultMap" type="com.ananops.provider.model.domain.SpcEngineerPerformance" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="engineer_id" property="engineerId" jdbcType="BIGINT" />
+    <result column="performance_id" property="performanceId" jdbcType="BIGINT" />
+  </resultMap>
+</mapper>

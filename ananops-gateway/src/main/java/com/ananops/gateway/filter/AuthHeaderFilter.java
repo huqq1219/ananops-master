@@ -1,3 +1,5 @@
+
+
 package com.ananops.gateway.filter;
 
 import com.netflix.zuul.ZuulFilter;
@@ -17,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * The class Auth header filter.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Slf4j
 @Component

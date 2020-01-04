@@ -1,6 +1,5 @@
 package com.ananops.provider.service.impl;
 
-import com.ananops.provider.model.dto.group.GroupBindUacUserDto;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -27,13 +26,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 
 /**
  * The class Uac role service.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -183,37 +185,6 @@ public class UacRoleServiceImpl extends BaseService<UacRole> implements UacRoleS
 		roleBindUserDto.setAlreadyBindUserIdSet(alreadyBindUserIdSet);
 
 		return roleBindUserDto;
-	}
-
-	@Override
-	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	public List<UacUser> getRoleBindUacUserDto(Long roleId, Long currentUserId) {
-		GroupBindUacUserDto groupBindUacUserDto = new GroupBindUacUserDto();
-		UacRole uacRole = uacRoleMapper.selectByPrimaryKey(roleId);
-		if (PublicUtil.isEmpty(uacRole)) {
-			logger.error("找不到roleId={}, 的角色", roleId);
-			throw new UacBizException(ErrorCodeEnum.UAC10012005, roleId);
-		}
-
-		// 查询所有用户包括已禁用的用户
-		List<BindUserDto> bindUserDtoList = uacRoleMapper.selectAllNeedBindUser(GlobalConstant.Sys.SUPER_MANAGER_ROLE_ID, currentUserId);
-
-		List<UacUser> allUserList = new ArrayList<>();
-		for (BindUserDto bindUserDto : bindUserDtoList){
-			allUserList.add(uacUserService.findUserInfoByUserId(bindUserDto.getUserId()));
-		}
-
-//		// 该角色已经绑定的用户
-//		List<UacRoleUser> setAlreadyBindUserSet = uacRoleUserService.listByRoleId(roleId);
-//		Set<UacUser> alreadyBindUserSet = new HashSet<>();
-//		for (UacRoleUser uacRoleUser : setAlreadyBindUserSet) {
-//			alreadyBindUserSet.add(uacUserService.findUserInfoByUserId(uacRoleUser.getUserId()));
-//		}
-//
-//		groupBindUacUserDto.setAllUserSet(allUserSet);
-//		groupBindUacUserDto.setAlreadyBindUserIdSet(alreadyBindUserSet);
-
-		return allUserList;
 	}
 
 	@Override

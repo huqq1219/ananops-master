@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * The class Pc authorization server config.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Configuration
 @EnableAuthorizationServer

@@ -1,3 +1,4 @@
+
 package com.ananops.base.dto;
 
 import com.google.common.base.Preconditions;

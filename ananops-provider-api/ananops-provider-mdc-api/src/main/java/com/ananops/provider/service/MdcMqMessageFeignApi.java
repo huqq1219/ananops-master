@@ -1,3 +1,4 @@
+
 package com.ananops.provider.service;
 
 
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * The interface Mdc mq message feign api.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @FeignClient(value = "ananops-provider-mdc", configuration = OAuth2FeignAutoConfiguration.class, fallback = MdcMqMessageApiHystrix.class)
 public interface MdcMqMessageFeignApi {

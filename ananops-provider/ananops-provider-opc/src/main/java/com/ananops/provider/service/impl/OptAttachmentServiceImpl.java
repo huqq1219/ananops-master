@@ -1,23 +1,20 @@
 /*
- * Copyright (c) 2018. ananops.net All Rights Reserved.
- * 项目名称：ananops快速搭建企业级分布式微服务平台
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
  * 类名称：OptAttachmentServiceImpl.java
- * 创建人：刘兆明
- * 联系方式：ananops.net@gmail.com
- * 开源地址: https://github.com/ananops
- * 博客地址: http://blog.ananops.net
- * 项目官网: http://ananops.net
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
  */
 
 package com.ananops.provider.service.impl;
 
+import com.ananops.config.properties.AnanopsProperties;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.ananops.PublicUtil;
 import com.ananops.base.constant.GlobalConstant;
 import com.ananops.base.dto.LoginAuthDto;
 import com.ananops.base.enums.ErrorCodeEnum;
-import com.ananops.config.properties.AnanopsProperties;
 import com.ananops.core.support.BaseService;
 import com.ananops.provider.exceptions.OpcBizException;
 import com.ananops.provider.mapper.OptAttachmentMapper;
@@ -29,7 +26,6 @@ import com.ananops.provider.model.dto.attachment.OptUploadFileByteInfoReqDto;
 import com.ananops.provider.model.dto.oss.*;
 import com.ananops.provider.service.OpcAttachmentService;
 import com.ananops.provider.service.OpcOssService;
-import com.ananops.provider.utils.CheckFileUtil;
 import com.qiniu.common.QiniuException;
 import com.xiaoleilu.hutool.io.FileTypeUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -47,7 +43,7 @@ import java.util.List;
 /**
  * The class Opt attachment service.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Service
 public class OptAttachmentServiceImpl extends BaseService<OptAttachment> implements OpcAttachmentService {
@@ -56,7 +52,7 @@ public class OptAttachmentServiceImpl extends BaseService<OptAttachment> impleme
 	@Resource
 	private OpcOssService optOssService;
 	@Resource
-	private AnanopsProperties AnanopsProperties;
+	private AnanopsProperties ananOpsProperties;
 
 	@Override
 	public List<OptUploadFileRespDto> uploadFile(MultipartHttpServletRequest multipartRequest, OptUploadFileReqDto optUploadFileReqDto, LoginAuthDto loginAuthDto, boolean storeDbFlag) {
@@ -82,9 +78,9 @@ public class OptAttachmentServiceImpl extends BaseService<OptAttachment> impleme
 				InputStream inputStream = multipartFile.getInputStream();
 
 //				String inputStreamFileType = FileTypeUtil.getType(inputStream);
-				String inputStreamFileName = multipartFile.getOriginalFilename();
-				String inputStreamName= multipartFile.getName();
-				String inputStreamFileType = FileTypeUtil.getType(inputStreamFileName);
+//				String inputStreamFileName = multipartFile.getOriginalFilename();
+//				String inputStreamName= multipartFile.getName();
+//				String inputStreamFileType = FileTypeUtil.getType(inputStreamFileName);
 				//CheckFileUtil.checkFileType(fileType, inputStreamFileType);
 				OptUploadFileRespDto fileInfo;
 				if (storeDbFlag) {
@@ -216,10 +212,10 @@ public class OptAttachmentServiceImpl extends BaseService<OptAttachment> impleme
 	private String getUrl(final Long expires, final boolean encrypt, final String fileName) {
 		final String domainOfBucket;
 		if (encrypt) {
-			domainOfBucket = AnanopsProperties.getQiniu().getOss().getPrivateHost();
+			domainOfBucket = ananOpsProperties.getQiniu().getOss().getPrivateHost();
 			return optOssService.getFileUrl(domainOfBucket, fileName, expires);
 		} else {
-			domainOfBucket = AnanopsProperties.getQiniu().getOss().getPublicHost();
+			domainOfBucket = ananOpsProperties.getQiniu().getOss().getPublicHost();
 			return domainOfBucket + "/" + fileName;
 		}
 	}

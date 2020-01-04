@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * 校验密码.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Data
 @ApiModel(value = "校验新密码是否与原始密码相同Dto ")

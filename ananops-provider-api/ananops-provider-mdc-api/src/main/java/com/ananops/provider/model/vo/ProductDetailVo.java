@@ -1,3 +1,5 @@
+
+
 package com.ananops.provider.model.vo;
 
 import io.swagger.annotations.ApiModel;
@@ -9,7 +11,7 @@ import java.math.BigDecimal;
 /**
  * The class Product detail vo.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Data
 @ApiModel

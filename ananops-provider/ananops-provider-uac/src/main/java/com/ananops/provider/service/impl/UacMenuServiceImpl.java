@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：UacMenuServiceImpl.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
+ */
+
 package com.ananops.provider.service.impl;
 
 import com.google.common.base.Preconditions;
@@ -35,7 +43,7 @@ import java.util.*;
 /**
  * The class Uac menu service.
  *
- * @author ananops.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -52,7 +60,7 @@ public class UacMenuServiceImpl extends BaseService<UacMenu> implements UacMenuS
 	public List<MenuVo> getMenuVoList(Long userId, Long applicationId) {
 		// 1.查询该用户下所有的菜单列表
 		List<MenuVo> menuVoList = Lists.newArrayList();
-		List<UacMenu> menuList;
+		List<UacMenu> menuList = Lists.newArrayList();
 		Set<UacMenu> menuSet = Sets.newHashSet();
 		// 如果是admin则返回所有的菜单
 		if (userId == 1L) {
@@ -87,7 +95,7 @@ public class UacMenuServiceImpl extends BaseService<UacMenu> implements UacMenuS
 			for (final UacMenu menu : ownMenuList) {
 				getPid(menuSet, menu, map);
 			}
-			menuList = new ArrayList<>(menuSet);
+//			menuList = new ArrayList<>(menuSet);
 		}
 		List<MenuVo> list = getMenuVo(menuList);
 		if (PublicUtil.isNotEmpty(menuVoList)) {

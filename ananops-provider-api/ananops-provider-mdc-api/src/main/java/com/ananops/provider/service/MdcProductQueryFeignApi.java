@@ -1,3 +1,4 @@
+
 package com.ananops.provider.service;
 
 import com.ananops.annotation.NoNeedAccessAuthentication;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 /**
  * The interface Mdc product query feign api.
  *
- * @author ananops.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @FeignClient(value = "ananops-provider-mdc", configuration = OAuth2FeignAutoConfiguration.class, fallback = MdcProductQueryFeignHystrix.class)
 public interface MdcProductQueryFeignApi {

@@ -1,3 +1,14 @@
+/*
+ * Copyright (c) 2019. ananops.net All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：SwaggerConfiguration.java
+ * 创建人：ananops
+ * 联系方式：ananops.net@gmail.com
+
+
+ *  * 平台官网: http://ananops.com
+ */
+
 package com.ananops.core.config;
 
 import com.ananops.config.properties.AnanopsProperties;
@@ -26,7 +37,7 @@ import java.util.List;
 @EnableSwagger2
 public class SwaggerConfiguration {
 	@Resource
-	private AnanopsProperties AnanopsProperties;
+	private AnanopsProperties ananOpsProperties;
 
 	/**
 	 * Reservation api docket.
@@ -57,7 +68,7 @@ public class SwaggerConfiguration {
 	}
 
 	private ApiInfo apiInfo() {
-		SwaggerProperties swagger = AnanopsProperties.getSwagger();
+		SwaggerProperties swagger = ananOpsProperties.getSwagger();
 		return new ApiInfoBuilder()
 				.title(swagger.getTitle())
 				.description(swagger.getDescription())

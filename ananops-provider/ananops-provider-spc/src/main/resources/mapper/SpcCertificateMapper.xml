@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ananops.provider.mapper.SpcCertificateMapper" >
+  <resultMap id="BaseResultMap" type="com.ananops.provider.model.domain.SpcCertificate" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="ce_number" property="ceNumber" jdbcType="VARCHAR" />
+    <result column="ce_type" property="ceType" jdbcType="VARCHAR" />
+    <result column="ce_degree" property="ceDegree" jdbcType="VARCHAR" />
+    <result column="ce_first_time" property="ceFirstTime" jdbcType="TIMESTAMP" />
+    <result column="ce_expiration_date" property="ceExpirationDate" jdbcType="TIMESTAMP" />
+    <result column="ce_authority" property="ceAuthority" jdbcType="VARCHAR" />
+    <result column="ce_photo" property="cePhoto" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="creator_id" property="creatorId" jdbcType="BIGINT" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="last_operator" property="lastOperator" jdbcType="VARCHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>
