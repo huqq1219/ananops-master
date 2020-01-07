@@ -253,9 +253,18 @@
         LEFT JOIN an_uac_group_user gu ON gu.user_id = u.id
         LEFT JOIN an_uac_group g ON g.id = gu.group_id
         WHERE 1 = 1
-        <include refid="Base_Where_Condition">
-            <property name="alias" value="u"></property>
-        </include>
+        <if test="userName != null and userName != ''">
+            AND u.user_name LIKE concat('%',#{userName},'%')
+        </if>
+        <if test="loginName != null and loginName != ''">
+            AND u.login_name LIKE concat('%',#{loginName},'%')
+        </if>
+        <if test="mobileNo != null and mobileNo != ''">
+            AND u.mobile_no LIKE concat('%',#{mobileNo},'%')
+        </if>
+        <!--        <include refid="Base_Where_Condition">-->
+        <!--            <property name="alias" value="u"></property>-->
+        <!--        </include>-->
         <include refid="Base_OrderBy_Condition">
             <property name="alias" value="u"></property>
         </include>

@@ -65,7 +65,7 @@
         g.created_time       AS createdTime        ,
         g.last_operator      AS lastOperator       ,
         g.last_operator_id   AS lastOperatorId     ,
-        g.update_time number AS updateTime number  ,
+        g.update_time        AS updateTime
     </sql>
     <sql id="Base_Where_Condition">
         <if test="id != null and id !=''" >
@@ -244,4 +244,17 @@
             </if>
         </set>
     </sql>
+
+    <select id="selectGroupListByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        an_uac_group g, an_uac_user u , an_uac_group_user gu
+        where
+        1=1
+        and g.id = gu.group_id
+        and u.id = gu.user_id
+        and u.id = #{userId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

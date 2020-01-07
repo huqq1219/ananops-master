@@ -4,14 +4,14 @@ import com.ananops.core.mybatis.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
-import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.*;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Table(name = "an_imc_device_order")
 public class ImcDeviceOrder extends BaseEntity {
-    private static final long serialVersionUID = -266164296926669966L;
+    private static final long serialVersionUID = -1894808200318168653L;
     /**
      * 对应的巡检子项目的ID
      */
@@ -25,32 +25,12 @@ public class ImcDeviceOrder extends BaseEntity {
     private Long inspectionTaskId;
 
     /**
-     * 设备的ID
+     * 当前备品备件订单的处理状态
      */
-    @Column(name = "device_id")
-    private Long deviceId;
+    private Integer status;
 
     /**
-     * 当前订单花费
+     * 对该订单的处理意见
      */
-    private BigDecimal cost;
-
-    /**
-     * 设备类型
-     */
-    @Column(name = "device_type")
-    private String deviceType;
-
-    /**
-     * 设别生产商
-     */
-    private String manufacture;
-
-    /**
-     * 设备型号
-     */
-    @Column(name = "device_model")
-    private String deviceModel;
-
-
+    private String comment;
 }

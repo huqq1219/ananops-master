@@ -1,17 +1,14 @@
 /*
- * Copyright (c) 2018. paascloud.net All Rights Reserved.
- * 项目名称：paascloud快速搭建企业级分布式微服务平台
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
  * 类名称：QiniuOssConfiguration.java
- * 创建人：刘兆明
- * 联系方式：paascloud.net@gmail.com
- * 开源地址: https://github.com/paascloud
- * 博客地址: http://blog.paascloud.net
- * 项目官网: http://paascloud.net
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
  */
 
 package com.ananops.provider.config;
 
-import com.ananops.config.properties.PaascloudProperties;
+import com.ananops.config.properties.AnanopsProperties;
 import com.qiniu.common.Zone;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.UploadManager;
@@ -25,14 +22,14 @@ import javax.annotation.Resource;
 /**
  * The class Qiniu oss configuration.
  *
- * @author paascloud.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Slf4j
 @Configuration
 public class QiniuOssConfiguration {
 
 	@Resource
-	private PaascloudProperties paascloudProperties;
+	private AnanopsProperties ananOpsProperties;
 
 	/**
 	 * Auth auth.
@@ -41,7 +38,7 @@ public class QiniuOssConfiguration {
 	 */
 	@Bean
 	public Auth auth() {
-		Auth auth = Auth.create(paascloudProperties.getQiniu().getKey().getAccessKey(), paascloudProperties.getQiniu().getKey().getSecretKey());
+		Auth auth = Auth.create(ananOpsProperties.getQiniu().getKey().getAccessKey(), ananOpsProperties.getQiniu().getKey().getSecretKey());
 		log.info("Create Auth OK.");
 		return auth;
 	}

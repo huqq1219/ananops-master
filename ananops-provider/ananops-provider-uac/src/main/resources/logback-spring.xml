@@ -76,7 +76,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.paascloud.provider.mapper" level="DEBUG">
+    <logger name="com.ananops.provider.mapper" level="DEBUG">
         <appender-ref ref="MyBatisStatistics" />
     </logger>
     ​

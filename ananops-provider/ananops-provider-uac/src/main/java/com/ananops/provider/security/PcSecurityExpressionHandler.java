@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.provider.expression.OAuth2WebSecurity
 /** 鉴权服务过滤器
  * The class My o auth 2 web security expression handler.
  *
- * @author paascloud.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Configuration
 public class PcSecurityExpressionHandler extends OAuth2WebSecurityExpressionHandler {

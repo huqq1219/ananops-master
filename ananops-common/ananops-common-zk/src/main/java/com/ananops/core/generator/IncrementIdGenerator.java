@@ -1,13 +1,4 @@
-/*
- * Copyright (c) 2018. paascloud.net All Rights Reserved.
- * 项目名称：paascloud快速搭建企业级分布式微服务平台
- * 类名称：IncrementIdGenerator.java
- * 创建人：刘兆明
- * 联系方式：paascloud.net@gmail.com
- * 开源地址: https://github.com/paascloud
- * 博客地址: http://blog.paascloud.net
- * 项目官网: http://paascloud.net
- */
+
 
 package com.ananops.core.generator;
 
@@ -44,7 +35,7 @@ public class IncrementIdGenerator implements IdGenerator {
 	public Long nextId() {
 		String app = this.registerDto.getApp();
 		String host = this.registerDto.getHost();
-		//以uac服务为例 path="/paascloud/registry/id/paascloud-provider-uac/10.0.75.1"
+
 		CoordinatorRegistryCenter regCenter = this.registerDto.getCoordinatorRegistryCenter();
 		String path = GlobalConstant.ZK_REGISTRY_ID_ROOT_PATH + GlobalConstant.Symbol.SLASH + app + GlobalConstant.Symbol.SLASH + host;
 		if (regCenter.isExisted(path)) {

@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 /**
  * The interface Elastic job config.
  *
- * @author paascloud.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

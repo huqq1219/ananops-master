@@ -9,6 +9,22 @@ package com.ananops.base.enums;
  */
 public enum ErrorCodeEnum {
 	/**
+	 * Gl 9999086 error code enum.
+	 */
+	GL9999086(9999086,"当前状态不允许服务商拒单"),
+	/**
+	 * Gl 9999087 error code enum.
+	 */
+	GL9999087(9999087,"当前状态不允许工程师拒单"),
+	/**
+	 * Gl 9999088 error code enum.
+	 */
+	GL9999088(9999088,"更新巡检任务子项失败"),
+	/**
+	 * Gl 9999089 error code enum.
+	 */
+	GL9999089(9999089,"没有此角色"),
+	/**
 	 * Gl 9999090 error code enum.
 	 */
 	GL9999090(9999090,"没有处于此状态的任务子项"),
@@ -76,6 +92,16 @@ public enum ErrorCodeEnum {
 	 * Gl 99990002 error code enum.
 	 */
 	GL99990002(99990002, "微服务不在线,或者网络超时"),
+	/**
+	 * MDMC 99990003 error code enum.
+	 */
+	GL99990003(99990003,"用户id不能为空"),
+
+	/**
+	 * MDMC 99990004 error code enum.
+	 */
+	GL99990004(99990004,"任务id不能为空"),
+
 	/**
 	 * Uac 10010001 error code enum.
 	 */
@@ -609,54 +635,117 @@ public enum ErrorCodeEnum {
 	/**
 	 * Tpc 100500015 error code enum.
 	 */
-
 	TPC100500015(10050015, "消息PID不能为空, messageKey=%s"),
 
 	//1008 项目管理
 	/**
-	 * Pdc 10081001 error code enum.
+	 *
+	 */
+	PMC10081000(10081000, "删除失败, Id=%s"),
+
+	/**
+	 * Pmc 10081001 error code enum.
 	 */
 	PMC10081001(10081001, "更新项目信息失败, projectId=%s"),
 	/**
-	 * Pdc 10021002 error code enum.
+	 * Pmc 10021002 error code enum.
 	 */
 	PMC10081002(10081002, "删除项目失败, projectId=%s"),
 
 	/**
-	 * Pdc 10021003 error code enum.
+	 * Pmc 10021003 error code enum.
 	 */
 	PMC10081003(10081003, "该项目无合同信息, contactId=%s"),
 
 	/**
-	 * Pdc 10021011 error code enum.
+	 * Pmc 10021011 error code enum.
 	 */
 	PMC10081011(10081011, "更新合同信息失败, contactId=%s"),
 
 	/**
-	 * Pdc 10021012 error code enum.
+	 * Pmc 10021012 error code enum.
 	 */
 	PMC10081012(10081012, "删除合同失败, contactId=%s"),
 
 	/**
-	 * Pdc 10021021 error code enum.
+	 * Pmc 10021021 error code enum.
 	 */
 	PMC10081021(10081021, "更新巡检任务失败失败, taskId=%s"),
 
 	/**
-	 * Pdc 10021022 error code enum.
+	 * Pmc 10021022 error code enum.
 	 */
 	PMC10081022(10081022, "删除巡检任务失败失败, taskId=%s"),
 
 	/**
-	 * Pdc 10021023 error code enum.
+	 * Pmc 10021023 error code enum.
 	 */
-	PMC10081023(10081023, "改巡检任务无项目信息, projectId=%s"),
+	PMC10081023(10081023, "该巡检任务无项目信息, projectId=%s"),
+
+	/**
+	 * Pmc 10021024 error code enum.
+	 */
+	PMC10081024(10081024, "该巡检巡检详情无巡检任务信息, InspectTaskId=%s"),
+
+	/**
+	 * Pmc 10021025 error code enum.
+	 */
+	PMC10081025(10081025, "更新失败, InspectDetailId=%s"),
+
+	//报警管理 1009
+	/**
+	 * Amc 10091011 error code enum.
+	 */
+	AMC10091011(10091011, "更新报警信息失败, alarmId=%s"),
 
 
 
+	/**
+	 * 服务商管理
+	 *
+	 * Spc 100850010 error code enum.
+	 */
+	SPC100850010(100850010, "企业统一信用代码不能为空"),
+	/**
+	 * Spc 100850011 error code enum.
+	 */
+	SPC100850011(100850011, "企业法人姓名不能为空"),
+	/**
+	 * Spc 100850012 error code enum.
+	 */
+	SPC100850012(100850012, "企业基本开户行账号不能为空"),
+	/**
+	 * Spc 100850013 error code enum.
+	 */
+	SPC100850013(100850013, "企业基本开户行影印件未上传"),
+	/**
+	 * Spc 100850014 error code enum.
+	 */
+	SPC100850014(100850014, "企业营业执照类型不能为空"),
+	/**
+	 * Spc 100850015 error code enum.
+	 */
+	SPC100850015(100850015, "企业营业执照有效期不能为空"),
+	/**
+	 * Spc 100850016 error code enum.
+	 */
+	SPC100850016(100850016, "企业营业执照影印件未上传"),
+	/**
+	 * Spc 100850017 error code enum.
+	 */
+	SPC100850017(100850017, "工程师姓名不能为空"),
+	/**
+	 * Spc 100850018 error code enum.
+	 */
+	SPC100850018(100850018, "工程师身份证号码不能为空"),
+	
+	
+	RDC100000000(10000000, "新建订单失败，无法插入数据库"),
+	
+	RDC100000001(10000001, "序列化参数异常，请检查参数配置"),
+	
+	RDC100000002(10000002, "备品备件订单不存在"),
 	;
-
-
 	private int code;
 	private String msg;
 

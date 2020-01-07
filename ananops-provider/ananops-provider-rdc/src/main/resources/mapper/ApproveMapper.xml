@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ananops.provider.mapper.ApproveMapper" >
+  <resultMap id="BaseResultMap" type="com.ananops.provider.model.domain.Approve" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="previous_approver_id" property="previousApproverId" jdbcType="BIGINT" />
+    <result column="previous_approver" property="previousApprover" jdbcType="VARCHAR" />
+    <result column="current_approver_id" property="currentApproverId" jdbcType="BIGINT" />
+    <result column="current_approver" property="currentApprover" jdbcType="VARCHAR" />
+    <result column="next_approver_id" property="nextApproverId" jdbcType="BIGINT" />
+    <result column="next_approver" property="nextApprover" jdbcType="VARCHAR" />
+    <result column="object_type" property="objectType" jdbcType="INTEGER" />
+    <result column="object_id" property="objectId" jdbcType="BIGINT" />
+    <result column="applicant_id" property="applicantId" jdbcType="BIGINT" />
+    <result column="applicant" property="applicant" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="suggestion" property="suggestion" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectTodoApproveByApproverIdAndObject" resultMap="BaseResultMap">
+    SELECT *
+    FROM an_rdc_approve
+    WHERE `version` = 1
+    AND  `current_approver_id` = #{approverId, jdbcType=BIGINT}
+    AND `object_type` = #{objectType, jdbcType=INTEGER}
+    AND `object_id` = #{objectId, jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByApproverId" resultMap="BaseResultMap">
+    SELECT *
+    FROM an_rdc_approve
+    WHERE `current_approver_id` = #{approverId, jdbcType=BIGINT}
+    <if test="version != null">
+      AND `version` = #{version, jdbcType=version}
+    </if>
+  </select>
+</mapper>

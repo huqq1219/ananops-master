@@ -1,17 +1,8 @@
-/*
- * Copyright (c) 2018. ananops.net All Rights Reserved.
- * 项目名称：paascloud快速搭建企业级分布式微服务平台
- * 类名称：AsyncTaskExecutorConfiguration.java
- * 创建人：刘兆明
- * 联系方式：ananops.net@gmail.com
- * 开源地址: https://github.com/paascloud
- * 博客地址: http://blog.paascloud.net
- * 项目官网: http://paascloud.net
- */
+
 
 package com.ananops.core.config;
 
-import com.ananops.config.properties.PaascloudProperties;
+import com.ananops.config.properties.AnanopsProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -37,18 +28,18 @@ import java.util.concurrent.Executor;
 public class AsyncTaskExecutorConfiguration implements AsyncConfigurer {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	@Resource
-	private PaascloudProperties paascloudProperties;
+	private AnanopsProperties ananOpsProperties;
 
 	@Override
 	@Bean(name = "taskExecutor")
 	public Executor getAsyncExecutor() {
 		log.debug("Creating Async Task Executor");
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(paascloudProperties.getTask().getCorePoolSize());
-		executor.setMaxPoolSize(paascloudProperties.getTask().getMaxPoolSize());
-		executor.setQueueCapacity(paascloudProperties.getTask().getQueueCapacity());
-		executor.setKeepAliveSeconds(paascloudProperties.getTask().getKeepAliveSeconds());
-		executor.setThreadNamePrefix(paascloudProperties.getTask().getThreadNamePrefix());
+		executor.setCorePoolSize(ananOpsProperties.getTask().getCorePoolSize());
+		executor.setMaxPoolSize(ananOpsProperties.getTask().getMaxPoolSize());
+		executor.setQueueCapacity(ananOpsProperties.getTask().getQueueCapacity());
+		executor.setKeepAliveSeconds(ananOpsProperties.getTask().getKeepAliveSeconds());
+		executor.setThreadNamePrefix(ananOpsProperties.getTask().getThreadNamePrefix());
 		return new ExceptionHandlingAsyncTaskExecutor(executor);
 	}
 

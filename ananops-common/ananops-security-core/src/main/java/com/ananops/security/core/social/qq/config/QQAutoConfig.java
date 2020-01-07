@@ -1,13 +1,13 @@
 
 /*
- * Copyright (c) 2018. ananops.net All Rights Reserved.
- * 项目名称：paascloud快速搭建企业级分布式微服务平台
+ * Copyright (c) 2019. ananops.net All Rights Reserved.
+ * 项目名称：ananops平台
  * 类名称：QQAutoConfig.java
- * 创建人：刘兆明
+ * 创建人：ananops
  * 联系方式：ananops.net@gmail.com
- * 开源地址: https://github.com/paascloud
- * 博客地址: http://blog.paascloud.net
- * 项目官网: http://paascloud.net
+
+
+ *  * 平台官网: http://ananops.com
  */
 
 package com.ananops.security.core.social.qq.config;
@@ -28,7 +28,7 @@ import org.springframework.social.connect.ConnectionFactory;
  * @author ananops.net@gmail.com
  */
 @Configuration
-@ConditionalOnProperty(prefix = "paascloud.security.social.qq", name = "app-id")
+@ConditionalOnProperty(prefix = "ananops.security.social.qq", name = "app-id")
 public class QQAutoConfig extends SocialAutoConfigurerAdapter {
 
 	private final SecurityProperties securityProperties;

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ananops.provider.mapper.TaskItemMapper" >
+  <resultMap id="BaseResultMap" type="com.ananops.provider.model.domain.TaskItem" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="version" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creator" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="creator_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="created_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="last_operator" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="last_operator_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="task_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="device_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="device_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="actual_finish_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="actual_start_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="description" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="level" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="device_latitude" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="device_longitude" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="maintainer_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="suggestion" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="result" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+
+  <select id="selectByMaintainerIdAndStatus" resultMap="BaseResultMap">
+    select * from task_item where maintainer_id=#{maintainer_id, jdbcType=BIGINT} and status = #{status, jdbcType=INTEGER}
+  </select>
+</mapper>

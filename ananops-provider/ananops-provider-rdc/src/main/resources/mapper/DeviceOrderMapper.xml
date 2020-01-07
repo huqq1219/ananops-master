@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ananops.provider.mapper.DeviceOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.ananops.provider.model.domain.DeviceOrder" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="creator_id" property="creatorId" jdbcType="BIGINT" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="last_operator" property="lastOperator" jdbcType="VARCHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="object_type" property="objectType" jdbcType="INTEGER" />
+    <result column="object_id" property="objectId" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="items" property="items" jdbcType="LONGVARCHAR" />
+    <result column="status_msg" property="statusMsg" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="FLOAT" />
+    <result column="process_result" property="processResult" jdbcType="INTEGER" />
+    <result column="process_msg" property="processMsg" jdbcType="VARCHAR" />
+    <result column="quotation_text" property="quotationText" jdbcType="LONGVARCHAR" />
+    <result column="quotation_url" property="quotationUrl" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectByApproverIdAndVersion" resultMap="BaseResultMap">
+    SELECT *
+    FROM an_rdc_order
+    WHERE `id` IN (
+      SELECT object_id
+      FROM an_rdc_approve
+      WHERE current_approver_id = #{approverId, jdbcType=BIGINT}
+    <if test="version != null">
+      AND version = #{version, jdbcType=INTEGER}
+    </if>
+    )
+  </select>
+
+  <select id="selectCountByApproverIdAndVersion" resultMap="BaseResultMap">
+    SELECT count(`id`)
+    FROM an_rdc_order
+    WHERE id IN (
+      SELECT object_id
+      FROM an_rdc_approve
+      WHERE current_approver_id = #{approverId, jdbcType=BIGINT}
+    <if test="version != null">
+      AND version = #{version, jdbcType=INTEGER}
+    </if>
+    )
+  </select>
+
+  <select id="selectByObject">
+    SELECT *
+    FROM an_rdc_order
+    WHERE object_type = #{objectType, jdbcType=INTEGER}
+    AND object_id = #{objectId, jdbcType=BIGINT}
+  </select>
+
+
+</mapper>

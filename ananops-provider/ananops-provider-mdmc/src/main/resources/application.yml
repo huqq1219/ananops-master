@@ -1,0 +1,10 @@
+server:
+  port: 9300
+spring:
+  profiles:
+    active: dev
+  application:
+    name: ananops-provider-mdmc
+  datasource:
+    username: root
+    password: 123456

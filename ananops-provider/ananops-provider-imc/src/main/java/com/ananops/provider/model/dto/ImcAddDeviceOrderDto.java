@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Created by rongshuai on 2019/12/3 8:22
@@ -14,11 +15,6 @@ import java.math.BigDecimal;
 @ApiModel
 public class ImcAddDeviceOrderDto implements Serializable {
     private static final long serialVersionUID = -7255977012891559528L;
-    /**
-     * 备品备件订单对应的ID
-     */
-    @ApiModelProperty(value = "备品备件订单对应的ID")
-    private Long id;
     /**
      * 对应的巡检任务ID
      */
@@ -32,33 +28,21 @@ public class ImcAddDeviceOrderDto implements Serializable {
     private Long inspectionItemId;
 
     /**
-     * 设备类型
+     * 当前备品备件订单的处理状态
      */
-    @ApiModelProperty(value = "设备类型")
-    private String deviceType;
+    @ApiModelProperty(value = "当前备品备件订单的处理状态")
+    private Integer status;
 
     /**
-     * 设备生产商
+     * 对该订单的处理意见
      */
-    @ApiModelProperty(value = "设备生产商")
-    private String manufacture;
+    @ApiModelProperty(value = "对该订单的处理意见")
+    private String comment;
 
     /**
-     * 设备型号
+     * 备品备件订单对应对的设备列表
      */
-    @ApiModelProperty(value = "设备型号")
-    private String deviceModel;
-
-    /**
-     * 当前订单的花费
-     */
-    @ApiModelProperty(value = "当前订单的花费")
-    private BigDecimal cost;
-
-    /**
-     * 设备的ID
-     */
-    @ApiModelProperty(value = "被巡检的设备的ID")
-    private Long deviceId;
+    @ApiModelProperty(value = "备品备件订单对应对的设备列表")
+    private List<DeviceDto> deviceDtoList;
 
 }

@@ -97,7 +97,7 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
-            <!-- paas cloud start -->
+            <!-- ananops cloud start -->
             <dependency>
                 <groupId>com.ananops.common</groupId>
                 <artifactId>ananops-common-base</artifactId>
@@ -123,7 +123,7 @@
                 <artifactId>ananops-security-app</artifactId>
                 <version>${ananops.version}</version>
             </dependency>
-            <!-- paas cloud end -->
+            <!-- ananops cloud end -->
             <!-- swagger cloud start -->
             <dependency>
                 <groupId>io.springfox</groupId>
@@ -249,17 +249,17 @@
             </dependency>
             <dependency>
                 <groupId>com.ananops.provider.api</groupId>
+                <artifactId>ananops-provider-pmc-api</artifactId>
+                <version>${ananops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ananops.provider.api</groupId>
                 <artifactId>ananops-provider-uac-api</artifactId>
                 <version>${ananops.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ananops.provider.api</groupId>
                 <artifactId>ananops-provider-mdc-api</artifactId>
-                <version>${ananops.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ananops.provider.api</groupId>
-                <artifactId>ananops-provider-omc-api</artifactId>
                 <version>${ananops.version}</version>
             </dependency>
             <dependency>
@@ -275,6 +275,21 @@
             <dependency>
                 <groupId>com.ananops.provider.api</groupId>
                 <artifactId>ananops-provider-sdk-api</artifactId>
+                <version>${ananops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ananops.provider.api</groupId>
+                <artifactId>ananops-provider-pmc-api</artifactId>
+                <version>${ananops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ananops.provider.api</groupId>
+                <artifactId>ananops-provider-activiti-api</artifactId>
+                <version>${ananops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ananops.provider.api</groupId>
+                <artifactId>ananops-provider-bill-api</artifactId>
                 <version>${ananops.version}</version>
             </dependency>
             <dependency>

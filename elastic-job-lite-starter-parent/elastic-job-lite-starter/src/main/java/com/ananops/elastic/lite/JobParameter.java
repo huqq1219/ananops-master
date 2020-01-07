@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * The class Job task model.
  *
- * @author paascloud.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Data
 public class JobParameter implements Serializable {

@@ -19,7 +19,7 @@ import com.ananops.provider.model.domain.UacUser;
 import com.ananops.provider.model.dto.group.GroupBindUserDto;
 import com.ananops.provider.model.dto.group.GroupBindUserReqDto;
 import com.ananops.provider.model.dto.role.BindUserDto;
-import com.ananops.provider.model.user.IdStatusDto;
+import com.ananops.provider.model.dto.user.IdStatusDto;
 import com.ananops.provider.model.enums.UacGroupStatusEnum;
 import com.ananops.provider.model.exceptions.UacBizException;
 import com.ananops.provider.model.vo.GroupZtreeVo;
@@ -38,7 +38,7 @@ import java.util.*;
 /**
  * The class Uac group service.
  *
- * @author paascloud.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -337,7 +337,6 @@ public class UacGroupServiceImpl extends BaseService<UacGroup> implements UacGro
 
 	@Override
 	public int saveUacGroup(UacGroup group, LoginAuthDto loginAuthDto) {
-
 		int result;
 		Preconditions.checkArgument(!StringUtils.isEmpty(group.getPid()), "上级节点不能为空");
 
@@ -371,7 +370,7 @@ public class UacGroupServiceImpl extends BaseService<UacGroup> implements UacGro
 			uacGroup.setParentGroupCode(parentGroup.getGroupCode());
 			uacGroup.setParentGroupName(parentGroup.getGroupName());
 		}
-		// 处理饿了吗级联菜单回显地址
+		// 处理级联菜单回显地址
 		Long provinceId = uacGroup.getProvinceId();
 		Long cityId = uacGroup.getCityId();
 		Long areaId = uacGroup.getAreaId();

@@ -1,0 +1,10 @@
+server:
+  port: 9207
+spring:
+  profiles:
+    active: dev
+  application:
+    name: ananops-provider-rdc
+  datasource:
+    username: root
+    password: 123456

@@ -8,9 +8,11 @@ import com.ananops.provider.mapper.PmcInspectTaskMapper;
 import com.ananops.provider.mapper.PmcProjectMapper;
 import com.ananops.provider.model.domain.PmcInspectTask;
 import com.ananops.provider.model.domain.PmcProject;
+import com.ananops.provider.service.PmcInspectDetailsService;
 import com.ananops.provider.service.PmcInspectTaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -21,11 +23,14 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@Transactional
 public class PmcInspectTaskServiceImpl extends BaseService<PmcInspectTask> implements PmcInspectTaskService {
     @Resource
     PmcInspectTaskMapper pmcInspectTaskMapper;
     @Resource
     PmcProjectMapper pmcProjectMapper;
+    @Resource
+    PmcInspectDetailsService pmcInspectDetailService;
 
     @Override
     public void saveDevice(PmcInspectTask pmcInspectTask, LoginAuthDto loginAuthDto) {
@@ -61,10 +66,27 @@ public class PmcInspectTaskServiceImpl extends BaseService<PmcInspectTask> imple
 
     @Override
     public void deleteTaskById(Long id) {
+        if (pmcInspectDetailService.getInspectDetailList(id) != null) {
+            pmcInspectDetailService.deleteDetailByTaskId(id);  //删除级联的任务详情
+        }
         Integer result = pmcInspectTaskMapper.deleteByPrimaryKey(id);
         if (result < 1) {
             throw new PmcBizException(ErrorCodeEnum.PMC10081022, id);
         }
+    }
+
+    @Override
+    public void deleteTaskByProjectId(Long projectId) {
+        List<PmcInspectTask> pmcInspectTasks = this.getTasksByProjectId(projectId);
+        if (pmcInspectTasks != null) { //删除级联的任务详情
+            for (PmcInspectTask pmcInspectTask : pmcInspectTasks) {
+                pmcInspectDetailService.deleteDetailByTaskId(pmcInspectTask.getId());
+            }
+        }
+        Example example = new Example(PmcInspectTask.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId", projectId);
+        pmcInspectTaskMapper.deleteByExample(example);
     }
 
 

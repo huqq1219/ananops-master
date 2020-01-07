@@ -11,11 +11,12 @@ import com.ananops.provider.mapper.ImcUserItemMapper;
 import com.ananops.provider.model.domain.ImcInspectionItem;
 import com.ananops.provider.model.domain.ImcInspectionTask;
 import com.ananops.provider.model.domain.ImcUserItem;
-import com.ananops.provider.model.dto.ImcAddInspectionItemDto;
-import com.ananops.provider.model.dto.ItemQueryDto;
-import com.ananops.provider.model.dto.TaskQueryDto;
+import com.ananops.provider.model.dto.*;
 import com.ananops.provider.model.enums.ItemStatusEnum;
+
+import com.ananops.provider.model.enums.TaskStatusEnum;
 import com.ananops.provider.service.ImcInspectionItemService;
+import com.ananops.wrapper.WrapMapper;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -66,8 +67,8 @@ public class ImcInspectionItemServiceImpl extends BaseService<ImcInspectionItem>
             Long currentTime = System.currentTimeMillis();
             if(scheduledStartTime<=currentTime){
                 //如果计划执行时间<=当前时间，说明，巡检任务需要立即执行
-                //将巡检任务子项的状态设置为等待巡检
-                imcInspectionItem.setStatus(ItemStatusEnum.WAITING_FOR_INSPECTION.getStatusNum());
+                //将巡检任务子项的状态设置为等待分配工程师
+                imcInspectionItem.setStatus(ItemStatusEnum.WAITING_FOR_MAINTAINER.getStatusNum());
             }
             imcInspectionItemMapper.insert(imcInspectionItem);
             //新增一条巡检任务子项和甲方用户的关系记录
@@ -85,10 +86,11 @@ public class ImcInspectionItemServiceImpl extends BaseService<ImcInspectionItem>
 
     /**
      *
-     * @param taskId
+     * @param itemQueryDto
      * @return
      */
-    public List<ImcInspectionItem> getAllItemByTaskId(Long taskId){
+    public List<ImcInspectionItem> getAllItemByTaskId(ItemQueryDto itemQueryDto){
+        Long taskId = itemQueryDto.getTaskId();
         Example example1 = new Example(ImcInspectionTask.class);
         Example.Criteria criteria1 = example1.createCriteria();
         criteria1.andEqualTo("id",taskId);
@@ -99,6 +101,7 @@ public class ImcInspectionItemServiceImpl extends BaseService<ImcInspectionItem>
         Example example2 = new Example(ImcInspectionItem.class);
         Example.Criteria criteria2 = example2.createCriteria();
         criteria2.andEqualTo("inspectionTaskId",taskId);
+        PageHelper.startPage(itemQueryDto.getPageNum(),itemQueryDto.getPageSize());
         List<ImcInspectionItem> imcInspectionItems = imcInspectionItemMapper.selectByExample(example2);
         return imcInspectionItems;
     }
@@ -118,7 +121,9 @@ public class ImcInspectionItemServiceImpl extends BaseService<ImcInspectionItem>
         return imcInspectionItemMapper.selectByExample(example).get(0);
     }
 
-    public List<ImcInspectionItem> getItemByItemStatusAndTaskId(Long taskId,Integer status){
+    public List<ImcInspectionItem> getItemByItemStatusAndTaskId(ItemQueryDto itemQueryDto){
+        Long taskId = itemQueryDto.getTaskId();
+        Integer status = itemQueryDto.getStatus();
         Example example = new Example(ImcInspectionItem.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("inspectionTaskId",taskId);
@@ -129,6 +134,7 @@ public class ImcInspectionItemServiceImpl extends BaseService<ImcInspectionItem>
         if(imcInspectionItemMapper.selectCountByExample(example)==0){
             throw new BusinessException(ErrorCodeEnum.GL9999090);
         }
+        PageHelper.startPage(itemQueryDto.getPageNum(),itemQueryDto.getPageSize());
         return imcInspectionItemMapper.selectByExample(example);
     }
 
@@ -142,6 +148,48 @@ public class ImcInspectionItemServiceImpl extends BaseService<ImcInspectionItem>
         return imcInspectionItemMapper.queryItemByUserIdAndStatus(itemQueryDto.getUserId(),itemQueryDto.getStatus());
     }
 
+    public List<ImcInspectionItem> getItemByMaintainerId(ItemQueryDto itemQueryDto){
+        Long maintainerId = itemQueryDto.getMaintainerId();
+        Example example = new Example(ImcInspectionItem.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("maintainerId",maintainerId);
+        PageHelper.startPage(itemQueryDto.getPageNum(),itemQueryDto.getPageSize());
+        return imcInspectionItemMapper.selectByExample(example);
+    }
+
+    public List<ImcInspectionItem> getItemByMaintainerIdAndStatus(ItemQueryDto itemQueryDto){
+        Long maintainerId = itemQueryDto.getMaintainerId();
+        Integer status = itemQueryDto.getStatus();
+        Example example = new Example(ImcInspectionItem.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("maintainerId",maintainerId);
+        criteria.andEqualTo("status",status);
+        PageHelper.startPage(itemQueryDto.getPageNum(),itemQueryDto.getPageSize());
+        return imcInspectionItemMapper.selectByExample(example);
+    }
+
+    /**
+     * 修改巡检任务子项对应的维修工ID
+     * @param itemChangeMaintainerDto
+     * @return
+     */
+    public ItemChangeMaintainerDto modifyMaintainerIdByItemId(ItemChangeMaintainerDto itemChangeMaintainerDto){
+        Long itemId = itemChangeMaintainerDto.getItemId();
+        Long maintainerId = itemChangeMaintainerDto.getMaintainerId();
+        Example example = new Example(ImcInspectionItem.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id",itemId);
+        if(imcInspectionItemMapper.selectCountByExample(example)==0){
+            throw new BusinessException(ErrorCodeEnum.GL9999097);
+        }
+        ImcInspectionItem imcInspectionItem = this.getItemByItemId(itemId);
+        imcInspectionItem.setMaintainerId(maintainerId);
+        int result = this.update(imcInspectionItem);
+        if(result == 1){
+            return itemChangeMaintainerDto;
+        }
+        throw new BusinessException(ErrorCodeEnum.GL9999093);
+    }
     public Integer setBasicInfoFromContract(){//将从合同中获取到的基本信息填写到巡检任务中
         return 1;
     }

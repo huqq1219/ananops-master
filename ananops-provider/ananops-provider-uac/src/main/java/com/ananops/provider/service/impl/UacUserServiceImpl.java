@@ -1,5 +1,8 @@
 package com.ananops.provider.service.impl;
 
+import com.ananops.provider.mapper.*;
+import com.ananops.provider.model.dto.group.GroupBindUserDto;
+import com.ananops.provider.model.vo.UserVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
@@ -15,14 +18,9 @@ import com.ananops.core.enums.LogTypeEnum;
 import com.ananops.core.support.BaseService;
 import com.ananops.core.utils.RequestUtil;
 import com.ananops.provider.manager.UserManager;
-import com.ananops.provider.mapper.UacActionMapper;
-import com.ananops.provider.mapper.UacMenuMapper;
-import com.ananops.provider.mapper.UacUserMapper;
-import com.ananops.provider.mapper.UacUserMenuMapper;
 import com.ananops.provider.model.domain.*;
 import com.ananops.provider.model.dto.menu.UserMenuChildrenDto;
 import com.ananops.provider.model.dto.menu.UserMenuDto;
-import com.ananops.provider.model.user.*;
 import com.ananops.provider.model.dto.user.*;
 import com.ananops.provider.model.enums.UacEmailTemplateEnum;
 import com.ananops.provider.model.enums.UacUserSourceEnum;
@@ -37,6 +35,7 @@ import com.ananops.provider.utils.Md5Util;
 import com.ananops.security.core.SecurityUser;
 import com.xiaoleilu.hutool.date.DateUtil;
 import eu.bitwalker.useragentutils.UserAgent;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -56,7 +55,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * The class Uac user service.
  *
- * @author paascloud.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -71,6 +70,8 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 	private UacMenuMapper uacMenuMapper;
 	@Resource
 	private UacGroupUserService uacGroupUserService;
+	@Resource
+	private UacGroupUserMapper uacGroupUserMapper;
 	@Resource
 	private UacLogService uacLogService;
 	@Resource
@@ -99,13 +100,20 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 	private OpcRpcService opcRpcService;
 	@Resource
 	private UserManager userManager;
+	@Resource
+	private UacGroupMapper uacGroupMapper;
 
 	@Override
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
 	public UacUser findByLoginName(String loginName) {
 		logger.info("findByLoginName - 根据用户名查询用户信息. loginName={}", loginName);
-
-		return uacUserMapper.findByLoginName(loginName);
+		UacUser uacUser = uacUserMapper.findByLoginName(loginName);
+		List<UacGroup> uacGroups = uacGroupMapper.selectGroupListByUserId(uacUser.getId());
+		if(PublicUtil.isNotEmpty(uacGroups)){
+			uacUser.setGroupId(uacGroups.get(0).getId());
+			uacUser.setGroupName(uacGroups.get(0).getGroupName());
+		}
+		return uacUser;
 	}
 
 	@Override
@@ -177,7 +185,7 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 
 	@Override
 	public int deleteUserById(Long userId) {
-		return 0;
+		return uacUserMapper.deleteByPrimaryKey(userId);
 	}
 
 	@Override
@@ -426,6 +434,11 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 	public UacUser queryByUserId(Long userId) {
 		logger.info("queryByUserId - 根据用户查询用户信息接口. userId={}", userId);
 		UacUser uacUser = uacUserMapper.selectByPrimaryKey(userId);
+		List<UacGroup> uacGroups = uacGroupMapper.selectGroupListByUserId(userId);
+		if(PublicUtil.isNotEmpty(uacGroups)){
+			uacUser.setGroupId(uacGroups.get(0).getId());
+			uacUser.setGroupName(uacGroups.get(0).getGroupName());
+		}
 		if (PublicUtil.isNotEmpty(uacUser)) {
 			uacUser.setLoginPwd("");
 		}
@@ -975,6 +988,52 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 		if (count > 0) {
 			throw new UacBizException(ErrorCodeEnum.UAC10011019);
 		}
+	}
 
+	@Override
+	public void addUser(UserInfoDto userInfoDto) {
+		UacUser uacUser = new UacUser();
+		try {
+			BeanUtils.copyProperties(uacUser, userInfoDto);
+		} catch (Exception e) {
+			logger.error("工程师Dto与用户Dto属性拷贝异常");
+			e.printStackTrace();
+		}
+		uacUser.setLoginPwd(Md5Util.encrypt("123456"));
+		uacUser.setStatus("0");
+		uacUserMapper.insertSelective(uacUser);
+	}
+
+	@Override
+	public List<UserVo> getApprovalUserListById(Long groupId, Long userId) {
+		List<UserVo> userVoList = new ArrayList<>();
+		// 该组织已经绑定的用户
+		List<UacGroupUser> alreadyBindUserSet = uacGroupUserMapper.listByGroupId(groupId);
+		for (UacGroupUser uacGroupUser : alreadyBindUserSet) {
+			//每个用户的信息
+			UserVo userVo = new UserVo();
+			//用户id
+			Long userApprovalId = uacGroupUser.getUserId();
+			UacUser uacUser = uacUserMapper.selectByPrimaryKey(userApprovalId);
+			//根据用户id获取用户角色列表
+			List<UacRoleUser> roleUserList = uacRoleUserService.queryByUserId(userApprovalId);
+			//根据用户的id获取该用户roleCodeList
+			List<String> roleCodeList = new ArrayList<>();
+			for (UacRoleUser uacRoleUser : roleUserList) {
+				Long roleId = uacRoleUser.getRoleId();
+				UacRole uacRole = uacRoleService.getRoleById(roleId);
+				roleCodeList.add(uacRole.getRoleCode());
+			}
+			//如果该用户是用户负责人的角色就添加到用户负责人列表
+			if (roleCodeList.contains("user_leader")) {
+				try {
+					BeanUtils.copyProperties(userVo, uacUser);
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+				userVoList.add(userVo);
+			}
+		}
+		return userVoList;
 	}
 }

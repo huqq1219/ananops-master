@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * The class Uac role user service.
  *
- * @author paascloud.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Service
 @Transactional(rollbackFor = Exception.class)

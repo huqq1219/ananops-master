@@ -16,13 +16,13 @@ import org.springframework.context.annotation.Configuration;
 /**
  * The class Registry center configuration.
  *
- * @author paascloud.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Configuration
 @ConditionalOnClass(ElasticJob.class)
 @ConditionalOnBean(annotation = ElasticJobConfig.class)
 @EnableConfigurationProperties(ZookeeperRegistryProperties.class)
-public class RegistryCenterConfiguration {//注册中心的配置
+public class RegistryCenterConfiguration {
 
 	private final ZookeeperRegistryProperties regCenterProperties;
 

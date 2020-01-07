@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * The class Uac role menu.
  *
- * @author paascloud.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Data
 @Table(name = "an_uac_role_menu")

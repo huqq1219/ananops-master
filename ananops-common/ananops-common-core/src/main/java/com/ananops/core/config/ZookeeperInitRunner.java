@@ -1,17 +1,17 @@
 /*
- * Copyright (c) 2018. ananops.net All Rights Reserved.
- * 项目名称：paascloud快速搭建企业级分布式微服务平台
+ * Copyright (c) 2019. ananops.net All Rights Reserved.
+ * 项目名称：ananops平台
  * 类名称：ZookeeperInitRunner.java
- * 创建人：刘兆明
+ * 创建人：ananops
  * 联系方式：ananops.net@gmail.com
- * 开源地址: https://github.com/paascloud
- * 博客地址: http://blog.paascloud.net
- * 项目官网: http://paascloud.net
+
+
+ *  * 平台官网: http://ananops.com
  */
 
 package com.ananops.core.config;
 
-import com.ananops.config.properties.PaascloudProperties;
+import com.ananops.config.properties.AnanopsProperties;
 import com.ananops.core.registry.RegistryCenterFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +32,7 @@ import java.net.InetAddress;
 @Slf4j
 public class ZookeeperInitRunner implements CommandLineRunner {
 	@Resource
-	private PaascloudProperties paascloudProperties;
+	private AnanopsProperties ananOpsProperties;
 	@Value("${spring.application.name}")
 	private String applicationName;
 
@@ -47,7 +47,7 @@ public class ZookeeperInitRunner implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		String hostAddress = InetAddress.getLocalHost().getHostAddress();
 		log.info("###ZookeeperInitRunner，init. HostAddress={}, applicationName={}", hostAddress, applicationName);
-		RegistryCenterFactory.startup(paascloudProperties, hostAddress, applicationName);//进入注册中心
+		RegistryCenterFactory.startup(ananOpsProperties, hostAddress, applicationName);//进入注册中心
 		log.info("###ZookeeperInitRunner，finish<<<<<<<<<<<<<");
 	}
 

@@ -74,4 +74,13 @@ public class PmcContractServiceImpl extends BaseService<PmcContract> implements 
         //3. 返回
         return new PageInfo<>(pmcContractList);
     }
+
+    @Override
+    public List<PmcContract> getContactByAB(Long partyAId, Long partyBId) {
+        Example example = new Example(PmcContract.class);
+        Example.Criteria criteria= example.createCriteria();
+        criteria.andEqualTo("partyAId",partyAId);
+        criteria.andEqualTo("partyBId",partyBId);
+        return pmcContractMapper.selectByExample(example);
+    }
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="config.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple"
+             defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="${mapper.plugin}">
+            <property name="mappers" value="${mapper.Mapper}"/>
+        </plugin>
+
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.url}" userId="${jdbc.user}" password="${jdbc.password}">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="${targetModelPackage}"
+                            targetProject="${targetJavaProject}"/>
+
+        <sqlMapGenerator targetPackage="${targetXMLPackage}"
+                         targetProject="${targetResourcesProject}"/>
+
+        <javaClientGenerator targetPackage="${targetMapperPackage}"
+                             targetProject="${targetJavaProject}" type="XMLMAPPER"/>
+
+        <!-- 设置要生成代码的表 -->
+        <!--<table tableName="tbl_rmc_warehouse_area" domainObjectName="RmcWarehouseArea">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="tbl_rmc_device_detail" domainObjectName="RmcDeviceDetail">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+
+
+        <table tableName="an_spc_certificate" domainObjectName="SpcCertificate">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+      <table tableName="an_spc_company" domainObjectName="SpcCompany">
+        <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+      </table>
+
+        <table tableName="an_spc_company_certificate" domainObjectName="SpcCompanyCertificate">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+        <table tableName="an_spc_company_engineer" domainObjectName="SpcCompanyEngineer">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+        <table tableName="an_spc_company_performance" domainObjectName="SpcCompanyPerformance">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+        <table tableName="an_spc_engineer" domainObjectName="SpcEngineer">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+        <table tableName="an_spc_engineer_certificate" domainObjectName="SpcEngineerCertificate">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+        <table tableName="an_spc_engineer_performance" domainObjectName="SpcEngineerPerformance">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+        <table tableName="an_spc_performance" domainObjectName="SpcPerformance">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+        </context>
+    </generatorConfiguration>

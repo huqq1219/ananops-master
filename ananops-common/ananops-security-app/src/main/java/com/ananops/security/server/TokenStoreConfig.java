@@ -1,12 +1,12 @@
  /*
-  * Copyright (c) 2018. ananops.net All Rights Reserved.
-  * 项目名称：paascloud快速搭建企业级分布式微服务平台
+  * Copyright (c) 2019. ananops.net All Rights Reserved.
+  * 项目名称：ananops平台
   * 类名称：TokenStoreConfig.java
-  * 创建人：刘兆明
+  * 创建人：ananops
   * 联系方式：ananops.net@gmail.com
-  * 开源地址: https://github.com/paascloud
-  * 博客地址: http://blog.paascloud.net
-  * 项目官网: http://paascloud.net
+
+
+  *  * 平台官网: http://ananops.com
   */
 
  package com.ananops.security.server;
@@ -34,7 +34,7 @@
  public class TokenStoreConfig {
 
      /**
-      * 使用redis存储token的配置，只有在paascloud.security.oauth2.tokenStore配置为redis时生效
+      * 使用redis存储token的配置，只有在ananops.security.oauth2.tokenStore配置为redis时生效
       */
      @Configuration
      @ConditionalOnProperty(prefix = "ananops.security.oauth2", name = "tokenStore", havingValue = "redis")

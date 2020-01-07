@@ -23,15 +23,13 @@ spring:
 encrypt:
   key-store:
     location: classpath:/server.jks
-    password: paascloud-storepass
-    alias: paascloud-key-store
-    secret: paascloud-keypass
+    password: ananops-storepass
+    alias: ananops-key-store
+    secret: ananops-keypass
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://root:root@ananops-eureka:8761/eureka/
   instance:
-    prefer-ip-address: true
-    ip-address: www.ananops.com
-    non-secure-port: 29992
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}

@@ -35,4 +35,10 @@ public interface PmcInspectTaskService extends IService<PmcInspectTask> {
      * @param id
      */
     void deleteTaskById(Long id);
+
+    /**
+     *
+     * @param projectId
+     */
+    void deleteTaskByProjectId(Long projectId);
 }

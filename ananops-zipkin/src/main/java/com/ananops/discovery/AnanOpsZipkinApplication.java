@@ -1,12 +1,9 @@
 /*
- * Copyright (c) 2018. paascloud.net All Rights Reserved.
- * 项目名称：paascloud快速搭建企业级分布式微服务平台
- * 类名称：PaasCloudZipkinApplication.java
- * 创建人：刘兆明
- * 联系方式：paascloud.net@gmail.com
- * 开源地址: https://github.com/paascloud
- * 博客地址: http://blog.paascloud.net
- * 项目官网: http://paascloud.net
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
+ * 类名称：AnanOpsZipkinApplication.java
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
  */
 
 package com.ananops.discovery;
@@ -17,9 +14,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import zipkin.server.EnableZipkinServer;
 
 /**
- * The class Paas cloud zipkin application.
+ * The class AnanOps cloud zipkin application.
  *
- * @author paascloud.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @EnableDiscoveryClient
 @SpringBootApplication

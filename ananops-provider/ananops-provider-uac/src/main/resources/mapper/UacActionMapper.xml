@@ -130,7 +130,7 @@
         delete from an_uac_action
         where menu_id = #{menuId}
     </delete>
-    <select id="findAllPerms" resultType="com.ananops.provider.model.user.Perm">
+    <select id="findAllPerms" resultType="com.ananops.provider.model.dto.user.Perm">
         select url as resource, actionCode as perm from UacAction
     </select>
     <select id="findActionCodeListByUserId" resultType="java.lang.String">

@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 /**
  * The class Mdc address service.
  *
- * @author paascloud.net @gmail.com
+ * @author ananops.com @gmail.com
  */
 @Service
 @Transactional(rollbackFor = Exception.class)

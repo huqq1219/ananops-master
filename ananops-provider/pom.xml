@@ -21,6 +21,12 @@
         <module>ananops-provider-mdc</module>
         <module>ananops-provider-imc</module>
         <module>ananops-provider-pmc</module>
+        <module>ananops-provider-mdmc</module>
+        <module>ananops-provider-spc</module>
+        <module>ananops-provider-activiti</module>
+        <module>ananops-provider-bill</module>
+        <module>ananops-provider-payment</module>
+        <module>ananops-provider-amc</module>
     </modules>
 
     <properties>

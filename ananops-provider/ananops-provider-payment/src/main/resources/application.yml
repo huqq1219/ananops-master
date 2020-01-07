@@ -1,0 +1,11 @@
+server:
+  port: 9500
+spring:
+  profiles:
+    active: dev
+  application:
+    name: ananops-provider-payment
+  datasource:
+    username: root
+    password: root
+

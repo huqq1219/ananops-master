@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ananops.eureka</groupId>
-    <artifactId>ananops.eureka</artifactId>
+    <artifactId>ananops-eureka</artifactId>
     <packaging>jar</packaging>
 
     <name>ananops-eureka</name>

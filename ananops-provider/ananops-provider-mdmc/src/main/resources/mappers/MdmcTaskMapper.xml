@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ananops.provider.mapper.MdmcTaskMapper" >
+  <resultMap id="BaseResultMap" type="com.ananops.provider.model.domain.MdmcTask" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="version" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creator" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="creator_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="created_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="last_operator" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="last_operator_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="principal_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="project_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="facilitator_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="maintainer_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="scheduled_finish_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="actual_finish_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="scheduled_start_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="actual_start_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="deadline" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="request_latitude" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="request_longitude" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="total_cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="clearing_form" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <resultMap id="IDResultMap" type="com.ananops.provider.model.domain.MdmcTask">
+    <constructor >
+      <arg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+    </constructor>
+  </resultMap>
+
+</mapper>

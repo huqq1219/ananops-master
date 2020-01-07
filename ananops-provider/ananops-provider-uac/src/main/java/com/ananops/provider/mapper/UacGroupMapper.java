@@ -1,12 +1,9 @@
 /*
- * Copyright (c) 2018. paascloud.net All Rights Reserved.
- * 项目名称：paascloud快速搭建企业级分布式微服务平台
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
  * 类名称：UacGroupMapper.java
- * 创建人：刘兆明
- * 联系方式：paascloud.net@gmail.com
- * 开源地址: https://github.com/paascloud
- * 博客地址: http://blog.paascloud.net
- * 项目官网: http://paascloud.net
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
  */
 
 package com.ananops.provider.mapper;
@@ -16,12 +13,15 @@ import com.ananops.provider.model.domain.UacGroup;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * The interface Uac group mapper.
  *
- * @author paascloud.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Mapper
 @Component
 public interface UacGroupMapper extends MyMapper<UacGroup> {
+    List<UacGroup> selectGroupListByUserId(Long userId);
 }

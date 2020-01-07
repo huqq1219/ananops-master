@@ -85,14 +85,31 @@ public class ImcInspectionTaskController extends BaseController {
     }
 
     @PostMapping(value = "/getTaskByUserId")
-    @ApiOperation(httpMethod = "POST",value = "根据甲方用户的id查询对应的巡检任务")
-    public Wrapper<List<ImcInspectionTask>> getTaskByUserId(@ApiParam(name = "getTaskByUserId",value = "根据甲方用户的ID查询巡检任务")@RequestBody TaskQueryDto taskQueryDto){
+    @ApiOperation(httpMethod = "POST",value = "根据用户（1：甲方，2：服务商，3：服务商管理员，4：服务商组织）的id查询对应的巡检任务")
+    public Wrapper<List<ImcInspectionTask>> getTaskByUserId(@ApiParam(name = "getTaskByUserId",value = "根据用户（1：甲方，2：服务商）的ID查询巡检任务")@RequestBody TaskQueryDto taskQueryDto){
         return WrapMapper.ok(imcInspectionTaskService.getTaskByUserId(taskQueryDto));
     }
 
     @PostMapping(value = "/getTaskByUserIdAndStatus")
-    @ApiOperation(httpMethod = "POST",value = "根据甲方用户id查询指定状态的巡检任务")
-    public Wrapper<List<ImcInspectionTask>> getTaskByUserIdAndStatus(@ApiParam(name = "getTaskByUserIdAndStatus",value = "根据甲方用户id查询指定状态的巡检任务")@RequestBody TaskQueryDto taskQueryDto){
+    @ApiOperation(httpMethod = "POST",value = "根据用户（1：甲方，2：服务商，3：服务商管理员，4：服务商组织）id查询指定状态的巡检任务")
+    public Wrapper<List<ImcInspectionTask>> getTaskByUserIdAndStatus(@ApiParam(name = "getTaskByUserIdAndStatus",value = "根据用户（1：甲方，2：服务商）id查询指定状态的巡检任务")@RequestBody TaskQueryDto taskQueryDto){
         return WrapMapper.ok(imcInspectionTaskService.getTaskByUserIdAndStatus(taskQueryDto));
     }
+
+    @PostMapping(value = "/modifyFacilitatorIdByTaskId")
+    @ApiOperation(httpMethod = "POST",value = "根据巡检任务的ID修改对应任务的服务商ID")
+    public Wrapper<TaskChangeFacilitatorDto> modifyFacilitatorIdByTaskId(@ApiParam(name = "modifyFacilitatorByTaskId",value = "根据巡检任务的ID修改对应任务的服务商ID")@RequestBody TaskChangeFacilitatorDto taskChangeFacilitatorDto){
+        return WrapMapper.ok(imcInspectionTaskService.modifyFacilitator(taskChangeFacilitatorDto));
+    }
+//    @PostMapping(value = "/getTaskByFacilitatorId")
+//    @ApiOperation(httpMethod = "POST",value = "根据服务商id查询巡检任务")
+//    public Wrapper<List<ImcInspectionTask>> getTaskByFacilitatorId(@ApiParam(name = "getTaskByFacilitatorId",value = "根据服务商id查询巡检任务")@RequestBody TaskQueryDto taskQueryDto){
+//        return WrapMapper.ok(imcInspectionTaskService.getTaskByFacilitatorId(taskQueryDto));
+//    }
+//
+//    @PostMapping(value = "/getTaskByFacilitatorIdAndStatus")
+//    @ApiOperation(httpMethod = "POST",value = "根据服务商id查询指定状态的巡检任务")
+//    public Wrapper<List<ImcInspectionTask>> getTaskByFacilitatorIdAndStatus(@ApiParam(name = "getTaskByFacilitatorIdAndStatus",value = "根据服务商id查询指定状态的巡检任务")@RequestBody TaskQueryDto taskQueryDto){
+//        return WrapMapper.ok(imcInspectionTaskService.getTaskByFacilitatorIdAndStatus(taskQueryDto));
+//    }
 }

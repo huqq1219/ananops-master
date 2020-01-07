@@ -1,13 +1,4 @@
-/*
- * Copyright (c) 2018. ananops.net All Rights Reserved.
- * 项目名称：paascloud快速搭建企业级分布式微服务平台
- * 类名称：AliyunSmsConstants.java
- * 创建人：刘兆明
- * 联系方式：ananops.net@gmail.com
- * 开源地址: https://github.com/paascloud
- * 博客地址: http://blog.paascloud.net
- * 项目官网: http://paascloud.net
- */
+
 package com.ananops.base.constant;
 
 import com.google.common.collect.Lists;
@@ -31,7 +22,7 @@ public class AliyunSmsConstants {
 	public enum SmsTempletEnum {
 
 		/**
-		 * 通用模板(短信内容:验证码${code}, 您正在注册成为paasCloud用户, 感谢您的支持！)
+		 * 通用模板(短信内容:验证码${code}, 您正在注册成为AnanOps用户, 感谢您的支持！)
 		 */
 		UAC_PC_GLOBAL_TEMPLATE("UAC_PC_GLOBAL_TEMPLATE", "SMS_105115057", "code"),;
 

@@ -19,6 +19,16 @@ import java.util.List;
 public class ImcAddInspectionTaskDto implements Serializable {
     private static final long serialVersionUID = -6922470629930578506L;
     /**
+     * 巡检任务对应的服务商组织的Id
+     */
+    @ApiModelProperty(value = "巡检任务对应的服务商组织的Id")
+    private Long facilitatorGroupId;
+    /**
+     * 巡检任务对应的服务商管理员Id
+     */
+    @ApiModelProperty(value = "巡检任务对应的服务商管理员id")
+    private Long facilitatorManagerId;
+    /**
      * 巡检任务对应的甲方用户id
      */
     @ApiModelProperty(value = "巡检任务对应的甲方用户id")

@@ -1,12 +1,9 @@
 /*
- * Copyright (c) 2018. paascloud.net All Rights Reserved.
- * 项目名称：paascloud快速搭建企业级分布式微服务平台
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
  * 类名称：PaginationPlugin.java
- * 创建人：刘兆明
- * 联系方式：paascloud.net@gmail.com
- * 开源地址: https://github.com/paascloud
- * 博客地址: http://blog.paascloud.net
- * 项目官网: http://paascloud.net
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
  */
 
 package com.ananops.discovery;
@@ -25,9 +22,9 @@ import org.springframework.cloud.netflix.turbine.EnableTurbine;
 import org.springframework.context.annotation.Bean;
 
 /**
- * The class Paas cloud monitor application.
+ * The class AnanOps cloud monitor application.
  *
- * @author paascloud.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @SpringBootApplication
 @EnableDiscoveryClient

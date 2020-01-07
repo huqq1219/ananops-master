@@ -1,17 +1,15 @@
 /*
- * Copyright (c) 2018. paascloud.net All Rights Reserved.
- * 项目名称：paascloud快速搭建企业级分布式微服务平台
+ * Copyright (c) 2019. ananops.com All Rights Reserved.
+ * 项目名称：ananops平台
  * 类名称：OptQiniuOssServiceImpl.java
- * 创建人：刘兆明
- * 联系方式：paascloud.net@gmail.com
- * 开源地址: https://github.com/paascloud
- * 博客地址: http://blog.paascloud.net
- * 项目官网: http://paascloud.net
+ * 创建人：ananops
+ * 平台官网: http://ananops.com
  */
 
 package com.ananops.provider.service.impl;
 
 
+import com.ananops.config.properties.AnanopsProperties;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
@@ -19,7 +17,6 @@ import com.ananops.PublicUtil;
 import com.ananops.RedisKeyUtil;
 import com.ananops.UrlUtil;
 import com.ananops.base.enums.ErrorCodeEnum;
-import com.ananops.config.properties.PaascloudProperties;
 import com.ananops.core.generator.UniqueIdGenerator;
 import com.ananops.provider.exceptions.OpcBizException;
 import com.ananops.provider.model.dto.oss.OptUploadFileRespDto;
@@ -49,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * The class Opt qiniu oss service.
  *
- * @author paascloud.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Slf4j
 @Service
@@ -59,7 +56,7 @@ public class OptQiniuOssServiceImpl implements OpcOssService {
 	@Resource
 	private Auth auth;
 	@Resource
-	private PaascloudProperties paascloudProperties;
+	private AnanopsProperties ananOpsProperties;
 	@Resource
 	private UploadManager uploadManager;
 	@Resource
@@ -149,9 +146,9 @@ public class OptQiniuOssServiceImpl implements OpcOssService {
 		String fileUrl;
 		// 获取图片路径
 		if (StringUtils.equals(OPEN_IMG_BUCKET, bucketName)) {
-			fileUrl = paascloudProperties.getQiniu().getOss().getPublicHost() + "/" + filePath + newFileName;
+			fileUrl = ananOpsProperties.getQiniu().getOss().getPublicHost() + "/" + filePath + newFileName;
 		} else {
-			String domainUrl = paascloudProperties.getQiniu().getOss().getPrivateHost();
+			String domainUrl = ananOpsProperties.getQiniu().getOss().getPrivateHost();
 			fileUrl = this.getFileUrl(domainUrl, fileName);
 		}
 		OptUploadFileRespDto result = new OptUploadFileRespDto();
@@ -167,7 +164,7 @@ public class OptQiniuOssServiceImpl implements OpcOssService {
 
 	private void checkFileSize(byte[] uploadFileByte) {
 		long redisFileSize;
-		Long fileMaxSize = paascloudProperties.getQiniu().getOss().getFileMaxSize();
+		Long fileMaxSize = ananOpsProperties.getQiniu().getOss().getFileMaxSize();
 		Preconditions.checkArgument(fileMaxSize != null, "每天上传文件最大值没有配置");
 
 		String fileSizeKey = RedisKeyUtil.getFileSizeKey();

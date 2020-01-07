@@ -12,24 +12,28 @@
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     <result column="project_type" property="projectType" jdbcType="VARCHAR" />
     <result column="is_contract" property="isContract" jdbcType="INTEGER" />
-    <result column="part_a_id" property="partyAId" jdbcType="BIGINT" />
-    <result column="part_a_name" property="partyAName" jdbcType="VARCHAR" />
+    <result column="party_a_id" property="partyAId" jdbcType="BIGINT" />
+    <result column="party_a_name" property="partyAName" jdbcType="VARCHAR" />
     <result column="party_b_id" property="partyBId" jdbcType="BIGINT" />
     <result column="party_b_name" property="partyBName" jdbcType="VARCHAR" />
+    <result column="a_leader_id" property="aLeaderId" jdbcType="BIGINT" />
+    <result column="a_leader_name" property="aLeaderName" jdbcType="VARCHAR" />
+    <result column="a_leader_tel" property="aLeaderTel" jdbcType="VARCHAR" />
     <result column="a_one_name" property="aOneName" jdbcType="VARCHAR" />
     <result column="party_a_one" property="partyAOne" jdbcType="VARCHAR" />
     <result column="a_two_name" property="aTwoName" jdbcType="VARCHAR" />
     <result column="party_a_two" property="partyATwo" jdbcType="VARCHAR" />
     <result column="a_three_name" property="aThreeName" jdbcType="VARCHAR" />
     <result column="party_a_three" property="partyAThree" jdbcType="VARCHAR" />
-    <result column="b_name" property="bName" jdbcType="VARCHAR" />
-    <result column="party_b_one" property="partyBOne" jdbcType="VARCHAR" />
+    <result column="b_leader_id" property="bLeaderId" jdbcType="BIGINT" />
+    <result column="b_leader_name" property="bLeaderName" jdbcType="VARCHAR" />
+    <result column="b_leader_tel" property="bLeaderTel" jdbcType="VARCHAR" />
     <result column="party_b_tel" property="partyBTel" jdbcType="VARCHAR" />
     <result column="party_b_phone" property="partyBPhone" jdbcType="VARCHAR" />
     <result column="party_b_email" property="partyBEmail" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
-    <result column="is_destory" property="isDestory" jdbcType="INTEGER" />
+    <result column="is_destroy" property="isDestroy" jdbcType="INTEGER" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="creator_id" property="creatorId" jdbcType="BIGINT" />
@@ -38,4 +42,16 @@
     <result column="last_operator_id" property="lastOperatorId" jdbcType="BIGINT" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
+
+
+  <select id="getProjectByUserId" resultMap="BaseResultMap">
+    select * from
+    an_pmc_project p,an_pmc_project_user u
+    where
+    1=1
+    and p.id = u.project_id
+    and u.user_id =  #{userId,jdbcType=BIGINT}
+  </select>
+
 </mapper>
+

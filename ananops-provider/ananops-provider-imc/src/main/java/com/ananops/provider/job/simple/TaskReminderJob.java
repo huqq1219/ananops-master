@@ -51,7 +51,7 @@ public class TaskReminderJob implements SimpleJob {
                     //更新巡检任务子项的执行次数
                     item.setCount(passed);
                     //将巡检任务子项状态设置为等待巡检
-                    item.setStatus(ItemStatusEnum.WAITING_FOR_INSPECTION.getStatusNum());
+                    item.setStatus(ItemStatusEnum.WAITING_FOR_MAINTAINER.getStatusNum());
                     imcInspectionItemMapper.updateByPrimaryKeySelective(item);
                 }
             }

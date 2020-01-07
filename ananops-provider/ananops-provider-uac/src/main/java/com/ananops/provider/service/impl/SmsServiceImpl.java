@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * The class Sms service.
  *
- * @author paascloud.net@gmail.com
+ * @author ananops.com@gmail.com
  */
 @Slf4j
 @Service
@@ -66,7 +66,7 @@ public class SmsServiceImpl implements SmsService {
 
 		UacUser user = uacUserService.findByMobileNo(mobile);
 		redisTemplate.opsForValue().set(RedisKeyUtil.getResetPwdTokenKey(resetPwdKey), user, 10, TimeUnit.MINUTES);
-		CookieUtil.setCookie("PASSCLOUD_PAAS_resetPwdKey", resetPwdKey, 10 * 60, response);
+		CookieUtil.setCookie("ANANOPS_ANAN_resetPwdKey", resetPwdKey, 10 * 60, response);
 		return resetPwdKey;
 	}
 }

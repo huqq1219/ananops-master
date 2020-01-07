@@ -6,6 +6,7 @@ import com.ananops.core.utils.RequestUtil;
 import com.ananops.provider.core.annotation.AnanLogAnnotation;
 import com.ananops.provider.model.domain.*;
 import com.ananops.provider.model.dto.*;
+import com.ananops.provider.model.enums.TaskStatusEnum;
 import com.ananops.provider.service.ImcInspectionItemLogService;
 import com.ananops.provider.service.ImcInspectionItemService;
 import com.ananops.provider.service.ImcInspectionTaskLogService;
@@ -195,6 +196,14 @@ public class AnanLogAspect {
                 LoginAuthDto loginUser = RequestUtil.getLoginUser();
                 if(imcInspectionItemLogService.createInspectionItemLog(imcInspectionItemLog,loginUser) == 1){
                     System.out.println("巡检任务子项日志创建成功" + imcInspectionItemLog);
+                }
+                if(imcInspectionTaskService.getTaskByTaskId(taskId).getStatus()==TaskStatusEnum.WAITING_FOR_CONFIRM.getStatusNum()){
+                    //如果在巡检任务子项状态改变的同时，巡检任务的状态也改变
+
+                    ImcInspectionTaskLog imcInspectionTaskLog = createTaskLog(taskId,4,startTime,endTime,"修改巡检任务状态为" + TaskStatusEnum.WAITING_FOR_CONFIRM.getStatusMsg(),os,browser,ipAddress);
+                    if(imcInspectionTaskLogService.createInspectionTaskLog(imcInspectionTaskLog,loginUser)==1){
+                        System.out.println("巡检任务日志创建成功" + imcInspectionTaskLog);
+                    }
                 }
             }else if(wrapper.getResult().getClass().getName().equals(TaskNameChangeDto.class.getName())){
                 TaskNameChangeDto taskNameChangeDto = (TaskNameChangeDto) wrapper.getResult();

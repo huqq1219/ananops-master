@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ananops.provider.mapper.PmcProjectUserMapper" >
+  <resultMap id="BaseResultMap" type="com.ananops.provider.model.domain.PmcProjectUser" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="project_id" property="projectId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+  </resultMap>
+</mapper>

@@ -1,11 +1,11 @@
 package com.ananops.core.registry;
 
+import com.ananops.config.properties.AnanopsProperties;
 import com.google.common.base.Charsets;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import com.ananops.config.properties.AliyunProperties;
-import com.ananops.config.properties.PaascloudProperties;
 import com.ananops.config.properties.ZookeeperProperties;
 import com.ananops.core.generator.IncrementIdGenerator;
 import com.ananops.core.registry.base.CoordinatorRegistryCenter;
@@ -49,24 +49,24 @@ public final class RegistryCenterFactory {
 	/**
 	 * Startup.
 	 *
-	 * @param paascloudProperties the paascloud properties
+	 * @param ananOpsProperties the AnanOps properties
 	 * @param host                the host
 	 * @param app                 the app
 	 */
-	public static void startup(PaascloudProperties paascloudProperties, String host, String app) {
+	public static void startup(AnanopsProperties ananOpsProperties, String host, String app) {
 		//初始化用于协调分布式服务的注册中心
-		CoordinatorRegistryCenter coordinatorRegistryCenter = createCoordinatorRegistryCenter(paascloudProperties.getZk());
+		CoordinatorRegistryCenter coordinatorRegistryCenter = createCoordinatorRegistryCenter(ananOpsProperties.getZk());
 		RegisterDto dto = new RegisterDto(app, host, coordinatorRegistryCenter);
 		//生成分布式ID
 		Long serviceId = new IncrementIdGenerator(dto).nextId();
 		IncrementIdGenerator.setServiceId(serviceId);
 		//当前启动服务（生产者或消费者）注册到zookeeper中心
-		registerMq(paascloudProperties, host, app);
+		registerMq(ananOpsProperties, host, app);
 	}
 	//注册rocketmq生产者消费者
-	private static void registerMq(PaascloudProperties paascloudProperties, String host, String app) {
-		CoordinatorRegistryCenter coordinatorRegistryCenter = createCoordinatorRegistryCenter(paascloudProperties.getZk());
-		AliyunProperties.RocketMqProperties rocketMq = paascloudProperties.getAliyun().getRocketMq();
+	private static void registerMq(AnanopsProperties ananOpsProperties, String host, String app) {
+		CoordinatorRegistryCenter coordinatorRegistryCenter = createCoordinatorRegistryCenter(ananOpsProperties.getZk());
+		AliyunProperties.RocketMqProperties rocketMq = ananOpsProperties.getAliyun().getRocketMq();
 		//生产者和消费者
 		String consumerGroup = rocketMq.isReliableMessageConsumer() ? rocketMq.getConsumerGroup() : null;
 		String namesrvAddr = rocketMq.getNamesrvAddr();
