@@ -6,7 +6,7 @@ import com.ananops.provider.model.dto.BillCreateDto;
 import java.util.List;
 
 public interface BaseService {
-    public void insert(BillCreateDto billCreateDto);
+    public void insert(BillCreateDto billCreateDto, Float devicePrice, Float servicePrice, String transactionMethod);
     public List<Basebill> getAllBillByUserId(String userid);
     public Float getAmountByworkorderid(String workorderid);
     public Basebill getBillById(String id);

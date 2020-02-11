@@ -5,16 +5,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Table(name = "an_rdc_order")
-public class DeviceOrder extends BaseEntity {
+public class DeviceOrder extends BaseEntity implements Serializable {
     
-    private static final long serialVersionUID = 2920471834738891092L;
-
     /**
      * 订单绑定对象类型(1.维修工单 2.巡检工单 3.企业订单 4.个人订单)
      */
@@ -62,7 +61,7 @@ public class DeviceOrder extends BaseEntity {
     /**
      * 备品备件订单处理结果
      */
-    private Integer processResult;
+    private String processResult;
     
     /**
      * 备品贝吉安订单处理意见

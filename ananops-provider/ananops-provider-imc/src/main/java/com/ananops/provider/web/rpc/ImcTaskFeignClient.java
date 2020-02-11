@@ -10,7 +10,6 @@ import com.ananops.provider.mapper.ImcInspectionTaskMapper;
 import com.ananops.provider.model.domain.ImcInspectionItem;
 import com.ananops.provider.model.domain.ImcInspectionTask;
 import com.ananops.provider.model.dto.*;
-import com.ananops.provider.model.enums.TaskStatusEnum;
 import com.ananops.provider.service.ImcInspectionTaskLogService;
 import com.ananops.provider.service.ImcInspectionTaskService;
 import com.ananops.provider.service.ImcTaskFeignApi;
@@ -24,7 +23,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -176,7 +174,7 @@ public class ImcTaskFeignClient extends BaseController implements ImcTaskFeignAp
     }
 
     @Override
-    @ApiOperation(httpMethod = "POST", value = "根据巡检任务的ID修改任务的状态")
+    @ApiOperation(httpMethod = "POST", value = "更改巡检任务的状态")
     @AnanLogAnnotation
     public Wrapper<ImcTaskChangeStatusDto> modifyTaskStatusByTaskId(@ApiParam(name = "modifyTaskStatusByTaskId",value = "根据巡检任务的ID修改该任务的状态")@RequestBody ImcTaskChangeStatusDto imcTaskChangeStatusDto){
         LoginAuthDto loginAuthDto = imcTaskChangeStatusDto.getLoginAuthDto();
@@ -197,6 +195,7 @@ public class ImcTaskFeignClient extends BaseController implements ImcTaskFeignAp
 
     @Override
     @ApiOperation(httpMethod = "POST", value = "修改巡检任务对应的服务商")
+    @AnanLogAnnotation
     public Wrapper<TaskChangeFacilitatorDto> modifyFacilitatorByTaskId(@ApiParam(name = "modifyFacilitatorByTaskId",value = "修改巡检任务对应的服务商")@RequestBody TaskChangeFacilitatorDto taskChangeFacilitatorDto){
         Long taskId = taskChangeFacilitatorDto.getTaskId();
         Long facilitatorId = taskChangeFacilitatorDto.getFacilitatorId();
@@ -217,32 +216,27 @@ public class ImcTaskFeignClient extends BaseController implements ImcTaskFeignAp
 
 
     @Override
-    @ApiOperation(httpMethod = "POST", value = "服务商拒单（巡检任务）")
-    public Wrapper<ImcTaskChangeStatusDto> refuseImcTaskByTaskId(@ApiParam(name = "refuseImcTaskByTaskId",value = "服务商拒单（巡检任务）")@RequestBody RefuseTaskDto refuseTaskDto){
-        LoginAuthDto loginAuthDto = refuseTaskDto.getLoginAuthDto();
-        Long taskId = refuseTaskDto.getTaskId();
-        ImcTaskChangeStatusDto imcTaskChangeStatusDto = new ImcTaskChangeStatusDto();
-        imcTaskChangeStatusDto.setStatusMsg(TaskStatusEnum.getStatusMsg(TaskStatusEnum.WAITING_FOR_FACILITATOR.getStatusNum()));
-        imcTaskChangeStatusDto.setStatus(TaskStatusEnum.WAITING_FOR_FACILITATOR.getStatusNum());
-        imcTaskChangeStatusDto.setTaskId(taskId);
-        Example example = new Example(ImcInspectionTask.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("id",taskId);
-        if(imcInspectionTaskMapper.selectCountByExample(example)==0){
-            //如果当前任务不存在
-            throw new BusinessException(ErrorCodeEnum.GL9999098);
-        }
-        ImcInspectionTask imcInspectionTask = imcInspectionTaskMapper.selectByExample(example).get(0);
-        if(imcInspectionTask.getStatus().equals(TaskStatusEnum.WAITING_FOR_ACCEPT.getStatusNum())){
-            //如果当前任务的状态是等待服务商接单，才允许服务商拒单
-            imcInspectionTask.setStatus(TaskStatusEnum.WAITING_FOR_FACILITATOR.getStatusNum());
-            imcInspectionTask.setUpdateInfo(loginAuthDto);
-            imcInspectionTaskMapper.updateByPrimaryKeySelective(imcInspectionTask);
-        }else{
-            throw new BusinessException(ErrorCodeEnum.GL9999086);
-        }
-        return WrapMapper.ok(imcTaskChangeStatusDto);
+    @ApiOperation(httpMethod = "POST", value = "服务商拒单")
+    @AnanLogAnnotation
+    public Wrapper<ImcTaskChangeStatusDto> refuseImcTaskByFacilitator(@ApiParam(name = "refuseImcTaskByTaskId",value = "服务商拒单（巡检任务）")@RequestBody ConfirmImcTaskDto confirmImcTaskDto){
+        return WrapMapper.ok(imcInspectionTaskService.refuseImcTaskByFacilitator(confirmImcTaskDto));
     }
+
+    @Override
+    @ApiOperation(httpMethod = "POST", value = "服务商接单")
+    @AnanLogAnnotation
+    public Wrapper<ImcTaskChangeStatusDto> acceptImcTaskByFacilitator(@ApiParam(name = "acceptImcTaskByTaskId",value = "服务商接单（巡检任务）")@RequestBody ConfirmImcTaskDto confirmImcTaskDto){
+        return WrapMapper.ok(imcInspectionTaskService.acceptImcTaskByFacilitator(confirmImcTaskDto));
+    }
+
+    @Override
+    @ApiOperation(httpMethod = "POST", value = "编辑巡检任务")
+    @AnanLogAnnotation
+    public Wrapper<ImcAddInspectionTaskDto> createImcTask(@ApiParam(name = "createImcTask",value = "创建巡检任务")@RequestBody ImcAddInspectionTaskDto imcAddInspectionTaskDto){
+        LoginAuthDto loginAuthDto = imcAddInspectionTaskDto.getLoginAuthDto();
+        return WrapMapper.ok(imcInspectionTaskService.saveTask(imcAddInspectionTaskDto,loginAuthDto));
+    }
+
 
     public List<ItemDto> getItemList(Long taskId){
         Example example = new Example(ImcInspectionItem.class);
@@ -257,5 +251,4 @@ public class ImcTaskFeignClient extends BaseController implements ImcTaskFeignAp
         });
         return itemDtoList;
     }
-
 }

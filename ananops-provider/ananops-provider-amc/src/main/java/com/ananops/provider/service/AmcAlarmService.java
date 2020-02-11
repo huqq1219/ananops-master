@@ -35,12 +35,6 @@ public interface AmcAlarmService extends IService<AmcAlarm> {
      */
     PageInfo getAlarmListByGroupId(BaseQuery baseQuery);
 
-    /**
-     * 根据项目id,分页查看报警信息
-     * @param alarmQuery
-     * @return
-     */
-    PageInfo getAlarmListByProjectId(AlarmQuery alarmQuery);
 
     /**
      * 根据告警等级,分页筛选报警信息
@@ -73,4 +67,24 @@ public interface AmcAlarmService extends IService<AmcAlarm> {
      * @return
      */
     int getDealedCount();
+
+    /**
+     * 根据服务商id删除报警信息
+     * @param alarmId
+     * @return
+     */
+    int deleteAlarmByAlarmId(Long alarmId);
+
+    /**、
+     * 根据告警状态删除报警信息
+     * @param alarmStatus
+     * @return
+     */
+    int deleteAlarmsByAlarmStatus(int alarmStatus);
+
+    /**
+     * 获取总告警数
+     * @return
+     */
+    int getAllAlarmCount();
 }

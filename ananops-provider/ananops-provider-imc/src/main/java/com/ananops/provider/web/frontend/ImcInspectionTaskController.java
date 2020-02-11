@@ -7,6 +7,7 @@ import com.ananops.provider.core.annotation.AnanLogAnnotation;
 import com.ananops.provider.model.domain.ImcInspectionTask;
 import com.ananops.provider.model.dto.*;
 import com.ananops.provider.model.vo.TaskLogVo;
+import com.ananops.provider.service.ImcInspectionItemService;
 import com.ananops.provider.service.ImcInspectionTaskLogService;
 import com.ananops.provider.service.ImcInspectionTaskService;
 import com.ananops.wrapper.WrapMapper;
@@ -33,6 +34,10 @@ public class ImcInspectionTaskController extends BaseController {
     @Resource
     ImcInspectionTaskLogService imcInspectionTaskLogService;
 
+    @Resource
+    ImcInspectionItemService imcInspectionItemService;
+
+
     @PostMapping(value = "/save")
     @ApiOperation(httpMethod = "POST",value = "编辑巡检任务记录")
     @AnanLogAnnotation
@@ -48,7 +53,7 @@ public class ImcInspectionTaskController extends BaseController {
         return WrapMapper.ok(imcInspectionTask);
     }
 
-    @PostMapping(value = "/modifyTaskStatusByTaskId/{taskId}")
+    @PostMapping(value = "/modifyTaskStatusByTaskId")
     @ApiOperation(httpMethod = "POST",value = "更改巡检任务的状态")
     @AnanLogAnnotation
     public Wrapper<ImcTaskChangeStatusDto> modifyTaskStatusByTaskId(@ApiParam(name = "modifyTaskStatus",value = "根据巡检任务的ID修改巡检任务的状态")@RequestBody ImcTaskChangeStatusDto imcTaskChangeStatusDto){
@@ -101,15 +106,59 @@ public class ImcInspectionTaskController extends BaseController {
     public Wrapper<TaskChangeFacilitatorDto> modifyFacilitatorIdByTaskId(@ApiParam(name = "modifyFacilitatorByTaskId",value = "根据巡检任务的ID修改对应任务的服务商ID")@RequestBody TaskChangeFacilitatorDto taskChangeFacilitatorDto){
         return WrapMapper.ok(imcInspectionTaskService.modifyFacilitator(taskChangeFacilitatorDto));
     }
-//    @PostMapping(value = "/getTaskByFacilitatorId")
-//    @ApiOperation(httpMethod = "POST",value = "根据服务商id查询巡检任务")
-//    public Wrapper<List<ImcInspectionTask>> getTaskByFacilitatorId(@ApiParam(name = "getTaskByFacilitatorId",value = "根据服务商id查询巡检任务")@RequestBody TaskQueryDto taskQueryDto){
-//        return WrapMapper.ok(imcInspectionTaskService.getTaskByFacilitatorId(taskQueryDto));
-//    }
-//
-//    @PostMapping(value = "/getTaskByFacilitatorIdAndStatus")
-//    @ApiOperation(httpMethod = "POST",value = "根据服务商id查询指定状态的巡检任务")
-//    public Wrapper<List<ImcInspectionTask>> getTaskByFacilitatorIdAndStatus(@ApiParam(name = "getTaskByFacilitatorIdAndStatus",value = "根据服务商id查询指定状态的巡检任务")@RequestBody TaskQueryDto taskQueryDto){
-//        return WrapMapper.ok(imcInspectionTaskService.getTaskByFacilitatorIdAndStatus(taskQueryDto));
-//    }
+
+    @PostMapping(value = "/refuseTaskByFacilitator")
+    @ApiOperation(httpMethod = "POST",value = "服务商拒单")
+    @AnanLogAnnotation
+    public Wrapper<ImcTaskChangeStatusDto> refuseTaskByFacilitator(@RequestBody ConfirmImcTaskDto refuseImcTaskDto){
+        refuseImcTaskDto.setLoginAuthDto(getLoginAuthDto());
+        return WrapMapper.ok(imcInspectionTaskService.refuseImcTaskByFacilitator(refuseImcTaskDto));
+    }
+
+    @PostMapping(value = "/acceptTaskByFacilitator")
+    @ApiOperation(httpMethod = "POST",value = "服务商接单")
+    @AnanLogAnnotation
+    public Wrapper<ImcTaskChangeStatusDto> acceptTaskByFacilitator(@RequestBody ConfirmImcTaskDto acceptImcTaskDto){
+        acceptImcTaskDto.setLoginAuthDto(getLoginAuthDto());
+        return WrapMapper.ok(imcInspectionTaskService.acceptImcTaskByFacilitator(acceptImcTaskDto));
+    }
+
+
+    @PostMapping(value = "/deleteTaskByTaskId/{taskId}")
+    @ApiOperation(httpMethod = "POST",value = "删除指定的巡检任务")
+    public Wrapper deleteTaskByTaskId(@PathVariable Long taskId){
+        imcInspectionTaskService.deleteTaskById(taskId);
+        return WrapMapper.ok();
+    }
+
+    @PostMapping(value = "/getAllUnauthorizedTask")
+    @ApiOperation(httpMethod = "POST",value = "查询当前甲方负责人下面的全部未授权的任务")
+    public Wrapper<List<ImcInspectionTask>> getAllUnauthorizedTask(@RequestBody TaskQueryDto taskQueryDto){
+        return WrapMapper.ok(imcInspectionTaskService.getAllUnauthorizedTaskByPrincipalId(taskQueryDto));
+    }
+
+    @PostMapping(value = "/getAllDeniedTask")
+    @ApiOperation(httpMethod = "POST",value = "查询当前甲方负责人下面的全部未授权的任务")
+    public Wrapper<List<ImcInspectionTask>> getAllDeniedTask(@RequestBody TaskQueryDto taskQueryDto){
+        return WrapMapper.ok(imcInspectionTaskService.getAllDeniedTaskByPrincipalId(taskQueryDto));
+    }
+
+    @PostMapping(value = "/acceptImcTaskByPrincipal")
+    @ApiOperation(httpMethod = "POST",value = "同意执行巡检任务")
+    @AnanLogAnnotation
+    public Wrapper<ImcTaskChangeStatusDto> acceptImcTaskByPrincipal(@RequestBody ImcTaskChangeStatusDto imcTaskChangeStatusDto){
+        LoginAuthDto loginAuthDto = getLoginAuthDto();
+        imcTaskChangeStatusDto.setLoginAuthDto(loginAuthDto);
+        return WrapMapper.ok(imcInspectionTaskService.acceptImcTaskByPrincipal(imcTaskChangeStatusDto));
+    }
+
+    @PostMapping(value = "/denyImcTaskByPrincipal")
+    @ApiOperation(httpMethod = "POST",value = "否决执行巡检任务")
+    @AnanLogAnnotation
+    public Wrapper<ImcTaskChangeStatusDto> denyImcTask(@RequestBody ImcTaskChangeStatusDto imcTaskChangeStatusDto){
+        LoginAuthDto loginAuthDto = getLoginAuthDto();
+        imcTaskChangeStatusDto.setLoginAuthDto(loginAuthDto);
+        return WrapMapper.ok(imcInspectionTaskService.denyImcTaskByPrincipal(imcTaskChangeStatusDto));
+    }
+
 }

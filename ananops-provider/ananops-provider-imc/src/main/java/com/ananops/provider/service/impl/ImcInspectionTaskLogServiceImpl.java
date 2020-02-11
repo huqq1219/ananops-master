@@ -5,6 +5,7 @@ import com.ananops.core.support.BaseService;
 import com.ananops.provider.mapper.ImcInspectionTaskLogMapper;
 import com.ananops.provider.model.domain.ImcInspectionTaskLog;
 import com.ananops.provider.model.dto.TaskLogQueryDto;
+import com.ananops.provider.model.enums.TaskStatusEnum;
 import com.ananops.provider.model.vo.TaskLogVo;
 import com.ananops.provider.service.ImcInspectionTaskLogService;
 import com.github.pagehelper.PageHelper;
@@ -38,6 +39,10 @@ public class ImcInspectionTaskLogServiceImpl extends BaseService<ImcInspectionTa
         imcInspectionTaskLog.setOrderBy(orderBy);
         PageHelper.startPage(taskLogQueryDto.getPageNum(),taskLogQueryDto.getPageSize());
         List<TaskLogVo> taskLogVoList = imcInspectionTaskLogMapper.queryTaskLogListWithPage(imcInspectionTaskLog);
+        for(int i=0;i<taskLogVoList.size();i++){
+            int status = taskLogVoList.get(i).getStatus();
+            taskLogVoList.get(i).setStatusMsg(TaskStatusEnum.getStatusMsg(status));
+        }
         return taskLogVoList;
     }
 

@@ -26,12 +26,14 @@
     <result column="result" jdbcType="VARCHAR" property="result" />
     <result column="item_name" jdbcType="VARCHAR" property="itemName" />
     <result column="maintainer_id" jdbcType="BIGINT" property="maintainerId" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
   </resultMap>
   <sql id="Base_Column_List">
     ${alias}.id,${alias}.version,${alias}.creator,${alias}.creator_id,${alias}.created_time,${alias}.last_operator,${alias}.last_operator_id,
     ${alias}.update_time,${alias}.inspection_task_id, ${alias}.actual_start_time,${alias}.scheduled_start_time,${alias}.actual_finish_time,
     ${alias}.days,${alias}.frequency,${alias}.description,${alias}.status,${alias}.item_latitude,${alias}.item_longitude,${alias}.result,
-    ${alias}.item_name,${alias}.maintainer_id
+    ${alias}.item_name,${alias}.maintainer_id,${alias}.count,${alias}.location
   </sql>
   <select id="queryItemByUserId" parameterType="java.lang.Long" resultType="com.ananops.provider.model.domain.ImcInspectionItem">
     SELECT

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created By ChengHao On 2019/12/20
@@ -38,6 +40,15 @@ public class PmcProjectFeignClient extends BaseController implements PmcProjectF
         BeanUtils.copyProperties(pmcProject, pmcProjectDto);
         logger.info("getProjectByProjectId - 根据项目Id查询项目信息. [OK] pmcProjectDto={}", pmcProjectDto);
         return WrapMapper.ok(pmcProjectDto);
+    }
+
+    @Override
+    @ApiOperation(httpMethod = "POST", value = "根据组织id查询项目信息")
+    public Wrapper<List<PmcProjectDto>> getProjectListByGroupId(@PathVariable(value = "groupId") Long groupId) {
+        List<PmcProject> pmcProjectList = pmcProjectService.getProjectListByGroupId(groupId);
+        List<PmcProjectDto> pmcProjectDtoList = new ArrayList<>();
+        BeanUtils.copyProperties(pmcProjectList, pmcProjectDtoList);
+        return WrapMapper.ok(pmcProjectDtoList);
     }
 
     @Override

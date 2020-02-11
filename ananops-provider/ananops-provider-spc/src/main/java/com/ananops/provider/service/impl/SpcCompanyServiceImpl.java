@@ -1,30 +1,39 @@
 package com.ananops.provider.service.impl;
 
+import com.ananops.PublicUtil;
+import com.ananops.base.constant.GlobalConstant;
 import com.ananops.base.dto.LoginAuthDto;
 import com.ananops.base.enums.ErrorCodeEnum;
 import com.ananops.core.support.BaseService;
 import com.ananops.provider.mapper.SpcCompanyMapper;
 import com.ananops.provider.model.domain.SpcCompany;
 import com.ananops.provider.model.dto.CompanyDto;
-import com.ananops.provider.model.dto.CompanyRegisterDto;
 import com.ananops.provider.model.dto.CompanyStatusDto;
 import com.ananops.provider.model.dto.ModifyCompanyStatusDto;
+import com.ananops.provider.model.dto.attachment.OptUploadFileByteInfoReqDto;
 import com.ananops.provider.model.dto.group.GroupSaveDto;
 import com.ananops.provider.model.dto.group.GroupStatusDto;
+import com.ananops.provider.model.dto.oss.OptUploadFileReqDto;
+import com.ananops.provider.model.dto.oss.OptUploadFileRespDto;
 import com.ananops.provider.model.dto.user.IdStatusDto;
-import com.ananops.provider.model.dto.user.UserRegisterDto;
 import com.ananops.provider.model.service.UacGroupFeignApi;
-import com.ananops.provider.model.service.UacUserFeignApi;
 import com.ananops.provider.model.vo.CompanyVo;
+import com.ananops.provider.service.OpcOssFeignApi;
 import com.ananops.provider.service.SpcCompanyService;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.xiaoleilu.hutool.io.FileTypeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,10 +52,10 @@ public class SpcCompanyServiceImpl extends BaseService<SpcCompany> implements Sp
     private SpcCompanyMapper spcCompanyMapper;
 
     @Resource
-    private UacUserFeignApi uacUserFeignApi;
+    private UacGroupFeignApi uacGroupFeignApi;
 
     @Resource
-    private UacGroupFeignApi uacGroupFeignApi;
+    private OpcOssFeignApi opcOssFeignApi;
 
     @Override
     public int getCompanyById(CompanyDto companyDto) {
@@ -57,42 +66,6 @@ public class SpcCompanyServiceImpl extends BaseService<SpcCompany> implements Sp
     public List<SpcCompany> queryAllCompanys(SpcCompany spcCompany) {
         return spcCompanyMapper.select(spcCompany);
     }
-
-    @Override
-    public void register(CompanyRegisterDto company) {
-        // 校验注册信息
-        validateRegisterInfo(company);
-        // 构建UAC User注册Dto
-        UserRegisterDto userRegisterDto = new UserRegisterDto();
-        GroupSaveDto groupSaveDto = new GroupSaveDto();
-        try {
-            BeanUtils.copyProperties(userRegisterDto, company);
-            BeanUtils.copyProperties(groupSaveDto, company);
-        } catch (Exception e) {
-            logger.error("服务商Dto与用户Dto属性拷贝异常");
-            e.printStackTrace();
-        }
-        Long uacUserId = uacUserFeignApi.userRegister(userRegisterDto).getResult();
-        Long uacGroupId = uacGroupFeignApi.groupSave(groupSaveDto).getResult();
-
-        if (!StringUtils.isEmpty(uacUserId) && !StringUtils.isEmpty(uacGroupId)) {
-            Date row = new Date();
-            // 封装注册信息
-            long id = generateId();
-            SpcCompany spcCompany = new SpcCompany();
-            spcCompany.setId(id);
-            spcCompany.setGroupId(uacGroupId);
-            spcCompany.setUserId(uacUserId);
-            spcCompany.setCreatorId(id);
-            spcCompany.setCreator(company.getGroupName());
-            spcCompany.setLastOperatorId(id);
-            spcCompany.setLastOperator(company.getGroupName());
-            logger.info("注册服务商. SpcCompany={}", spcCompany);
-            spcCompanyMapper.insertSelective(spcCompany);
-        }
-    }
-
-
 
     @Override
     public int modifyCompanyStatusById(ModifyCompanyStatusDto modifyCompanyStatusDto) {
@@ -139,21 +112,51 @@ public class SpcCompanyServiceImpl extends BaseService<SpcCompany> implements Sp
 
     @Override
     public CompanyVo queryByCompanyId(Long companyId) {
-        logger.info("queryByCompanyId - 根据公司Id查询公司信息接口. companyId={}", companyId);
+        logger.info("queryByCompanyId - 根据公司Id(groupId)查询公司信息接口. companyId={}", companyId);
         CompanyVo companyVo = new CompanyVo();
-        SpcCompany spcCompany = spcCompanyMapper.selectByPrimaryKey(companyId);
-        Long groupId = spcCompany.getGroupId();
-        if (!StringUtils.isEmpty(groupId)) {
-            GroupSaveDto groupSaveDto = uacGroupFeignApi.getUacGroupById(groupId).getResult();
+        SpcCompany queryC = new SpcCompany();
+        queryC.setGroupId(companyId);
+        SpcCompany spcCompany = spcCompanyMapper.selectOne(queryC);
+        if (companyId != null) {
+            GroupSaveDto groupSaveDto = uacGroupFeignApi.getUacGroupById(companyId).getResult();
             try {
-                BeanUtils.copyProperties(companyVo, spcCompany);
-                BeanUtils.copyProperties(companyVo, groupSaveDto);
+                if (spcCompany != null)
+                    BeanUtils.copyProperties(companyVo, spcCompany);
+                if (groupSaveDto != null)
+                    BeanUtils.copyProperties(companyVo, groupSaveDto);
             } catch (Exception e) {
                 logger.error("queryByCompanyId 服务商Dto与用户组Dto属性拷贝异常");
                 e.printStackTrace();
             }
         }
         return companyVo;
+    }
+
+    @Override
+    public List<CompanyVo> queryByLikeCompanyName(String companyName) {
+        logger.info("queryByLikeCompanyName - 根据公司名称模糊查询公司信息. companyName={}", companyName);
+        List<CompanyVo> companyVos = new ArrayList<>();
+        List<GroupSaveDto> groupSaveDtos = uacGroupFeignApi.getUacGroupByLikeName(companyName).getResult();
+        if (groupSaveDtos != null) {
+            for (GroupSaveDto groupSaveDto : groupSaveDtos) {
+                CompanyVo companyVo = new CompanyVo();
+                Long groupId = groupSaveDto.getId();
+                SpcCompany queryC = new SpcCompany();
+                queryC.setGroupId(groupId);
+                SpcCompany spcCompany = spcCompanyMapper.selectOne(queryC);
+                try {
+                    if (spcCompany != null)
+                        BeanUtils.copyProperties(companyVo, spcCompany);
+                    BeanUtils.copyProperties(companyVo, groupSaveDto);
+                } catch (Exception e) {
+                    logger.error("queryByCompanyId 服务商Dto与用户组Dto属性拷贝异常");
+                    e.printStackTrace();
+                }
+                companyVos.add(companyVo);
+            }
+
+        }
+        return companyVos;
     }
 
     @Override
@@ -194,24 +197,29 @@ public class SpcCompanyServiceImpl extends BaseService<SpcCompany> implements Sp
 
     }
 
-    /**
-     * 校验注册信息
-     *
-     * @param companyRegisterDto 注册的对象
-     */
-    private void validateRegisterInfo(CompanyRegisterDto companyRegisterDto) {
-        String mobileNo = companyRegisterDto.getContactPhone();
-
-        Preconditions.checkArgument(!StringUtils.isEmpty(companyRegisterDto.getGroupName()), ErrorCodeEnum.UAC10011007.msg());
-        Preconditions.checkArgument(!StringUtils.isEmpty(companyRegisterDto.getEmail()), ErrorCodeEnum.UAC10011018.msg());
-        Preconditions.checkArgument(!StringUtils.isEmpty(companyRegisterDto.getGroupCode()), ErrorCodeEnum.SPC100850010.msg());
-        Preconditions.checkArgument(!StringUtils.isEmpty(mobileNo), "手机号不能为空");
-        Preconditions.checkArgument(!StringUtils.isEmpty(companyRegisterDto.getLoginPwd()), ErrorCodeEnum.UAC10011014.msg());
-        Preconditions.checkArgument(!StringUtils.isEmpty(companyRegisterDto.getConfirmPwd()), ErrorCodeEnum.UAC10011009.msg());
-        Preconditions.checkArgument(!StringUtils.isEmpty(companyRegisterDto.getPhoneSmsCode()), "短信验证码不能为空");
-        Preconditions.checkArgument(companyRegisterDto.getLoginPwd().equals(companyRegisterDto.getConfirmPwd()), "两次密码不一致");
+    @Override
+    public int registerNew(CompanyDto companyDto) {
+        Date row = new Date();
+        // 封装注册信息
+        long id = generateId();
+        SpcCompany spcCompany = new SpcCompany();
+        spcCompany.setId(id);
+        if (companyDto.getGroupId() != null) {
+            spcCompany.setGroupId(companyDto.getGroupId());
+        } else {
+            return 1;
+        }
+        if (companyDto.getUserId() != null)
+            spcCompany.setUserId(companyDto.getUserId());
+        spcCompany.setCreatorId(id);
+        spcCompany.setCreator(companyDto.getGroupName());
+        spcCompany.setLastOperatorId(id);
+        spcCompany.setLastOperator(companyDto.getGroupName());
+        spcCompany.setCreatedTime(row);
+        logger.info("注册服务商. SpcCompany={}", spcCompany);
+        spcCompanyMapper.insertSelective(spcCompany);
+        return 0;
     }
-
 
     /**
      * 校验保存信息
@@ -232,4 +240,47 @@ public class SpcCompanyServiceImpl extends BaseService<SpcCompany> implements Sp
         Preconditions.checkArgument(!StringUtils.isEmpty(companyVo.getBusinessLicensePhoto()), ErrorCodeEnum.SPC100850016.msg());
     }
 
+    @Override
+    public List<OptUploadFileRespDto> uploadCompanyFile(MultipartHttpServletRequest multipartRequest, OptUploadFileReqDto optUploadFileReqDto, LoginAuthDto loginAuthDto) {
+        // 这里的filePath来区分照片类型，有以下三种:
+        // 法人身份证照片：legalPersonIdPhoto
+        // 营业执照照片：businessLicensePhoto
+        // 账户开户许可证照片：accountOpeningLicense
+        String filePath = optUploadFileReqDto.getFilePath();
+        Long userId = loginAuthDto.getUserId();
+        String userName = loginAuthDto.getUserName();
+        List<OptUploadFileRespDto> result = Lists.newArrayList();
+        try {
+            List<MultipartFile> fileList = multipartRequest.getFiles("file");
+            if (fileList.isEmpty()) {
+                return result;
+            }
+
+            for (MultipartFile multipartFile : fileList) {
+                String fileName = multipartFile.getOriginalFilename();
+                if (PublicUtil.isEmpty(fileName)) {
+                    continue;
+                }
+                Preconditions.checkArgument(multipartFile.getSize() <= GlobalConstant.FILE_MAX_SIZE, "上传文件不能大于5M");
+                InputStream inputStream = multipartFile.getInputStream();
+
+                String inputStreamFileType = FileTypeUtil.getType(inputStream);
+                // 将上传文件的字节流封装到到Dto对象中
+                OptUploadFileByteInfoReqDto optUploadFileByteInfoReqDto = new OptUploadFileByteInfoReqDto();
+                optUploadFileByteInfoReqDto.setFileByteArray(multipartFile.getBytes());
+                optUploadFileByteInfoReqDto.setFileName(fileName);
+                optUploadFileByteInfoReqDto.setFileType(inputStreamFileType);
+                optUploadFileReqDto.setUploadFileByteInfoReqDto(optUploadFileByteInfoReqDto);
+                // 设置不同文件路径来区分图片
+                optUploadFileReqDto.setFilePath("ananops/spc/company/" + userId + "/" + filePath + "/");
+                optUploadFileReqDto.setUserId(userId);
+                optUploadFileReqDto.setUserName(userName);
+                OptUploadFileRespDto optUploadFileRespDto = opcOssFeignApi.uploadFile(optUploadFileReqDto).getResult();
+                result.add(optUploadFileRespDto);
+            }
+        } catch (IOException e) {
+            logger.error("上传文件失败={}", e.getMessage(), e);
+        }
+        return result;
+    }
 }

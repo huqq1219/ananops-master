@@ -3,17 +3,16 @@ package com.ananops.provider.web.frontend;
 import com.ananops.base.dto.LoginAuthDto;
 import com.ananops.core.annotation.LogAnnotation;
 import com.ananops.core.support.BaseController;
-import com.ananops.provider.model.dto.EngineerDto;
-import com.ananops.provider.model.dto.WorkOrderDto;
-import com.ananops.provider.model.dto.WorkOrderQueryDto;
+import com.ananops.provider.model.dto.*;
 import com.ananops.provider.model.vo.WorkOrderDetailVo;
 import com.ananops.provider.model.vo.WorkOrderVo;
+import com.ananops.provider.service.ImcTaskFeignApi;
+import com.ananops.provider.service.MdmcTaskFeignApi;
 import com.ananops.provider.service.SpcWorkOrderService;
 import com.ananops.wrapper.WrapMapper;
 import com.ananops.wrapper.Wrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.codemodel.internal.fmt.JStaticFile;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -36,22 +35,27 @@ public class SpcWorkOrderController extends BaseController {
     @Resource
     private SpcWorkOrderService spcWorkOrderService;
 
+    @Resource
+    private ImcTaskFeignApi imcTaskFeignApi;
+
+    @Resource
+    private MdmcTaskFeignApi mdmcTaskFeignApi;
     /**
      * 分页查询服务商下待处理工单.
      *
-     * @param workOrderDto 传入的查询参数
+     * @param workOrderStatusQueryDto 传入的查询参数
      *
      * @return the wrapper
      */
     @PostMapping(value = "/queryAllWorkOrders")
     @LogAnnotation
     @ApiOperation(httpMethod = "POST", value = "分页查询服务商下工程师")
-    public Wrapper<PageInfo<WorkOrderVo>> queryAllWorkOrders(@ApiParam(name = "workOrderDto", value = "工单查询参数") @RequestBody WorkOrderDto workOrderDto) {
-        logger.info(" 分页查询参数 workOrderDto={}", workOrderDto);
+    public Wrapper<PageInfo<WorkOrderVo>> queryAllWorkOrders(@ApiParam(name = "workOrderDto", value = "工单查询参数") @RequestBody WorkOrderStatusQueryDto workOrderStatusQueryDto) {
+        logger.info(" 分页查询参数 workOrderStatusQueryDto={}", workOrderStatusQueryDto);
         LoginAuthDto loginAuthDto = getLoginAuthDto();
-        PageHelper.startPage(workOrderDto.getPageNum(), workOrderDto.getPageSize());
-        workOrderDto.setOrderBy("update_time desc");
-        List<WorkOrderVo> workOrderVoVoList = spcWorkOrderService.queryAllWorkOrders(workOrderDto, loginAuthDto);
+        PageHelper.startPage(workOrderStatusQueryDto.getPageNum(), workOrderStatusQueryDto.getPageSize());
+        workOrderStatusQueryDto.setOrderBy("update_time desc");
+        List<WorkOrderVo> workOrderVoVoList = spcWorkOrderService.queryAllWorkOrders(workOrderStatusQueryDto, loginAuthDto);
         return WrapMapper.ok(new PageInfo<>(workOrderVoVoList));
     }
 
@@ -91,39 +95,95 @@ public class SpcWorkOrderController extends BaseController {
     }
 
     /**
-     * 分配工单信息中的工程师信息
-     * 修改工单信息中的状态
+     *为维修维护工单分配工程师
      *
-     * @param workOrderDto engineerDto 工单查询参数
+     * @param engineerDistributeDto
      *
      * @return  是否成功
      */
-    @PostMapping(value = "/distributeEngineerWithWorkOrder")
+    @PostMapping(value = "/distributeEngineerWithMdmcOrder")
     @LogAnnotation
-    @ApiOperation(httpMethod = "POST", value = "分配工单信息中的工程师信息,状态")
-    public Wrapper<Integer> distributeEngineerWithWorkOrder(@ApiParam(name = "workOrderDto ,engineerDto", value = "工单ID,工程师ID") @RequestBody WorkOrderDto workOrderDto, EngineerDto engineerDto) {
-        logger.info("getSpcWorkOrderById - 根据工单Id查询工单信息. workOrderDto={}", workOrderDto);
+    @ApiOperation(httpMethod = "POST", value = "分配维修维护类型工单信息中的工程师信息,状态")
+    public Wrapper<Integer> distributeEngineerWithMdmcOrder(@ApiParam(name = "engineerDistributeDto", value = "工程师分配Dto") @RequestBody EngineerDistributeDto engineerDistributeDto) {
+        logger.info("distributeEngineerWithMdmcOrder - 分配维修维护工单信息中的工程师信息,状态. engineerDistributeDto={}", engineerDistributeDto);
         LoginAuthDto loginAuthDto = getLoginAuthDto();
-        spcWorkOrderService.distributeEngineer(workOrderDto,loginAuthDto,engineerDto.getId());
+        spcWorkOrderService.distributeEngineerForMdmc(engineerDistributeDto,loginAuthDto);
         return WrapMapper.ok();
+    }
+
+    @PostMapping(value = "/distributeEngineerWithImcOrder")
+    @LogAnnotation
+    @ApiOperation(httpMethod = "POST", value = "分配巡检类型工单信息中的工程师信息,状态")
+    public Wrapper<Integer> distributeEngineerWithImcOrder(@ApiParam(name = "engineerDistributeDto", value = "工程师分配Dto") @RequestBody EngineerDistributeDto engineerDistributeDto) {
+        logger.info("distributeEngineerWithImcOrder - 分配巡检工单信息中的工程师信息,状态. engineerDistributeDto={}", engineerDistributeDto);
+        LoginAuthDto loginAuthDto = getLoginAuthDto();
+        spcWorkOrderService.distributeEngineerForImc(engineerDistributeDto,loginAuthDto);
+        return WrapMapper.ok();
+    }
+
+//    /**
+//     *转单
+//     *
+//     * @param workOrderDto engineerDto 工单查询参数
+//     *
+//     * @return  是否成功
+//     */
+//    @PostMapping(value = "/transferWorkOrder")
+//    @LogAnnotation
+//    @ApiOperation(httpMethod = "POST", value = "转单，相当于服务商拒单")
+//    public Wrapper<Integer> transferWorkOrder(@ApiParam(name = "workOrderDto", value = "工单ID") @RequestBody WorkOrderDto workOrderDto) {
+//        logger.info("getSpcWorkOrderById - 根据工单Id查询工单信息. workOrderQueryDto={}", workOrderDto);
+//        LoginAuthDto loginAuthDto = getLoginAuthDto();
+//        spcWorkOrderService.transferWorkOrder(workOrderDto,loginAuthDto);
+//        return WrapMapper.ok();
+//    }
+
+    /**
+     * 获取全部未分配工程师的工单
+     * @param workOrderStatusQueryDto
+     * @return
+     */
+    @PostMapping(value = "/getAllUnDistributedWorkOrders")
+    @LogAnnotation
+    @ApiOperation(httpMethod = "POST", value = "获取全部未分配工程师的工单")
+    public Wrapper<PageInfo<WorkOrderVo>> getAllUnDistributedWorkOrders(@ApiParam(name = "WorkOrderStatusQueryDto",value = "工单查询参数")@RequestBody WorkOrderStatusQueryDto workOrderStatusQueryDto){
+        logger.info("getAllUnDistributedWorkOrders - 获取全部未分配工程师的工单. workOrderStatusQueryDto={}", workOrderStatusQueryDto);
+        LoginAuthDto loginAuthDto = getLoginAuthDto();
+        PageHelper.startPage(workOrderStatusQueryDto.getPageNum(), workOrderStatusQueryDto.getPageSize());
+        workOrderStatusQueryDto.setOrderBy("update_time desc");
+        List<WorkOrderVo> workOrderVoVoList = spcWorkOrderService.queryAllUnDistributedWorkOrders(workOrderStatusQueryDto, loginAuthDto);
+        return WrapMapper.ok(new PageInfo<>(workOrderVoVoList));
+    }
+
+
+    //---------------------------审批--------------------------------------------------
+
+    /**
+     * 分页查询待审批的全部工单
+     * @param workOrderStatusQueryDto
+     * @return
+     */
+    @PostMapping(value = "/getAllUnConfirmedWorkOrders")
+    @ApiOperation(httpMethod = "POST",value = "获取全部等待被审批的工单")
+    public Wrapper<PageInfo<WorkOrderVo>> getAllUnConfirmedWorkOrders(@ApiParam(name = "WorkOrderStatusQueryDto",value = "工单查询参数")@RequestBody WorkOrderStatusQueryDto workOrderStatusQueryDto){
+        logger.info("getAllUnConfirmedWorkOrders - 获取全部等待被审批的工单. workOrderStatusQueryDto={}", workOrderStatusQueryDto);
+        LoginAuthDto loginAuthDto = getLoginAuthDto();
+        PageHelper.startPage(workOrderStatusQueryDto.getPageNum(), workOrderStatusQueryDto.getPageSize());
+        workOrderStatusQueryDto.setOrderBy("update_time desc");
+        List<WorkOrderVo> workOrderVoVoList = spcWorkOrderService.queryAllUnConfirmedWorkOrders(workOrderStatusQueryDto, loginAuthDto);
+        return WrapMapper.ok(new PageInfo<>(workOrderVoVoList));
     }
 
     /**
-     *转单
-     *
-     * @param workOrderDto engineerDto 工单查询参数
-     *
-     * @return  是否成功
+     * 工单审批
+     * @param workOrderConfirmDto
+     * @return
      */
-    @PostMapping(value = "/transferWorkOrder")
-    @LogAnnotation
-    @ApiOperation(httpMethod = "POST", value = "转单,将工单信息中工程师置空")
-    public Wrapper<Integer> transferWorkOrder(@ApiParam(name = "workOrderDto", value = "工单ID") @RequestBody WorkOrderDto workOrderDto) {
-        logger.info("getSpcWorkOrderById - 根据工单Id查询工单信息. workOrderQueryDto={}", workOrderDto);
-        ///LoginAuthDto loginAuthDto = getLoginAuthDto();
-        spcWorkOrderService.transferWorkOrder(workOrderDto);
-        return WrapMapper.ok();
+    @PostMapping(value = "/confirmWorkOrder")
+    @ApiOperation(httpMethod = "POST",value = "审批工单")
+    public Wrapper confirmWorkOrder(@ApiParam(name = "WorkOrderConfirmDto",value = "工单详情查询Dto")@RequestBody WorkOrderConfirmDto workOrderConfirmDto){
+        logger.info("confirmWorkOrder - 审批工单. workOrderConfirmDto={}", workOrderConfirmDto);
+        return WrapMapper.ok(spcWorkOrderService.confirmWorkOrder(workOrderConfirmDto,getLoginAuthDto()));
     }
-
 
 }

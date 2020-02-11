@@ -3,6 +3,7 @@ package com.ananops.provider.model.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,13 +14,16 @@ import java.util.Date;
 @ApiModel
 public class MdmcAddTaskItemDto implements Serializable {
 
-    private static final long serialVersionUID = 77608959690597491L;
+    private static final long serialVersionUID = 8604444543573834036L;
 
     @ApiModelProperty(value = "任务子项ID")
     private Long id;
 
     @ApiModelProperty("设备编号")
     private Long deviceId;
+
+    @ApiModelProperty("设备编号")
+    private String deviceName;
 
     @ApiModelProperty("设备类型")
     private String deviceType;
@@ -38,7 +42,6 @@ public class MdmcAddTaskItemDto implements Serializable {
 
     @ApiModelProperty("设备地址-纬度")
     private BigDecimal deviceLongitude;
-
 
     @ApiModelProperty("故障类型")
     private Integer troubleType;

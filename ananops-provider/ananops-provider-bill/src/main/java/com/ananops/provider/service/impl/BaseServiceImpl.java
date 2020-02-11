@@ -23,7 +23,7 @@ public class BaseServiceImpl implements BaseService {
     BasebillMapper basebillMapper;
 
     @Override
-    public void insert(BillCreateDto billCreateDto) {
+    public void insert(BillCreateDto billCreateDto, Float devicePrice, Float servicePrice, String transactionMethod) {
 //        JSONObject jsonObject=JSONObject.parseObject(billCreateDto.toString());
 //        String paymentMethod=jsonObject.get("paymentMethod").toString();
 //        String userid=jsonObject.get("userid").toString();
@@ -41,12 +41,14 @@ public class BaseServiceImpl implements BaseService {
         String id = String.valueOf(timestamp)+billCreateDto.getUserid();
         bill.setId(id);
         bill.setPaymentMethod(billCreateDto.getPaymentMethod());
-        bill.setTransactionMethod(billCreateDto.getPayDto().getPaymentType().toString());
-        bill.setAmount(Float.valueOf(billCreateDto.getPayDto().getPaymentMoney()));
+        bill.setTransactionMethod(transactionMethod);
         bill.setUserid(billCreateDto.getUserid());
         bill.setTime(time);
         bill.setSupplier(billCreateDto.getSupplier());
         bill.setWorkorderid(billCreateDto.getWorkorderid());
+        bill.setDeviceAmount(devicePrice);
+        bill.setServiceAmount(servicePrice);
+        bill.setAmount(bill.getDeviceAmount() + bill.getServiceAmount());
         basebillMapper.insertSelective(bill);
     }
 

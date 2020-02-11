@@ -23,6 +23,11 @@ public class PmcProjectFeignHystrix implements PmcProjectFeignApi {
     }
 
     @Override
+    public Wrapper<List<PmcProjectDto>> getProjectListByGroupId(Long groupId) {
+        return null;
+    }
+
+    @Override
     public Wrapper saveProject(PmcProjectDto pmcProjectDto) {
         return null;
     }

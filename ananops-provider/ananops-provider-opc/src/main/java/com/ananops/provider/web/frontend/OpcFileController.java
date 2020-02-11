@@ -48,6 +48,7 @@ public class OpcFileController extends BaseController {
 
 	@Resource
 	private OpcAttachmentService optAttachmentService;
+
 	@Resource
 	private OpcOssService opcOssService;
 

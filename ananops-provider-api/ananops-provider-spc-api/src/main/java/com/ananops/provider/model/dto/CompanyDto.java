@@ -23,6 +23,12 @@ public class CompanyDto implements Serializable {
     @ApiModelProperty("UAC组织ID")
     private Long groupId;
 
+    @ApiModelProperty("UAC组织名称")
+    private String groupName;
+
+    @ApiModelProperty("UAC用户ID")
+    private Long userId;
+
     @ApiModelProperty("法人姓名")
     private String legalPersonName;
 

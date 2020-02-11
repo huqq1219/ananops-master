@@ -43,6 +43,12 @@ public interface ImcTaskFeignApi {
     @PostMapping(value = "/api/task/modifyFacilitatorByTaskId")
     Wrapper<TaskChangeFacilitatorDto> modifyFacilitatorByTaskId(@ApiParam(name = "modifyFacilitatorByTaskId",value = "修改巡检任务对应的服务商")@RequestBody TaskChangeFacilitatorDto taskChangeFacilitatorDto);
 
-    @PostMapping(value = "/api/task/refuseImcTaskByTaskId")
-    Wrapper<ImcTaskChangeStatusDto> refuseImcTaskByTaskId(@ApiParam(name = "refuseImcTaskByTaskId",value = "服务商拒单（巡检任务）")@RequestBody RefuseTaskDto refuseTaskDto);
+    @PostMapping(value = "/api/task/refuseImcTaskByFacilitator")
+    Wrapper<ImcTaskChangeStatusDto> refuseImcTaskByFacilitator(@ApiParam(name = "refuseImcTaskByTaskId",value = "服务商拒单（巡检任务）")@RequestBody ConfirmImcTaskDto confirmImcTaskDto);
+
+    @PostMapping(value = "/api/task/createImcTask")
+    Wrapper<ImcAddInspectionTaskDto> createImcTask(@ApiParam(name = "createImcTask",value = "创建巡检任务")@RequestBody ImcAddInspectionTaskDto imcAddInspectionTaskDto);
+
+    @PostMapping(value = "/api/task/acceptImcTaskByTaskId")
+    Wrapper<ImcTaskChangeStatusDto> acceptImcTaskByFacilitator(@ApiParam(name = "acceptImcTaskByTaskId",value = "服务商接单（巡检任务）")@RequestBody ConfirmImcTaskDto confirmImcTaskDto);
 }

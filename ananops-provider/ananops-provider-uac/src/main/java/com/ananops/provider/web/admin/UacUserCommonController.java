@@ -56,9 +56,9 @@ public class UacUserCommonController extends BaseController {
 	 * @return the wrapper
 	 */
 	@PostMapping(value = "/queryUserInfo/{loginName}")
-	@ApiOperation(httpMethod = "POST", value = "根据userId查询用户详细信息")
+	@ApiOperation(httpMethod = "POST", value = "根据loginName查询用户详细信息")
 	public Wrapper<UserVo> queryUserInfo(@PathVariable String loginName) {
-		logger.info("根据userId查询用户详细信息");
+		logger.info("根据loginName查询用户详细信息");
 		UserVo userVo = new UserVo();
 		UacUser uacUser = uacUserService.findByLoginName(loginName);
 		uacUser = uacUserService.findUserInfoByUserId(uacUser.getId());
@@ -235,11 +235,29 @@ public class UacUserCommonController extends BaseController {
 	}
 
 	@GetMapping(value = "/getApprovalUserList")
-	@ApiOperation(httpMethod = "GET", value = "获取用户负责人列表")
-	public Wrapper<List<UserVo>> getApprovalUserList(@RequestParam("groupId") Long groupId, @RequestParam("userId") Long userId) {
-		logger.info("根据groupId和userId获取用户负责人列表");
-//		LoginAuthDto loginAuthDto = getLoginAuthDto();
+	@ApiOperation(httpMethod = "GET", value = "获取当前登录用户领导列表")
+	public Wrapper<List<UserVo>> getApprovalUserList() {
+		logger.info("根据groupId和userId获取用户领导列表");
+		LoginAuthDto loginAuthDto = getLoginAuthDto();
+		Long groupId = loginAuthDto.getGroupId();
+		Long userId = loginAuthDto.getUserId();
 		List<UserVo> userVoList = uacUserService.getApprovalUserListById(groupId, userId);
 		return WrapMapper.ok(userVoList);
+	}
+
+	@GetMapping(value = "/getSubordinateUserList/{userId}")
+	@ApiOperation(httpMethod = "GET", value = "根据用户id获取下级用户列表")
+	public Wrapper<List<UserVo>> getSubordinateUserList(@ApiParam(name = "userId", value = "用户id")@PathVariable(value = "userId") Long userId) {
+		logger.info("根据userId获取下级用户列表");
+		List<UserVo> userVoList = uacUserService.getSubordinateUserListByUserId(userId);
+		return WrapMapper.ok(userVoList);
+	}
+
+	@GetMapping(value = "/getPGIdByUserId/{userId}")
+	@ApiOperation(httpMethod = "GET", value = "根据用户id获取用户领导的groupId")
+	public Wrapper<Long> getPGIdByUserId(@ApiParam(name = "userId", value = "用户id")@PathVariable(value = "userId") Long userId) {
+		logger.info("根据userId获取下级用户列表");
+		Long pid = uacUserService.getPGIdByUserId(userId);
+		return WrapMapper.ok(pid);
 	}
 }

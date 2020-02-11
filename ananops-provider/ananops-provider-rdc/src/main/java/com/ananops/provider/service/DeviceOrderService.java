@@ -6,6 +6,8 @@ import com.ananops.provider.mapper.DeviceOrderMapper;
 import com.ananops.provider.model.domain.DeviceOrder;
 import com.ananops.provider.model.dto.CreateNewOrderDto;
 import com.ananops.provider.model.dto.ProcessOrderDto;
+import com.ananops.provider.model.vo.DeviceOrderDetailVo;
+import com.ananops.provider.model.vo.DeviceOrderListVo;
 import com.ananops.provider.model.vo.ProcessOrderResultVo;
 
 import java.util.List;
@@ -37,8 +39,8 @@ public interface DeviceOrderService extends IService<DeviceOrder> {
     
     int getOrderCountByApproverIdAndVersion(Long approverId, Integer version);
     
-    List<DeviceOrder> getOrderByObjectIdAndObjectType(Long objectId, Integer objectType);
-    
-    
+    DeviceOrder getOrderByObjectIdAndObjectType(Long objectId, Integer objectType);
+
+    DeviceOrderListVo getDeviceOrderByObject(Long objectId, Integer objectType);
     
 }

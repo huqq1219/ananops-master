@@ -257,4 +257,14 @@
         and u.id = #{userId,jdbcType=BIGINT}
     </select>
 
+    <select id="selectGroupByGroupName" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        an_uac_group g
+        where
+        1=1
+        and g.group_name like concat('%',#{groupName},'%')
+    </select>
+
 </mapper>

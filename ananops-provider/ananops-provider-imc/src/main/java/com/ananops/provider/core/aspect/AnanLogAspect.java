@@ -7,10 +7,7 @@ import com.ananops.provider.core.annotation.AnanLogAnnotation;
 import com.ananops.provider.model.domain.*;
 import com.ananops.provider.model.dto.*;
 import com.ananops.provider.model.enums.TaskStatusEnum;
-import com.ananops.provider.service.ImcInspectionItemLogService;
-import com.ananops.provider.service.ImcInspectionItemService;
-import com.ananops.provider.service.ImcInspectionTaskLogService;
-import com.ananops.provider.service.ImcInspectionTaskService;
+import com.ananops.provider.service.*;
 import com.ananops.wrapper.Wrapper;
 import eu.bitwalker.useragentutils.UserAgent;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +18,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -45,6 +43,10 @@ public class AnanLogAspect {
     ImcInspectionItemService imcInspectionItemService;
     @Resource
     ImcInspectionTaskService imcInspectionTaskService;
+    @Resource
+    SpcCompanyFeignApi spcCompanyFeignApi;
+    @Resource
+    SpcEngineerFeignApi spcEngineerFeignApi;
 
     private ThreadLocal<Date> threadLocal = new ThreadLocal<>();
 
@@ -126,7 +128,7 @@ public class AnanLogAspect {
             //获取当前操作对应的任务ID
             Wrapper wrapper = (Wrapper) result;
             if(wrapper.getResult().getClass().getName().equals(ImcAddInspectionTaskDto.class.getName())){
-                //如果当前的日志是巡检任务的
+                //如果当前的日志是编辑巡检任务的
                 ImcInspectionTaskLog imcInspectionTaskLog = new ImcInspectionTaskLog();
                 ImcAddInspectionTaskDto imcAddInspectionTaskDto = (ImcAddInspectionTaskDto) wrapper.getResult();
                 taskId = imcAddInspectionTaskDto.getId();
@@ -156,6 +158,7 @@ public class AnanLogAspect {
                     System.out.println("巡检任务子项日志创建成功" + imcInspectionItemLog);
                 }
             }else if(wrapper.getResult().getClass().getName().equals(ImcDeviceOrder.class.getName())){
+                //如果当前日志是备品备件的
                 ImcDeviceOrder imcDeviceOrder = (ImcDeviceOrder) wrapper.getResult();
                 taskId = imcDeviceOrder.getInspectionTaskId();
                 itemId = imcDeviceOrder.getInspectionItemId();
@@ -165,6 +168,7 @@ public class AnanLogAspect {
                     System.out.println("巡检任务子项日志创建成功" + imcInspectionItemLog);
                 }
             }else if(wrapper.getResult().getClass().getName().equals(ImcInspectionReview.class.getName())){
+                //如果当前日志是评论的
                 ImcInspectionReview imcInspectionReview = (ImcInspectionReview) wrapper.getResult();
                 taskId = imcInspectionReview.getInspectionTaskId();
                 status = getTask(taskId).getStatus();
@@ -174,16 +178,28 @@ public class AnanLogAspect {
                     System.out.println("巡检任务日志创建成功" + imcInspectionTaskLog);
                 }
             }else if(wrapper.getResult().getClass().getName().equals(ImcTaskChangeStatusDto.class.getName())){
+                //如果当前日志是修改任务状态的
                 ImcTaskChangeStatusDto imcTaskChangeStatusDto = (ImcTaskChangeStatusDto) wrapper.getResult();
                 taskId = imcTaskChangeStatusDto.getTaskId();
                 status = imcTaskChangeStatusDto.getStatus();
                 String statusMsg = imcTaskChangeStatusDto.getStatusMsg();
-                ImcInspectionTaskLog imcInspectionTaskLog = createTaskLog(taskId,status,startTime,endTime,movement + "为：" + statusMsg,os,browser,ipAddress);
-                LoginAuthDto loginUser = RequestUtil.getLoginUser();
+                ImcInspectionTaskLog imcInspectionTaskLog;
+                if("服务商拒单".equals(movement)||"服务商接单".equals(movement)||"同意执行巡检任务".equals(movement)||"否决执行巡检任务".equals(movement)){
+                     imcInspectionTaskLog = createTaskLog(taskId,status,startTime,endTime,movement ,os,browser,ipAddress);
+                } else{
+                    imcInspectionTaskLog = createTaskLog(taskId,status,startTime,endTime,statusMsg,os,browser,ipAddress);
+                }
+                LoginAuthDto loginUser;
+                try{//如果是模块内部调用产生的日志打印，则通过此方法获取
+                    loginUser = RequestUtil.getLoginUser();
+                }catch (Exception e){//如果是模块间调用产生的日志打印，则通过此方法获取
+                    loginUser = imcTaskChangeStatusDto.getLoginAuthDto();
+                }
                 if(imcInspectionTaskLogService.createInspectionTaskLog(imcInspectionTaskLog,loginUser) == 1){
                     System.out.println("巡检任务日志创建成功" + imcInspectionTaskLog);
                 }
             }else if(wrapper.getResult().getClass().getName().equals(ImcItemChangeStatusDto.class.getName())){
+                //如果当前日志是修改任务子项状态的
                 ImcItemChangeStatusDto imcItemChangeStatusDto = (ImcItemChangeStatusDto) wrapper.getResult();
                 itemId = imcItemChangeStatusDto.getItemId();
                 status = imcItemChangeStatusDto.getStatus();
@@ -192,8 +208,18 @@ public class AnanLogAspect {
                 criteria.andEqualTo("id",itemId);
                 taskId = imcInspectionItemService.selectByExample(example).get(0).getInspectionTaskId();
                 String statusMsg = imcItemChangeStatusDto.getStatusMsg();
-                ImcInspectionItemLog imcInspectionItemLog = createItemLog(itemId,taskId,status,startTime,endTime,movement + "为：" + statusMsg,os,browser,ipAddress);
-                LoginAuthDto loginUser = RequestUtil.getLoginUser();
+                ImcInspectionItemLog imcInspectionItemLog;
+                if("工程师拒单".equals(movement)||"工程师接单".equals(movement)){
+                    imcInspectionItemLog = createItemLog(itemId,taskId,status,startTime,endTime,movement,os,browser,ipAddress);
+                }else{
+                    imcInspectionItemLog = createItemLog(itemId,taskId,status,startTime,endTime,statusMsg,os,browser,ipAddress);
+                }
+                LoginAuthDto loginUser;
+                try{//如果是模块内部调用产生的日志打印，则通过此方法获取
+                    loginUser = RequestUtil.getLoginUser();
+                }catch (Exception e){//如果是模块间调用产生的日志打印，则通过此方法获取
+                    loginUser = imcItemChangeStatusDto.getLoginAuthDto();
+                }
                 if(imcInspectionItemLogService.createInspectionItemLog(imcInspectionItemLog,loginUser) == 1){
                     System.out.println("巡检任务子项日志创建成功" + imcInspectionItemLog);
                 }
@@ -206,6 +232,7 @@ public class AnanLogAspect {
                     }
                 }
             }else if(wrapper.getResult().getClass().getName().equals(TaskNameChangeDto.class.getName())){
+                //如果当前日志是修改任务名字的
                 TaskNameChangeDto taskNameChangeDto = (TaskNameChangeDto) wrapper.getResult();
                 taskId = taskNameChangeDto.getTaskId();
                 String taskName = taskNameChangeDto.getTaskName();
@@ -213,9 +240,53 @@ public class AnanLogAspect {
                 status = imcInspectionTask.getStatus();
                 String details = "为" + taskName;
                 ImcInspectionTaskLog imcInspectionTaskLog = createTaskLog(taskId,status,startTime,endTime,movement + details,os,browser,ipAddress);
-                LoginAuthDto loginUser = RequestUtil.getLoginUser();
+                LoginAuthDto loginUser;
+                try{//如果是模块内部调用产生的日志打印，则通过此方法获取
+                    loginUser = RequestUtil.getLoginUser();
+                }catch (Exception e){//如果是模块间调用产生的日志打印，则通过此方法获取
+                    loginUser = taskNameChangeDto.getLoginAuthDto();
+                }
                 if(imcInspectionTaskLogService.createInspectionTaskLog(imcInspectionTaskLog,loginUser) == 1){
                     System.out.println("巡检任务日志创建成功" + imcInspectionTaskLog);
+                }
+            }else if(wrapper.getResult().getClass().getName().equals(TaskChangeFacilitatorDto.class.getName())){
+                //如果当前日志是修改任务对应的服务商的
+                TaskChangeFacilitatorDto taskChangeFacilitatorDto = (TaskChangeFacilitatorDto) wrapper.getResult();
+                taskId = taskChangeFacilitatorDto.getTaskId();
+                ImcInspectionTask imcInspectionTask = imcInspectionTaskService.getTaskByTaskId(taskId);
+                status = imcInspectionTask.getStatus();
+                Long facilitatorId = imcInspectionTask.getFacilitatorId();
+                String facilitatorName = spcCompanyFeignApi.getCompanyDetailsById(facilitatorId).getResult().getGroupName();
+                String details = "为" + facilitatorName;
+                ImcInspectionTaskLog imcInspectionTaskLog = createTaskLog(taskId,status,startTime,endTime,movement + details,os,browser,ipAddress);
+                LoginAuthDto loginUser;
+                try{//如果是模块内部调用产生的日志打印，则通过此方法获取
+                    loginUser = RequestUtil.getLoginUser();
+                }catch (Exception e){//如果是模块间调用产生的日志打印，则通过此方法获取
+                    loginUser = taskChangeFacilitatorDto.getLoginAuthDto();
+                }
+                if(imcInspectionTaskLogService.createInspectionTaskLog(imcInspectionTaskLog,loginUser) == 1){
+                    System.out.println("巡检任务日志创建成功" + imcInspectionTaskLog);
+                }
+            }else if(wrapper.getResult().getClass().getName().equals(ItemChangeMaintainerDto.class.getName())){
+                //如果当前日志是修改任务子项对应的工程师的
+                ItemChangeMaintainerDto itemChangeMaintainerDto = (ItemChangeMaintainerDto) wrapper.getResult();
+                itemId = itemChangeMaintainerDto.getItemId();
+                ImcInspectionItem imcInspectionItem = imcInspectionItemService.getItemByItemId(itemId);
+                status = imcInspectionItem.getStatus();
+                taskId = imcInspectionItem.getInspectionTaskId();
+                Long maintainerId = imcInspectionItem.getMaintainerId();
+                String maintainerName = spcEngineerFeignApi.getEngineerById(maintainerId).getResult().getUserName();
+                String details = "为" + maintainerName;
+                ImcInspectionItemLog imcInspectionItemLog = createItemLog(itemId,taskId,status,startTime,endTime,movement + details,os,browser,ipAddress);
+                LoginAuthDto loginUser;
+                try{//如果是模块内部调用产生的日志打印，则通过此方法获取
+                    loginUser = RequestUtil.getLoginUser();
+                }catch (Exception e){//如果是模块间调用产生的日志打印，则通过此方法获取
+                    loginUser = itemChangeMaintainerDto.getLoginAuthDto();
+                }
+                if(imcInspectionItemLogService.createInspectionItemLog(imcInspectionItemLog,loginUser) == 1){
+                    System.out.println("巡检任务子项日志创建成功" + imcInspectionItemLog);
                 }
             }
 

@@ -8,19 +8,15 @@ import com.ananops.provider.mapper.MdmcDeviceMapper;
 import com.ananops.provider.mapper.MdmcTaskItemMapper;
 import com.ananops.provider.mapper.MdmcTaskMapper;
 import com.ananops.provider.model.domain.MdmcDevice;
-import com.ananops.provider.model.domain.MdmcDeviceOrder;
 import com.ananops.provider.model.domain.MdmcTask;
 import com.ananops.provider.model.domain.MdmcTaskItem;
 import com.ananops.provider.model.dto.MdmcAddDeviceDto;
-import com.ananops.provider.model.dto.MdmcAddDeviceItemDto;
 import com.ananops.provider.service.MdmcDeviceService;
-import com.ananops.provider.service.MdmcTaskItemService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 
 @Service

@@ -47,7 +47,7 @@ public interface ActivitiService {
     List<ProcessDefinition> getDefinitionList();
 
     //根据部署id获取文件
-    String getResource(String deploymentId, String fileName, int version) throws Exception;
+    byte[] getResource(String deploymentId, String fileName, int version) throws Exception;
 
     //根据部署id删除流程定义表
     void deleteDefinitionList(String id);

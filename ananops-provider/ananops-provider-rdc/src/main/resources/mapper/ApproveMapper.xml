@@ -38,4 +38,12 @@
       AND `version` = #{version, jdbcType=version}
     </if>
   </select>
+
+  <select id="selectByObject" resultMap="BaseResultMap">
+    SELECT *
+    FROM an_rdc_approve
+    WHERE `object_type` = #{objectType, jdbcType=INTEGER}
+    AND `object_id` = #{objectId, jdbcType=BIGINT}
+    ORDER BY `version` DESC
+  </select>
 </mapper>

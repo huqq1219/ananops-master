@@ -62,7 +62,7 @@ public class OptQiniuOssServiceImpl implements OpcOssService {
 	@Resource
 	private StringRedisTemplate srt;
 
-	private static final String OPEN_IMG_BUCKET = "ananops-media-file";
+	private static final String OPEN_IMG_BUCKET = "open-img-ananops";
 
 	@Override
 	@Retryable(value = Exception.class, backoff = @Backoff(delay = 5000, multiplier = 2))
@@ -149,7 +149,7 @@ public class OptQiniuOssServiceImpl implements OpcOssService {
 			fileUrl = ananOpsProperties.getQiniu().getOss().getPublicHost() + "/" + filePath + newFileName;
 		} else {
 			String domainUrl = ananOpsProperties.getQiniu().getOss().getPrivateHost();
-			fileUrl = this.getFileUrl(domainUrl, fileName);
+			fileUrl = this.getFileUrl(domainUrl, filePath + newFileName);
 		}
 		OptUploadFileRespDto result = new OptUploadFileRespDto();
 		result.setAttachmentUrl(fileUrl);

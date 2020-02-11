@@ -25,4 +25,8 @@ public class ApproveServiceImpl extends BaseService<Approve> implements ApproveS
     public boolean isExist(Approve approve) {
         return selectOne(approve) != null;
     }
+
+    public List<Approve> selectByObject(Integer objectType, Long objectId){
+        return approveMapper.selectByObject(objectType, objectId);
+    }
 }

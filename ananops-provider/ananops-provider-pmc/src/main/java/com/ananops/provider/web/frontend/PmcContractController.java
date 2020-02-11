@@ -48,10 +48,24 @@ public class PmcContractController extends BaseController {
         return WrapMapper.ok(pmcContract);
     }
 
-    @PostMapping("/getContactListByGroupId/{groupId}")
+    @PostMapping("/getContractListByGroupId/{groupId}")
     @ApiOperation(httpMethod = "POST", value = "获取某个组织的合同列表")
     public Wrapper<List<PmcContract>> getContactListByGroupId(@ApiParam(value = "组织id") @PathVariable Long groupId) {
         List<PmcContract> pmcContractList = pmcContractService.getContactListByGroupId(groupId);
+        return WrapMapper.ok(pmcContractList);
+    }
+
+    @PostMapping("/getContractListByLikePartyAName/{partyAName}")
+    @ApiOperation(httpMethod = "POST", value = "根据组织名模糊查询获取对应的合同列表")
+    public Wrapper<List<PmcContract>> getContractListByLikePartyAName(@ApiParam(value = "甲方组织名") @PathVariable String partyAName) {
+        List<PmcContract> pmcContractList = pmcContractService.getContractListByLikePartyAName(partyAName);
+        return WrapMapper.ok(pmcContractList);
+    }
+
+    @PostMapping("/getContractListByLikePartyBName/{partyBName}")
+    @ApiOperation(httpMethod = "POST", value = "根据组织名模糊查询获取对应的合同列表")
+    public Wrapper<List<PmcContract>> getContractListByLikePartyBName(@ApiParam(value = "甲方组织名") @PathVariable String partyBName) {
+        List<PmcContract> pmcContractList = pmcContractService.getContractListByLikePartyBName(partyBName);
         return WrapMapper.ok(pmcContractList);
     }
 

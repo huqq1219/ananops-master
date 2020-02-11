@@ -8,6 +8,7 @@ import com.ananops.core.support.BaseService;
 import com.ananops.provider.mapper.ImcInspectionItemLogMapper;
 import com.ananops.provider.model.domain.ImcInspectionItemLog;
 import com.ananops.provider.model.dto.ItemLogQueryDto;
+import com.ananops.provider.model.enums.ItemStatusEnum;
 import com.ananops.provider.model.vo.ItemLogVo;
 import com.ananops.provider.service.ImcInspectionItemLogService;
 import com.github.pagehelper.PageHelper;
@@ -50,6 +51,10 @@ public class ImcInspectionItemLogServiceImpl extends BaseService<ImcInspectionIt
         imcInspectionItemLog.setOrderBy(orderBy);
         PageHelper.startPage(itemLogQueryDto.getPageNum(),itemLogQueryDto.getPageSize());
         List<ItemLogVo> itemLogVoList = imcInspectionItemLogMapper.queryItemLogListWithPage(imcInspectionItemLog);
+        for(int i=0;i<itemLogVoList.size();i++){
+            int status = itemLogVoList.get(i).getStatus();
+            itemLogVoList.get(i).setStatusMsg(ItemStatusEnum.getStatusMsg(status));
+        }
         return itemLogVoList;
     }
 }

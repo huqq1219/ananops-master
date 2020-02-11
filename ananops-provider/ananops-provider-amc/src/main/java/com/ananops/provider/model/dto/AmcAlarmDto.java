@@ -1,8 +1,10 @@
 package com.ananops.provider.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import java.io.Serializable;
@@ -77,7 +79,9 @@ public class AmcAlarmDto implements Serializable {
     /**
      * 最近发生时间
      */
-    @ApiModelProperty(value = "最近发生时间")
+    @ApiModelProperty(value = "最近发生时间",example = "2019-12-01 12:18:48")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date lastOccurTime;
 
     /**
@@ -86,16 +90,5 @@ public class AmcAlarmDto implements Serializable {
     @ApiModelProperty(value = "描述")
     private String description;
 
-    /**
-     * 项目id
-     */
-    @ApiModelProperty(value = "项目id")
-    private Long projectId;
-
-    /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称")
-    private String projectName;
 
 }

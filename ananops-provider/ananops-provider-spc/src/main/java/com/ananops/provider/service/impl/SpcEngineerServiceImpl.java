@@ -9,28 +9,32 @@ import com.ananops.provider.mapper.SpcCompanyEngineerMapper;
 import com.ananops.provider.mapper.SpcCompanyMapper;
 import com.ananops.provider.mapper.SpcEngineerMapper;
 import com.ananops.provider.model.domain.SpcCompany;
-import com.ananops.provider.model.domain.SpcCompanyEngineer;
 import com.ananops.provider.model.domain.SpcEngineer;
 import com.ananops.provider.model.dto.EngineerDto;
 import com.ananops.provider.model.dto.EngineerRegisterDto;
 import com.ananops.provider.model.dto.EngineerStatusDto;
 import com.ananops.provider.model.dto.ModifyEngineerStatusDto;
-import com.ananops.provider.model.dto.oss.OptUploadFileRespDto;
 import com.ananops.provider.model.dto.user.IdStatusDto;
 import com.ananops.provider.model.dto.user.UserInfoDto;
 import com.ananops.provider.model.service.UacGroupFeignApi;
 import com.ananops.provider.model.service.UacUserFeignApi;
+import com.ananops.provider.model.vo.EngineerSimpleVo;
 import com.ananops.provider.model.vo.EngineerVo;
 import com.ananops.provider.service.PmcProjectEngineerFeignApi;
 import com.ananops.provider.service.SpcEngineerService;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -52,6 +56,9 @@ public class SpcEngineerServiceImpl extends BaseService<SpcEngineer> implements 
 
     @Resource
     private SpcEngineerMapper spcEngineerMapper;
+
+    @Resource
+    private SpcEngineerService spcEngineerService;
 
     @Resource
     private SpcCompanyMapper spcCompanyMapper;
@@ -188,7 +195,7 @@ public class SpcEngineerServiceImpl extends BaseService<SpcEngineer> implements 
         Long loginAuthDtoUserId = loginAuthDto.getUserId();
         SpcCompany spcCompany = new SpcCompany();
         spcCompany.setUserId(loginAuthDtoUserId);
-        Long companyId = spcCompanyMapper.selectOne(spcCompany).getId();
+//        Long companyId = spcCompanyMapper.selectOne(spcCompany).getId();
         // 校验注册信息
         validateRegisterInfo(engineerRegisterDto);
 
@@ -223,34 +230,61 @@ public class SpcEngineerServiceImpl extends BaseService<SpcEngineer> implements 
 
     }
 
-    @Override
-    public void uploadEngineerExcelFile(MultipartHttpServletRequest multipartRequest, LoginAuthDto loginAuthDto) {
-        try {
-            List<MultipartFile> fileList = multipartRequest.getFiles("file");
-            if (fileList.isEmpty()) {
-                return;
-            }
-
-            for (MultipartFile multipartFile : fileList) {
-                String fileName = multipartFile.getOriginalFilename();
-                if (PublicUtil.isEmpty(fileName)) {
-                    continue;
-                }
-                Preconditions.checkArgument(multipartFile.getSize() <= GlobalConstant.FILE_MAX_SIZE, "上传文件不能大于5M");
-                InputStream inputStream = multipartFile.getInputStream();
-
-                // TODO 待增加读取Excel表格生成工程师信息
-            }
-        } catch (IOException e) {
-            logger.error("上传文件失败={}", e.getMessage(), e);
+    public static List<EngineerRegisterDto> readExcel(InputStream inputStream ,String fileName) throws Exception{
+        InputStream is = inputStream;
+        Workbook hssfWorkbook = null;
+        if (fileName.endsWith("xlsx")){
+            hssfWorkbook = new XSSFWorkbook(is);//Excel 2007
+        }else if (fileName.endsWith("xls")){
+            hssfWorkbook = new HSSFWorkbook(is);//Excel 2003
         }
+        //先支持1个sheet
+        List<EngineerRegisterDto> list0 = new ArrayList<>();
+        // 循环工作表Sheet
+        for (int numSheet = 0; numSheet <hssfWorkbook.getNumberOfSheets(); numSheet++) {
+            //HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
+            Sheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
+            if (hssfSheet == null) {
+                continue;
+            }
+            // 循环行Row
+            for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
+                //HSSFRow hssfRow = hssfSheet.getRow(rowNum);
+                EngineerRegisterDto engineerRegisterDto;
+                Row hssfRow = hssfSheet.getRow(rowNum);
+                if (hssfRow != null) {
+                    engineerRegisterDto = new EngineerRegisterDto();
+                    //HSSFCell name = hssfRow.getCell(0);
+                    //HSSFCell pwd = hssfRow.getCell(1);
+                    Cell loginName = hssfRow.getCell(0);
+                    Cell userName = hssfRow.getCell(1);
+                    Cell mobileNum = hssfRow.getCell(2);
+                    Cell email = hssfRow.getCell(3);
+                    Cell identityNumber = hssfRow.getCell(4);
+                    Cell userCode = hssfRow.getCell(5);
+                    Cell titleCeNumber = hssfRow.getCell(6);
+                    //这里是自己的逻辑
+                    engineerRegisterDto.setLoginName(loginName.getStringCellValue());
+                    engineerRegisterDto.setUserName(userName.getStringCellValue());
+                    engineerRegisterDto.setMobileNo(mobileNum.getStringCellValue());
+                    engineerRegisterDto.setEmail(email.getStringCellValue());
+                    engineerRegisterDto.setIdentityNumber(identityNumber.getStringCellValue());
+                    engineerRegisterDto.setUserCode(userCode.getStringCellValue());
+                    engineerRegisterDto.setTitleCeNumber(titleCeNumber.getStringCellValue());
+                    list0.add(engineerRegisterDto);
+                }
+            }
+        }
+        return list0;
     }
 
     @Override
     public EngineerVo queryByEngineerId(Long engineerId) {
         logger.info("queryByEngineerId - 根据工程师Id查询工程师信息接口. engineerId={}", engineerId);
         EngineerVo engineerVo = new EngineerVo();
-        SpcEngineer spcEngineer = spcEngineerMapper.selectByPrimaryKey(engineerId);
+        SpcEngineer queryE = new SpcEngineer();
+        queryE.setUserId(engineerId);
+        SpcEngineer spcEngineer = spcEngineerMapper.selectOne(queryE);
         Long userId = spcEngineer.getUserId();
         if (!StringUtils.isEmpty(userId)) {
             UserInfoDto userInfoDto = uacUserFeignApi.getUacUserById(userId).getResult();
@@ -314,6 +348,25 @@ public class SpcEngineerServiceImpl extends BaseService<SpcEngineer> implements 
             logger.info("注册工程师. spcEngineer={}", spcEngineer);
             spcEngineerMapper.insertSelective(spcEngineer);
         }
+    }
+
+    @Override
+    public List<EngineerSimpleVo> getEngineersListByProjectId(Long projectId) {
+        List<Long> engineerUserIdList = pmcProjectEngineerFeignApi.getEngineersIdByProjectId(projectId).getResult();
+        logger.info("getEngineersIdByProjectId - 根据项目Id查询工程师UserId列表. engineerUserIdList={}", engineerUserIdList);
+        List<EngineerSimpleVo> engineerSimpleVos = new ArrayList<>();
+        if (engineerUserIdList != null) {
+            for (Long userId : engineerUserIdList) {
+                UserInfoDto userInfoDto = uacUserFeignApi.getUacUserById(userId).getResult();
+                if (userInfoDto != null) {
+                    EngineerSimpleVo engineerSimpleVo = new EngineerSimpleVo();
+                    engineerSimpleVo.setId(userId);
+                    engineerSimpleVo.setName(userInfoDto.getUserName());
+                    engineerSimpleVos.add(engineerSimpleVo);
+                }
+            }
+        }
+        return engineerSimpleVos;
     }
 
     private void validateCompanyVo(EngineerVo engineerVo) {

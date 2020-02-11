@@ -7,5 +7,5 @@ spring:
     name: ananops-provider-bill
   datasource:
     username: root
-    password: root
+    password: 123456
 

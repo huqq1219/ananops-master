@@ -1,5 +1,6 @@
 package com.ananops.provider.model.dto;
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -23,6 +24,7 @@ public class BillCreateDto implements Serializable {
     @ApiModelProperty(value = "状态") //填固定字段未支付
     private String state;
 
-    PmcPayDto payDto;
+    @ApiModelProperty(value = "备品备件id和数量的列表")
+    List<DeviceDto> deviceDtos;
 
 }

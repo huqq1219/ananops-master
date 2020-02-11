@@ -1,7 +1,7 @@
 package com.ananops.provider.service.impl;
 
 import com.ananops.provider.mapper.*;
-import com.ananops.provider.model.dto.group.GroupBindUserDto;
+import com.ananops.provider.model.vo.GroupZtreeVo;
 import com.ananops.provider.model.vo.UserVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -71,6 +71,8 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 	@Resource
 	private UacGroupUserService uacGroupUserService;
 	@Resource
+	private UacGroupService uacGroupService;
+	@Resource
 	private UacGroupUserMapper uacGroupUserMapper;
 	@Resource
 	private UacLogService uacLogService;
@@ -102,6 +104,8 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 	private UserManager userManager;
 	@Resource
 	private UacGroupMapper uacGroupMapper;
+	@Resource
+	private UacRoleMapper uacRoleMapper;
 
 	@Override
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
@@ -520,7 +524,7 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 	}
 
 	@Override
-	public void register(UserRegisterDto registerDto) {
+	public Long register(UserRegisterDto registerDto) {
 		// 校验注册信息
 		validateRegisterInfo(registerDto);
 		String mobileNo = registerDto.getMobileNo();
@@ -561,6 +565,8 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 
 		MqMessageData mqMessageData = emailProducer.sendEmailMq(to, UacEmailTemplateEnum.ACTIVE_USER, AliyunMqTopicConstants.MqTagEnum.ACTIVE_USER, param);
 		userManager.register(mqMessageData, uacUser);
+
+		return id;
 	}
 
 	@Override
@@ -746,6 +752,39 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 
 		// 查询所有角色包括该用户拥有的角色
 		List<BindRoleDto> bindRoleDtoList = uacUserMapper.selectAllNeedBindRole(GlobalConstant.Sys.SUPER_MANAGER_ROLE_ID);
+		// 该角色已经绑定的用户
+		List<UacRoleUser> setAlreadyBindRoleSet = uacRoleUserService.listByUserId(userId);
+
+		Set<BindRoleDto> allUserSet = new HashSet<>(bindRoleDtoList);
+
+		for (UacRoleUser uacRoleUser : setAlreadyBindRoleSet) {
+			alreadyBindRoleIdSet.add(uacRoleUser.getRoleId());
+		}
+
+		userBindRoleVo.setAllRoleSet(allUserSet);
+		userBindRoleVo.setAlreadyBindRoleIdSet(alreadyBindRoleIdSet);
+
+		return userBindRoleVo;
+	}
+
+	@Override
+	public UserBindRoleVo getUserPermitBindRoleDto(Long userId, Long roleId) {
+		UserBindRoleVo userBindRoleVo = new UserBindRoleVo();
+		Set<Long> alreadyBindRoleIdSet = Sets.newHashSet();
+		UacUser uacUser = this.queryByUserId(userId);
+		if (uacUser == null) {
+			logger.error("找不到userId={}, 的用户", userId);
+			throw new UacBizException(ErrorCodeEnum.UAC10011003, userId);
+		}
+		List<BindRoleDto> bindRoleDtoList = new ArrayList<>();
+		if(roleId == null){
+			 bindRoleDtoList = uacUserMapper.selectAllNeedBindRole(GlobalConstant.Sys.SUPER_MANAGER_ROLE_ID);
+		}else{
+			UacRole uacRole = uacRoleMapper.selectByPrimaryKey(roleId);
+			// 查询该用户可以绑定的角色
+		     bindRoleDtoList = uacUserMapper.selectAllPermitBindRole(uacRole.getVersion()+1);
+		}
+
 		// 该角色已经绑定的用户
 		List<UacRoleUser> setAlreadyBindRoleSet = uacRoleUserService.listByUserId(userId);
 
@@ -1006,29 +1045,82 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 
 	@Override
 	public List<UserVo> getApprovalUserListById(Long groupId, Long userId) {
+		if (Objects.equals(userId, GlobalConstant.Sys.SUPER_MANAGER_USER_ID)) {
+			logger.error("超级管理员没有父id userId={}", userId);
+			throw new UacBizException(ErrorCodeEnum.UAC10011023);
+		}
 		List<UserVo> userVoList = new ArrayList<>();
 		// 该组织已经绑定的用户
-		List<UacGroupUser> alreadyBindUserSet = uacGroupUserMapper.listByGroupId(groupId);
+		UacGroup uacGroup = uacGroupMapper.selectByPrimaryKey(groupId);
+		Long groupPId = uacGroup.getPid();
+		List<UacGroupUser> alreadyBindUserSet = uacGroupUserMapper.listByGroupId(groupPId);
 		for (UacGroupUser uacGroupUser : alreadyBindUserSet) {
 			//每个用户的信息
 			UserVo userVo = new UserVo();
 			//用户id
 			Long userApprovalId = uacGroupUser.getUserId();
 			UacUser uacUser = uacUserMapper.selectByPrimaryKey(userApprovalId);
-			//根据用户id获取用户角色列表
-			List<UacRoleUser> roleUserList = uacRoleUserService.queryByUserId(userApprovalId);
-			//根据用户的id获取该用户roleCodeList
-			List<String> roleCodeList = new ArrayList<>();
-			for (UacRoleUser uacRoleUser : roleUserList) {
-				Long roleId = uacRoleUser.getRoleId();
-				UacRole uacRole = uacRoleService.getRoleById(roleId);
-				roleCodeList.add(uacRole.getRoleCode());
-			}
-			//如果该用户是用户负责人的角色就添加到用户负责人列表
-			if (roleCodeList.contains("user_leader")) {
-				try {
+//			//根据用户id获取用户角色列表
+//			List<UacRoleUser> roleUserList = uacRoleUserService.queryByUserId(userApprovalId);
+//			//根据用户的id获取该用户roleCodeList
+//			List<String> roleCodeList = new ArrayList<>();
+//			for (UacRoleUser uacRoleUser : roleUserList) {
+//				Long roleId = uacRoleUser.getRoleId();
+//				UacRole uacRole = uacRoleService.getRoleById(roleId);
+//				roleCodeList.add(uacRole.getRoleCode());
+//			}
+//			//如果该用户是用户负责人的角色就添加到用户负责人列表
+//			if (roleCodeList.contains("user_leader")) {
+//				try {
+//					BeanUtils.copyProperties(userVo, uacUser);
+//				}catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//				userVoList.add(userVo);
+//			}
+			try {
 					BeanUtils.copyProperties(userVo, uacUser);
 				}catch (Exception e) {
+					e.printStackTrace();
+				}
+				userVoList.add(userVo);
+		}
+		return userVoList;
+	}
+
+	@Override
+	public List<UserVo> getSubordinateUserListByUserId(Long userId) {
+		if (userId == null) {
+			logger.error("userId={} 不能为空", userId);
+			throw new UacBizException(ErrorCodeEnum.UAC10011001);
+		}
+		UacUser uacUser = uacUserMapper.selectByPrimaryKey(userId);
+		UacGroupUser uacGroupUser = uacGroupUserService.queryByUserId(uacUser.getId());
+		Long pid = uacGroupUser.getGroupId();
+		UacGroup uacGroup = uacGroupService.queryById(pid);
+		List<GroupZtreeVo> tree = uacGroupService.getGroupTree(uacGroup.getId());
+		Long subordinateGroupId = 1L;
+		for (GroupZtreeVo groupZtreeVo : tree) {
+			if (groupZtreeVo.getpId() == pid) {
+				subordinateGroupId = groupZtreeVo.getId();
+				break;
+			}
+		}
+		List<UacGroupUser> setAlreadyBindUserSet = uacGroupUserMapper.listByGroupId(subordinateGroupId);
+		List<Long> userIdList = new ArrayList<>();
+		List<UserVo> userVoList = new ArrayList<>();
+		for (UacGroupUser groupUser : setAlreadyBindUserSet) {
+			if (PublicUtil.isNotEmpty(groupUser)) {
+				userIdList.add(groupUser.getUserId());
+			}
+		}
+		for (Long userListId : userIdList) {
+			UacUser user = uacUserMapper.selectByPrimaryKey(userListId);
+			if (PublicUtil.isNotEmpty(user)) {
+				UserVo userVo = new UserVo();
+				try {
+					BeanUtils.copyProperties(userVo, user);
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				userVoList.add(userVo);
@@ -1036,4 +1128,22 @@ public class UacUserServiceImpl extends BaseService<UacUser> implements UacUserS
 		}
 		return userVoList;
 	}
+
+	@Override
+	public Long getPGIdByUserId(Long userId) {
+		if (Objects.equals(userId, GlobalConstant.Sys.SUPER_MANAGER_USER_ID)) {
+			logger.info("找不到上级组织");
+			throw new UacBizException(ErrorCodeEnum.UAC10015009);
+		}
+		UacGroupUser uacGroupUser = uacGroupUserService.queryByUserId(userId);
+		if (uacGroupUser == null) {
+			logger.info("找不到组织信息");
+			throw new UacBizException(ErrorCodeEnum.UAC10015001);
+		}
+		UacGroup uacGroup = uacGroupMapper.selectByPrimaryKey(uacGroupUser.getGroupId());
+		Long pid = uacGroup.getPid();
+		return pid;
+	}
+
+
 }

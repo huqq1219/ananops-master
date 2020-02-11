@@ -262,6 +262,9 @@
         <if test="mobileNo != null and mobileNo != ''">
             AND u.mobile_no LIKE concat('%',#{mobileNo},'%')
         </if>
+        <if test="groupId != null and groupId != ''">
+            AND g.id LIKE concat('%',#{groupId},'%')
+        </if>
         <!--        <include refid="Base_Where_Condition">-->
         <!--            <property name="alias" value="u"></property>-->
         <!--        </include>-->
@@ -288,6 +291,16 @@
             (r.id = #{superManagerRoleId}) AS disabled
         FROM an_uac_role r
     </select>
+
+    <select id="selectAllPermitBindRole" parameterType="java.lang.Integer" resultType="com.ananops.provider.model.dto.user.BindRoleDto">
+        SELECT
+            r.id as roleId,
+            r.role_code as roleCode,
+            r.role_name as roleName
+        FROM an_uac_role r
+        WHERE r.version = #{version}
+    </select>
+
   <select id="findUserInfoByLoginName" resultType="com.ananops.provider.model.domain.UacUser">
     SELECT
     <include refid="Base_Column_List"/>,

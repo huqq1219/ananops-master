@@ -24,12 +24,10 @@ import com.ananops.provider.utils.TreeUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -408,5 +406,15 @@ public class UacRoleServiceImpl extends BaseService<UacRole> implements UacRoleS
 		bindAuthVo.setCheckedAuthList(checkedAuthList);
 
 		return bindAuthVo;
+	}
+
+	@Override
+	public List<UacRole> queryBindRoleWithPage(Long roleId) {
+		UacRole uacRole = uacRoleMapper.selectByPrimaryKey(roleId);
+		Example example = new Example(UacRole.class);
+		Example.Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("version", uacRole.getVersion()+1);
+		List<UacRole> uacRoleList = uacRoleMapper.selectByExample(example);
+		return uacRoleList;
 	}
 }

@@ -154,19 +154,18 @@ public class ActivitiController {
     }
 
     //获取流程图
-    @GetMapping(value = "/image")
+    @GetMapping(value = "/image",produces = MediaType.IMAGE_PNG_VALUE)
     @ApiOperation(httpMethod = "GET",value = "获取流程图")
-    public Wrapper<String> getImage(@ApiParam(name = "processDefinitionId",value="流程定义id") @RequestParam String processDefinitionId) throws Exception {
-        String path = null;
+    public Wrapper<byte[]> getImage(@ApiParam(name = "processDefinitionId",value="流程定义id") @RequestParam String processDefinitionId) throws Exception {
         try {
             ProcessDefinition processDefinition = activitiServiceImpl.getProDef(processDefinitionId);
-            path = activitiServiceImpl.getResource(processDefinition.getDeploymentId()
+            byte[] bytes = activitiServiceImpl.getResource(processDefinition.getDeploymentId()
                     , processDefinition.getKey()
                     , processDefinition.getVersion());
+            return WrapMapper.ok(bytes);
         } catch (Exception e) {
             return WrapMapper.error(e.getMessage());
         }
-        return WrapMapper.ok(path);
     }
 
     //普通删除流程定义表（根据部署ID）

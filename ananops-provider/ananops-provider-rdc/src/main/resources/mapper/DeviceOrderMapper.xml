@@ -15,13 +15,13 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="object_type" property="objectType" jdbcType="INTEGER" />
     <result column="object_id" property="objectId" jdbcType="BIGINT" />
-    <result column="type" property="type" jdbcType="INTEGER" />
+<!--    <result column="type" property="type" jdbcType="INTEGER" />-->
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
     <result column="items" property="items" jdbcType="LONGVARCHAR" />
     <result column="status_msg" property="statusMsg" jdbcType="VARCHAR" />
     <result column="discount" property="discount" jdbcType="FLOAT" />
-    <result column="process_result" property="processResult" jdbcType="INTEGER" />
+    <result column="process_result" property="processResult" jdbcType="VARCHAR" />
     <result column="process_msg" property="processMsg" jdbcType="VARCHAR" />
     <result column="quotation_text" property="quotationText" jdbcType="LONGVARCHAR" />
     <result column="quotation_url" property="quotationUrl" jdbcType="VARCHAR" />
@@ -43,7 +43,7 @@
   <select id="selectCountByApproverIdAndVersion" resultMap="BaseResultMap">
     SELECT count(`id`)
     FROM an_rdc_order
-    WHERE id IN (
+    WHERE `id` IN (
       SELECT object_id
       FROM an_rdc_approve
       WHERE current_approver_id = #{approverId, jdbcType=BIGINT}
@@ -53,7 +53,15 @@
     )
   </select>
 
-  <select id="selectByObject">
+  <select id="selectByObject" resultMap="BaseResultMap">
+    SELECT *
+    FROM an_rdc_order
+    WHERE object_type = #{objectType, jdbcType=INTEGER}
+    AND object_id = #{objectId, jdbcType=BIGINT}
+    AND `status` = 1
+  </select>
+
+  <select id="selectAllByObject" resultMap="BaseResultMap">
     SELECT *
     FROM an_rdc_order
     WHERE object_type = #{objectType, jdbcType=INTEGER}

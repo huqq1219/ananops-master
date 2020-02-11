@@ -166,4 +166,16 @@ public class MdmcTaskController extends BaseController {
         MdmcPageDto pageDto=taskService.getTaskListByPage(queryDto);
         return WrapMapper.ok(pageDto);
     }
+
+    @PostMapping(value = "/refuseTaskByFacilitator")
+    @ApiOperation(httpMethod = "POST",value = "服务商拒单")
+    public Wrapper<MdmcChangeStatusDto> refuseTaskByFacilitator(@RequestBody RefuseMdmcTaskDto refuseMdmcTaskDto){
+        return WrapMapper.ok(taskService.refuseTaskByFacilitator(refuseMdmcTaskDto));
+    }
+
+    @PostMapping(value = "/refuseTaskByMaintainer")
+    @ApiOperation(httpMethod = "POST",value = "工程师拒单")
+    public Wrapper<MdmcChangeStatusDto> refuseTaskByMaintainer(@RequestBody RefuseMdmcTaskDto refuseMdmcTaskDto){
+        return WrapMapper.ok(taskService.refuseTaskByMaintainer(refuseMdmcTaskDto));
+    }
 }

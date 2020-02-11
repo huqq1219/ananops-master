@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class PmcContractFeignClient extends BaseController implements PmcContrac
 
     @Override
     @ApiOperation(httpMethod = "POST", value = "获取甲乙双方合同的支付方式和支付金额")
-    public Wrapper<List<PmcPayDto>> getContactByAB(Long partyAId, Long partyBId) {
+    public Wrapper<List<PmcPayDto>> getContactByAB(@PathVariable(value = "partyAId") Long partyAId, @PathVariable(value = "partyBId") Long partyBId) {
         List<PmcContract> pmcContractList = pmcContractService.getContactByAB(partyAId,partyBId);
         List<PmcPayDto> pmcPayDtoList = new ArrayList<>();
         if (PublicUtil.isNotEmpty(pmcContractList)) {
@@ -49,7 +50,7 @@ public class PmcContractFeignClient extends BaseController implements PmcContrac
 
     @Override
     @ApiOperation(httpMethod = "POST", value = " 根据合同id查询合同")
-    public Wrapper<PmcContractDto> getContractById(Long contractId) {
+    public Wrapper<PmcContractDto> getContractById(@PathVariable(value = "contractId") Long contractId) {
         PmcContract pmcContract = pmcContractService.getContractById(contractId);
         PmcContractDto pmcContractDto = new PmcContractDto();
         BeanUtils.copyProperties(pmcContract, pmcContractDto);

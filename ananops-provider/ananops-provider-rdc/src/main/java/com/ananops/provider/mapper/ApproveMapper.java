@@ -12,4 +12,6 @@ public interface ApproveMapper extends MyMapper<Approve> {
     Approve selectTodoApproveByApproverIdAndObject(@Param("approverId") Long approverId, @Param("objectType") Integer objectType, @Param("objectId") Long objectId);
     
     List<Approve> selectByApproverId(@Param("approverId") Long approverId, @Param("verison")Integer version);
+
+    List<Approve> selectByObject(@Param("objectType")Integer objectType, @Param("objectId")Long objectId);
 }

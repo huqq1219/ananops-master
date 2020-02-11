@@ -26,4 +26,6 @@ public interface ApproveService extends IService<Approve> {
     
     
     boolean isExist(Approve approve);
+
+    List<Approve> selectByObject(Integer objectType, Long objectId);
 }

@@ -6,6 +6,7 @@ import com.ananops.provider.model.dto.CreateNewOrderDto;
 import com.ananops.provider.model.dto.ProcessOrderDto;
 import com.ananops.provider.model.enums.DeviceOrderStatusEnum;
 import com.ananops.provider.service.DeviceOrderService;
+import com.ananops.provider.service.DeviceService;
 import com.ananops.wrapper.WrapMapper;
 import com.ananops.wrapper.Wrapper;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,9 @@ public class DeviceOrderController extends BaseController {
     
     @Autowired
     DeviceOrderService orderService;
+
+    @Autowired
+    DeviceService deviceService;
     
     /**
      * 备品备件需求申请处理
@@ -53,7 +57,7 @@ public class DeviceOrderController extends BaseController {
     
     @ApiOperation(httpMethod = "GET", value = "获取当前用户已处理订单")
     @GetMapping(value = "/done/{userId}", produces = "application/json")
-    public Wrapper<Object> getDoneDeviceOrderByUserId(@ApiParam("当前用户编号")@PathVariable("userId")Long userId){
+    public Wrapper<Object> getDoneDeviceOrderByUserId(@ApiParam("当前用户编号")@PathVariable("userId")Long userId) {
         return WrapMapper.ok(orderService.getOrderByApproverIdAndVersion(userId, 0));
     }
     
@@ -68,5 +72,19 @@ public class DeviceOrderController extends BaseController {
     public Wrapper<Object> getDeviceOrderByObject(@ApiParam("备品备件订单来源对象的编号")@PathVariable("objectId")Long objectId,
                                                   @ApiParam("备品备件订单来源对象的类型（维修维护填1）")@PathVariable("objectType")Integer objectType){
         return WrapMapper.ok(orderService.getOrderByObjectIdAndObjectType(objectId, objectType));
+    }
+
+    @ApiOperation(httpMethod = "GET",value = "获取备件库所有设备")
+    @GetMapping(value = "/devices")
+    public Wrapper<Object> getAllDevice(){
+        return WrapMapper.ok(deviceService.selectAll());
+    }
+
+
+    @ApiOperation(httpMethod = "GET", value = "根据绑定对象获取全部备品备件订单详情")
+    @GetMapping(value = "/all/object/{objectId}/{objectType}")
+    public Wrapper<Object> getAllDeviceOrderByObject(@ApiParam("备品备件订单来源对象的编号")@PathVariable("objectId")Long objectId,
+                                                     @ApiParam("备品备件订单来源对象的类型（维修维护填1）")@PathVariable("objectType")Integer objectType){
+        return WrapMapper.ok(orderService.getDeviceOrderByObject(objectId, objectType));
     }
 }

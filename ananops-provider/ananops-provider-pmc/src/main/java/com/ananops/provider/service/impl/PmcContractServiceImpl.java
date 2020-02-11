@@ -66,6 +66,26 @@ public class PmcContractServiceImpl extends BaseService<PmcContract> implements 
     }
 
     @Override
+    public List<PmcContract> getContractListByLikePartyAName(String partyAName){
+        partyAName = "%" + partyAName + "%";
+        Example example = new Example(PmcContract.class);
+        Example.Criteria criteria= example.createCriteria();
+        criteria.andLike("partyAName",partyAName);
+        List<PmcContract> pmcContractList = pmcContractMapper.selectByExample(example);
+        return pmcContractList;
+    }
+
+    @Override
+    public List<PmcContract> getContractListByLikePartyBName(String partyBName){
+        partyBName = "%" + partyBName + "%";
+        Example example = new Example(PmcContract.class);
+        Example.Criteria criteria= example.createCriteria();
+        criteria.andLike("partyBName",partyBName);
+        List<PmcContract> pmcContractList = pmcContractMapper.selectByExample(example);
+        return pmcContractList;
+    }
+
+    @Override
     public PageInfo getContractListWithPage(BaseQuery baseQuery) {
         //1. 设置分页
         PageHelper.startPage(baseQuery.getPageNum(),baseQuery.getPageSize());

@@ -118,6 +118,10 @@ public class GlobalConstant {
 		public static final long REDIS_DEFAULT_EXPIRE = 1L;
 	}
 
+	public static final class Spc {
+		public static final Long SPC_MANAGER_ROLE_ID = 782523159130679297L;
+	}
+
 	/**
 	 * The class Symbol.
 	 *

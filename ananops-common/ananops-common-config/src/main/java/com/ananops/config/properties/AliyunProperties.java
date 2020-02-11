@@ -13,6 +13,7 @@ public class AliyunProperties {
 	private AliyunKeyProperties key = new AliyunKeyProperties();
 	private RocketMqProperties rocketMq = new RocketMqProperties();
 	private AliyunSmsProperties sms = new AliyunSmsProperties();
+	private AliyunOssProperties oss = new AliyunOssProperties();
 
 	@Data
 	public class AliyunKeyProperties {
@@ -68,5 +69,24 @@ public class AliyunProperties {
 		private String product;
 
 		private String domain;
+	}
+
+	@Data
+	public class AliyunOssProperties {
+
+		/**
+		 * 端点名称
+		 */
+		private String endPoint;
+
+        /**
+         * 文件主机
+         */
+        private String fileHost;
+
+        /**
+         * 桶名称
+         */
+        private String bucketName;
 	}
 }

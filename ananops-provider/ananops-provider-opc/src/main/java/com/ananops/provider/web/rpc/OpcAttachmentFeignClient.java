@@ -41,6 +41,7 @@ public class OpcAttachmentFeignClient extends BaseController implements OpcOssFe
 
 	@Resource
 	private OpcAttachmentService opcAttachmentService;
+
 	@Resource
 	private OpcOssService opcOssService;
 

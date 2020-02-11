@@ -197,7 +197,7 @@ public interface UacUserService extends IService<UacUser> {
 	 *
 	 * @param registerDto the register dto
 	 */
-	void register(UserRegisterDto registerDto);
+	Long register(UserRegisterDto registerDto);
 
 	/**
 	 * 校验登录名是否存在.
@@ -326,4 +326,29 @@ public interface UacUserService extends IService<UacUser> {
 	 * @return userVo
 	 */
 	List<UserVo> getApprovalUserListById(Long groupId, Long userId);
+
+	/**
+	 * 根据用户id获取下级用户列表
+	 *
+	 * @param userId
+	 * @return userVo
+	 */
+	List<UserVo> getSubordinateUserListByUserId(Long userId);
+
+
+	/**
+	 * 根据用户id获取用户领导的groupId
+	 *
+	 * @param userId
+	 * @return userVo
+	 */
+	Long getPGIdByUserId(Long userId);
+
+	/**
+	 * 获取用户可以绑定角色页面数据
+	 * @param userId
+	 * @param roleId
+	 * @return
+	 */
+	UserBindRoleVo getUserPermitBindRoleDto(Long userId, Long roleId);
 }

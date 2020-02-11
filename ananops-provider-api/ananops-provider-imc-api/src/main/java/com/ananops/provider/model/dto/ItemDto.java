@@ -18,6 +18,11 @@ import java.util.Date;
 public class ItemDto implements Serializable {
     private static final long serialVersionUID = -1185696597778126041L;
     /**
+     *
+     */
+    @ApiModelProperty(value = "ID")
+    private Long id;
+    /**
      * 从属的巡检任务的ID
      */
     @ApiModelProperty(value = "从属的巡检任务的ID")

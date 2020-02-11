@@ -55,6 +55,10 @@ public class UserManager {
 	public void register(final MqMessageData mqMessageData, final UacUser uacUser) {
 		log.info("注册用户. mqMessageData={}, user={}", mqMessageData, uacUser);
 		uacUserMapper.insertSelective(uacUser);
+		UacRoleUser uacRoleUser = new UacRoleUser();
+		uacRoleUser.setUserId(uacUser.getId());
+		uacRoleUser.setRoleId(GlobalConstant.Spc.SPC_MANAGER_ROLE_ID);
+		uacRoleUserMapper.insertSelective(uacRoleUser);
 	}
 
 	@MqProducerStore

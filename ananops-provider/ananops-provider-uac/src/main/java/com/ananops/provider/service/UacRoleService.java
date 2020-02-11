@@ -158,4 +158,10 @@ public interface UacRoleService extends IService<UacRole> {
 	 * @return the menu tree by role id
 	 */
 	BindAuthVo getMenuTreeByRoleId(Long roleId);
+
+	/**
+	 * 查询用户可以绑定的角色列表
+	 * @return
+	 */
+	List<UacRole> queryBindRoleWithPage(Long roleId);
 }

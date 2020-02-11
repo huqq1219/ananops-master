@@ -65,18 +65,18 @@ public class UacUserPasswordController extends BaseController {
 	}
 
 
-	/**
-	 * 注册
-	 *
-	 * @param registerDto the register dto
-	 *
-	 * @return the wrapper
-	 */
-	@PostMapping(value = "/registerUser")
-	@ApiOperation(httpMethod = "POST", value = "注册新用户")
-	public Wrapper registerUser(@ApiParam(name = "registerDto", value = "用户注册Dto") @RequestBody UserRegisterDto registerDto) {
-		logger.info("vue注册开始。注册参数：{}", registerDto);
-		uacUserService.register(registerDto);
-		return WrapMapper.ok("注册成功");
-	}
+//	/**
+//	 * 注册
+//	 *
+//	 * @param registerDto the register dto
+//	 *
+//	 * @return the wrapper
+//	 */
+//	@PostMapping(value = "/registerUser")
+//	@ApiOperation(httpMethod = "POST", value = "注册新用户")
+//	public Wrapper registerUser(@ApiParam(name = "registerDto", value = "用户注册Dto") @RequestBody UserRegisterDto registerDto) {
+//		logger.info("vue注册开始。注册参数：{}", registerDto);
+//		uacUserService.register(registerDto);
+//		return WrapMapper.ok("注册成功");
+//	}
 }

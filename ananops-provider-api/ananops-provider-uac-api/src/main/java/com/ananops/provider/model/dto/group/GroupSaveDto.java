@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用户组Dto
@@ -119,4 +120,8 @@ public class GroupSaveDto implements Serializable {
     @ApiModelProperty(value = "详细地址")
     private String detailAddress;
 
+    /**
+     * 四级地址数组
+     */
+    private List<Long> addressList;
 }

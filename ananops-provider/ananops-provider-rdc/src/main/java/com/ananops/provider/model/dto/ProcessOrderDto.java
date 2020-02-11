@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ public class ProcessOrderDto  implements Serializable {
     private static final long serialVersionUID = -6655429519272958337L;
     
     @ApiModelProperty("备品备件订单编号")
+    @JsonProperty("deviceOrderId")
     private Long id;
     
     @ApiModelProperty("备品备件订单当前处理状态(1审核中，2审核完成)")

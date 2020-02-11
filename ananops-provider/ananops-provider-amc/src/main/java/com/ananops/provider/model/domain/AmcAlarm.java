@@ -1,9 +1,11 @@
 package com.ananops.provider.model.domain;
 
 import com.ananops.core.mybatis.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -80,8 +82,10 @@ public class AmcAlarm extends BaseEntity {
     /**
      * 最近发生时间
      */
-    @ApiModelProperty(value = "最近发生时间")
+    @ApiModelProperty(value = "最近发生时间",example = "2019-12-01 12:18:48")
     @Column(name = "last_occur_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date lastOccurTime;
 
     /**
@@ -104,18 +108,6 @@ public class AmcAlarm extends BaseEntity {
     @Column(name = "group_name")
     private String groupName;
 
-    /**
-     * 项目id
-     */
-    @ApiModelProperty(value = "项目id")
-    @Column(name = "project_id")
-    private Long projectId;
 
-    /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称")
-    @Column(name = "project_name")
-    private String projectName;
 
 }

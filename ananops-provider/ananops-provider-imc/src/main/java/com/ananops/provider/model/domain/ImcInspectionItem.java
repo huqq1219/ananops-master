@@ -99,4 +99,9 @@ public class ImcInspectionItem extends BaseEntity {
      * 巡检任务子项已经执行的次数
      */
     private Integer count;
+
+    /**
+     * 巡检任务子项的网点地址
+     */
+    private String location;
 }

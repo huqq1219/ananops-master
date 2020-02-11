@@ -1,10 +1,7 @@
 package com.ananops.provider.service;
 
 import com.ananops.base.dto.LoginAuthDto;
-import com.ananops.provider.model.dto.EngineerDto;
-import com.ananops.provider.model.dto.WorkOrderDto;
-import com.ananops.provider.model.dto.WorkOrderQueryDto;
-import com.ananops.provider.model.vo.EngineerVo;
+import com.ananops.provider.model.dto.*;
 import com.ananops.provider.model.vo.WorkOrderDetailVo;
 import com.ananops.provider.model.vo.WorkOrderVo;
 
@@ -20,26 +17,66 @@ public interface SpcWorkOrderService {
     /**
      * 查询服务商下工单列表信息
      *
-     * @param workOrderDto 查询参数
+     * @param workOrderStatusQueryDto 查询参数
      *
      * @param loginAuthDto 登录者信息
      *
      * @return 返回工单信息列表
      */
-    List<WorkOrderVo> queryAllWorkOrders(WorkOrderDto workOrderDto, LoginAuthDto loginAuthDto);
+    List<WorkOrderVo> queryAllWorkOrders(WorkOrderStatusQueryDto workOrderStatusQueryDto, LoginAuthDto loginAuthDto);
 
     /**
      * 根据工单Id查询工单详情
-     *
      * @param workOrderQueryDto
-     *
      * @return
      */
     WorkOrderDetailVo queryByWorkOrderId(WorkOrderQueryDto workOrderQueryDto);
 
+    /**
+     * 获取工单对应的全部工程师列表
+     * @param workOrderDto
+     * @return
+     */
     List<EngineerDto> engineersDtoList(WorkOrderDto workOrderDto);
 
-    void distributeEngineer(WorkOrderDto workOrderDto, LoginAuthDto loginAuthDto, Long engineerId);
+    /**
+     * 为维修维护类型的工单分配工程师
+     * @param engineerDistributeDto
+     */
+    void distributeEngineerForMdmc(EngineerDistributeDto engineerDistributeDto,LoginAuthDto loginAuthDto);
 
-    void transferWorkOrder(WorkOrderDto workOrderDto);
+    /**
+     * 为巡检类型的工单分配工程师
+     * @param engineerDistributeDto
+     */
+    void distributeEngineerForImc(EngineerDistributeDto engineerDistributeDto,LoginAuthDto loginAuthDto);
+
+//    /**
+//     * 转单
+//     * @param workOrderDto
+//     */
+//    void transferWorkOrder(WorkOrderDto workOrderDto,LoginAuthDto loginAuthDto);
+
+    /**
+     * 查询所有待审批的工单
+     * @param workOrderStatusQueryDto
+     * @param loginAuthDto
+     * @return
+     */
+    List<WorkOrderVo> queryAllUnConfirmedWorkOrders(WorkOrderStatusQueryDto workOrderStatusQueryDto, LoginAuthDto loginAuthDto);
+
+    /**
+     * 查看所有待分配工程师的工单
+     * @param workOrderStatusQueryDto
+     * @param loginAuthDto
+     * @return
+     */
+    List<WorkOrderVo> queryAllUnDistributedWorkOrders(WorkOrderStatusQueryDto workOrderStatusQueryDto, LoginAuthDto loginAuthDto);
+
+    /**
+     * 审批工单
+     * @param workOrderConfirmDto
+     * @return
+     */
+    WorkOrderDetailVo confirmWorkOrder(WorkOrderConfirmDto workOrderConfirmDto,LoginAuthDto loginAuthDto);//审批工单
 }

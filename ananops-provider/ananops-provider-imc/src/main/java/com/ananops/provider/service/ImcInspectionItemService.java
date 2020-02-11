@@ -4,9 +4,7 @@ package com.ananops.provider.service;
 import com.ananops.base.dto.LoginAuthDto;
 import com.ananops.core.support.IService;
 import com.ananops.provider.model.domain.ImcInspectionItem;
-import com.ananops.provider.model.dto.ImcAddInspectionItemDto;
-import com.ananops.provider.model.dto.ItemChangeMaintainerDto;
-import com.ananops.provider.model.dto.ItemQueryDto;
+import com.ananops.provider.model.dto.*;
 
 import java.util.List;
 
@@ -17,6 +15,10 @@ public interface ImcInspectionItemService extends IService<ImcInspectionItem> {
     ImcAddInspectionItemDto saveInspectionItem(ImcAddInspectionItemDto imcAddInspectionItemDto, LoginAuthDto loginAuthDto);//新增一条巡检子项记录
 
     List<ImcInspectionItem> getAllItemByTaskId(ItemQueryDto itemQueryDto);//根据巡检任务ID，获取当前任务下的所有巡检任务子项
+
+    void deleteItemByItemId(Long itemId);
+
+    List<ImcInspectionItem> getAllItemByTaskIdAndStatus(ItemQueryDto itemQueryDto);
 
     ImcInspectionItem getItemByItemId(Long itemId);//根据巡检任务子项ID，获取对应的巡检任务子项
 
@@ -31,4 +33,12 @@ public interface ImcInspectionItemService extends IService<ImcInspectionItem> {
     List<ImcInspectionItem> getItemByMaintainerIdAndStatus(ItemQueryDto itemQueryDto);//根据工程师的Id查询指定状态的巡检任务
 
     ItemChangeMaintainerDto modifyMaintainerIdByItemId(ItemChangeMaintainerDto itemChangeMaintainerDto);//修改巡检任务子项对应的维修工ID
+
+    ImcItemChangeStatusDto refuseImcItemByItemId(ConfirmImcItemDto confirmImcItemDto);//工程师拒单
+
+    ImcItemChangeStatusDto modifyImcItemStatusByItemId(ImcItemChangeStatusDto imcItemChangeStatusDto);//修改任务子项的状态
+
+    ImcItemChangeStatusDto acceptImcItemByItemId(ConfirmImcItemDto confirmImcItemDto);//工程师接单
+
+    List<ImcInspectionItem> getAcceptedItemOfMaintainer(ItemQueryDto itemQueryDto);//获取工程下的全部已接单且未完成巡检任务子项
 }

@@ -118,6 +118,13 @@ public class PmcProjectServiceImpl extends BaseService<PmcProject> implements Pm
         }
     }
 
+    @Override
+    public List<PmcProjectUser> queryProUserByProjectId(Long projectId){
+        Example example = new Example(PmcProjectUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId", projectId);
+        return pmcProjectUserMapper.selectByExample(example);
+    }
 
     @Override
     public int addProUser(PmcProjectUser pmcProjectUser) {
@@ -132,6 +139,19 @@ public class PmcProjectServiceImpl extends BaseService<PmcProject> implements Pm
         Example example = new Example(PmcProjectUser.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId", projectId);
+        result = pmcProjectUserMapper.deleteByExample(example);
+        return result;
+    }
+
+    @Override
+    public int deleteProUser2(PmcProjectUser pmcProjectUser) {
+        int result = 0;
+        Long projectId = pmcProjectUser.getProjectId();
+        Long userId = pmcProjectUser.getUserId();
+        Example example = new Example(PmcProjectUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId", projectId);
+        criteria.andEqualTo("userId", userId);
         result = pmcProjectUserMapper.deleteByExample(example);
         return result;
     }

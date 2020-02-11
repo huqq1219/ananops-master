@@ -11,7 +11,6 @@ import lombok.Data;
 @Data
 @ApiModel
 public class AlarmQuery extends BaseQuery {
-    private Long id;
 
     /**
      * 告警等级，1-紧急，2-可疑，3-提醒

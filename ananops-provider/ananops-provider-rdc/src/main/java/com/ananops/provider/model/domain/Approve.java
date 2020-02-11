@@ -2,6 +2,7 @@ package com.ananops.provider.model.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.persistence.*;
 
@@ -14,6 +15,7 @@ public class Approve {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("approveId")
     private Long id;
     
     /**

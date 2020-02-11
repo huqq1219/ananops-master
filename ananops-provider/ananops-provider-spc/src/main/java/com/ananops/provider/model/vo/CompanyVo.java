@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 加盟服务商查询返回的公司Vo
@@ -191,5 +192,8 @@ public class CompanyVo extends BaseVo {
      */
     private String detailAddress;
 
-
+    /**
+     * 四级地址数组
+     */
+    private List<Long> addressList;
 }

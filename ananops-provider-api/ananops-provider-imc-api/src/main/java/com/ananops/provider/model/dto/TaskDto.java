@@ -1,5 +1,6 @@
 package com.ananops.provider.model.dto;
 
+import com.ananops.base.dto.BaseVo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,7 +19,7 @@ import java.util.List;
 @Data
 @ApiModel
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class TaskDto implements Serializable {
+public class TaskDto extends BaseVo implements Serializable {
     private static final long serialVersionUID = 5222231596006260928L;
 
     /**

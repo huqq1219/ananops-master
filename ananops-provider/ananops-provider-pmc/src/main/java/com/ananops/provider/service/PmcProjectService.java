@@ -27,6 +27,8 @@ public interface PmcProjectService extends IService<PmcProject> {
      */
     PmcProject getProjectById(Long id);
 
+    List<PmcProjectUser> queryProUserByProjectId(Long projectId);
+
     /**
      * 删除项目信息
      * @param id
@@ -69,6 +71,7 @@ public interface PmcProjectService extends IService<PmcProject> {
      */
     int deleteProUser(Long ProjectId);
 
+    int deleteProUser2(PmcProjectUser pmcProjectUser);
 
     /**
      * 根据项目id获取工程师id列表

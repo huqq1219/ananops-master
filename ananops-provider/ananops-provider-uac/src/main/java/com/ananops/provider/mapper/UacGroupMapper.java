@@ -23,5 +23,8 @@ import java.util.List;
 @Mapper
 @Component
 public interface UacGroupMapper extends MyMapper<UacGroup> {
+
     List<UacGroup> selectGroupListByUserId(Long userId);
+
+    List<UacGroup> selectGroupByGroupName(String groupName);
 }

@@ -16,6 +16,8 @@ public interface ImcInspectionTaskService extends IService<ImcInspectionTask> {
 
     ImcInspectionTask getTaskByTaskId(Long taskId);//根据巡检任务的ID，获得当前巡检任务的详情
 
+    void deleteTaskById(Long taskId);
+
     ImcInspectionTask modifyTaskStatus(ImcTaskChangeStatusDto imcTaskChangeStatusDto, LoginAuthDto loginAuthDto);//修改巡检任务的状态
 
     List<ImcInspectionTask> getTaskByStatus(TaskQueryDto taskQueryDto);//根据巡检任务的状态查询对应的任务
@@ -35,6 +37,18 @@ public interface ImcInspectionTaskService extends IService<ImcInspectionTask> {
     List<ImcInspectionTask> getTaskByFacilitatorId(TaskQueryDto taskQueryDto);//根据服务商ID获取对应的巡检任务
 
     List<ImcInspectionTask> getTaskByFacilitatorIdAndStatus(TaskQueryDto taskQueryDto);//根据服务商ID查询指定状态的巡检任务
+
+    ImcTaskChangeStatusDto refuseImcTaskByFacilitator(ConfirmImcTaskDto confirmImcTaskDto);//服务商拒单
+
+    List<ImcInspectionTask> getAllUnauthorizedTaskByPrincipalId(TaskQueryDto taskQueryDto);//查询当前甲方负责人下面的全部未授权的任务
+
+    List<ImcInspectionTask> getAllDeniedTaskByPrincipalId(TaskQueryDto taskQueryDto);//查询当前甲方负责人下面的全部未授权的任务
+
+    ImcTaskChangeStatusDto acceptImcTaskByPrincipal(ImcTaskChangeStatusDto imcTaskChangeStatusDto);//甲方负责人同意一项巡检任务
+
+    ImcTaskChangeStatusDto acceptImcTaskByFacilitator(ConfirmImcTaskDto confirmImcTaskDto);//服务商接单
+
+    ImcTaskChangeStatusDto denyImcTaskByPrincipal(ImcTaskChangeStatusDto imcTaskChangeStatusDto);//否决一项巡检任务
 //    List<ImcInspectionTask> getTaskByFacilitatorId(TaskQueryDto taskQueryDto);//根据服务商id查询对应的巡检任务
 //
 //    List<ImcInspectionTask> getTaskByFacilitatorIdAndStatus(TaskQueryDto taskQueryDto);//根据服务商id查询指定状态的巡检任务

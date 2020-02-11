@@ -1,5 +1,6 @@
 package com.ananops.provider.model.dto;
 
+import com.ananops.base.dto.LoginAuthDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -26,4 +27,10 @@ public class TaskChangeFacilitatorDto implements Serializable {
      */
     @ApiModelProperty(value = "修改后的服务商Id")
     private Long facilitatorId;
+
+    /**
+     * 当前操作用户的身份信息
+     */
+    @ApiModelProperty(value = "当前操作用户的LoginAuthDto")
+    private LoginAuthDto loginAuthDto;
 }

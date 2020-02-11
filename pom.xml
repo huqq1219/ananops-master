@@ -279,11 +279,6 @@
             </dependency>
             <dependency>
                 <groupId>com.ananops.provider.api</groupId>
-                <artifactId>ananops-provider-pmc-api</artifactId>
-                <version>${ananops.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ananops.provider.api</groupId>
                 <artifactId>ananops-provider-activiti-api</artifactId>
                 <version>${ananops.version}</version>
             </dependency>
@@ -328,6 +323,11 @@
                 <groupId>com.qiniu</groupId>
                 <artifactId>qiniu-java-sdk</artifactId>
                 <version>[7.0.0, 7.2.99]</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>3.8.0</version>
             </dependency>
             <!-- alipay start-->
             <dependency>

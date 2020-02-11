@@ -29,5 +29,9 @@ public class Basebill {
 
     private String state;
 
+    @Column(name = "deviceAmount")
+    private Float deviceAmount;
 
+    @Column(name = "serviceAmount")
+    private Float serviceAmount;
 }

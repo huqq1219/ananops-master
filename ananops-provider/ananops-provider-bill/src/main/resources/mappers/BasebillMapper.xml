@@ -15,6 +15,8 @@
       <arg column="supplier" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="workorderid" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="deviceAmount" javaType="java.lang.Float" jdbcType="REAL" />
+      <arg column="serviceAmount" javaType="java.lang.Floatg" jdbcType="REAL" />
     </constructor>
   </resultMap>
 </mapper>

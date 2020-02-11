@@ -2,7 +2,7 @@ package com.ananops.provider.model.vo;
 
 import com.ananops.base.dto.BaseVo;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+    import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -31,9 +31,19 @@ public class WorkOrderVo extends BaseVo {
     private Long projectId;
 
     /**
+     * 项目名称
+     */
+    private String projectName;
+
+    /**
      * 客户负责人ID
      */
     private Long principalId;
+
+    /**
+     * 客户负责人名称
+     */
+    private String principalName;
 
     /**
      * 服务商ID
@@ -41,9 +51,19 @@ public class WorkOrderVo extends BaseVo {
     private Long facilitatorId;
 
     /**
+     * 服务商名称
+     */
+    private String facilitatorName;
+
+    /**
      * 工程师ID
      */
     private Long maintainerId;
+
+    /**
+     * 工程师名称
+     */
+    private String maintainerName;
 
     /**
      * 工单名称

@@ -98,4 +98,11 @@ public interface UacUserMapper extends MyMapper<UacUser> {
 	 * @return the uac user
 	 */
 	UacUser findUserInfoByLoginName(@Param("loginName") String loginName);
+
+	/**
+	 * 查询角色的下级角色
+	 * @param version
+	 * @return
+	 */
+	List<BindRoleDto> selectAllPermitBindRole(Integer version);
 }

@@ -1,11 +1,8 @@
 package com.ananops.provider.web;
 
-import com.ananops.base.enums.ErrorCodeEnum;
-import com.ananops.provider.exceptions.TpcBizException;
+import com.alibaba.fastjson.JSONObject;
 import com.ananops.provider.model.domain.Basebill;
-import com.ananops.provider.model.dto.BillCreateDto;
-import com.ananops.provider.model.dto.BillModifyAmountDto;
-import com.ananops.provider.model.dto.PmcPayDto;
+import com.ananops.provider.model.dto.*;
 import com.ananops.provider.service.PmcContractFeignApi;
 import com.ananops.provider.service.impl.BaseServiceImpl;
 import com.ananops.provider.utils.WrapMapper;
@@ -13,7 +10,9 @@ import com.ananops.provider.utils.Wrapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.web.bind.annotation.*;
+import service.RdcDeviceOrderFeignApi;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -24,6 +23,8 @@ import java.util.List;
 @Slf4j
 public class BaseBillController {
 
+//    @Resource
+//    RdcDeviceOrderFeignApi rdcDeviceOrderFeignApi;
     @Resource
     PmcContractFeignApi pmcContractFeignApi;
     @Resource
@@ -32,20 +33,69 @@ public class BaseBillController {
     @PostMapping(value = "/create")
     @ApiOperation(httpMethod = "POST",value = "创建账单")
     public Wrapper<String> createNew(@ApiParam(name = "body",value="账单信息") @RequestBody BillCreateDto abc){
+        PmcPayDto pmcPayDto = new PmcPayDto();
         com.ananops.wrapper.Wrapper<List<PmcPayDto>> list = pmcContractFeignApi.getContactByAB(Long.valueOf(abc.getUserid()),Long.valueOf(abc.getSupplier()));
         if (list.getResult() == null) {
             log.info("该用户与该服务商没有合同");
         }
         List<PmcPayDto> payDtoList = new ArrayList<>(list.getResult());
         for (PmcPayDto payDto : payDtoList) {
-            abc.setPayDto(payDto);
+            try {
+                BeanUtils.copyProperties(pmcPayDto, payDto);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
-//        PmcPayDto payDto=new PmcPayDto();
-//        payDto.setPaymentType(2);
-//        payDto.setPaymentMoney(Long.valueOf(1000));
-//        abc.setPayDto(payDto);
-        baseServiceImpl.insert(abc);
+        Float servicePrice = pmcPayDto.getPaymentMoney().floatValue();
+        String transactionMethod = pmcPayDto.getPaymentType().toString();
+        List<DeviceDto> deviceDtoList = abc.getDeviceDtos();
+        List<Long> deviceIds = new ArrayList<>();
+        for (DeviceDto deviceDto : deviceDtoList) {
+            deviceIds.add(deviceDto.getDeviceId());
+        }
+//        com.ananops.wrapper.Wrapper<Object> objects = rdcDeviceOrderFeignApi.getPriceOfDevices(deviceIds);
+//        List<JSONObject> jsonObjects = (List<JSONObject>)objects.getResult();
+        Float devicePrice = 0.0F;
+//        for (JSONObject object : jsonObjects) {
+//            devicePrice += object.getBigDecimal("price").floatValue();
+//        }
+
+        baseServiceImpl.insert(abc, devicePrice, servicePrice, transactionMethod);
         return  WrapMapper.ok("success");
+    }
+
+    @PostMapping(value = "/createFakeOrder")
+    @ApiOperation(httpMethod = "POST",value = "创建账单")
+    public Wrapper<Float> createFakeNew(@ApiParam(name = "body",value="账单信息") @RequestBody BillCreateDto abc){
+        PmcPayDto pmcPayDto = new PmcPayDto();
+        com.ananops.wrapper.Wrapper<List<PmcPayDto>> list = pmcContractFeignApi.getContactByAB(Long.valueOf(abc.getUserid()),Long.valueOf(abc.getSupplier()));
+        if (list.getResult() == null) {
+            log.info("该用户与该服务商没有合同");
+        }
+        List<PmcPayDto> payDtoList = new ArrayList<>(list.getResult());
+        for (PmcPayDto payDto : payDtoList) {
+            try {
+                BeanUtils.copyProperties(pmcPayDto, payDto);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        Float servicePrice = pmcPayDto.getPaymentMoney().floatValue();
+//        List<DeviceDto> deviceDtoList = abc.getDeviceDtos();
+//        List<Long> deviceIds = new ArrayList<>();
+//        for (DeviceDto deviceDto : deviceDtoList) {
+//            deviceIds.add(deviceDto.getDeviceId());
+//        }
+//        com.ananops.wrapper.Wrapper<Object> objects = rdcDeviceOrderFeignApi.getPriceOfDevices(deviceIds);
+//        List<JSONObject> jsonObjects = (List<JSONObject>)objects.getResult();
+        Float devicePrice = 0.0F;
+//        for (JSONObject object : jsonObjects) {
+//            devicePrice += object.getBigDecimal("price").floatValue();
+//        }
+
+        return  WrapMapper.ok(servicePrice + devicePrice);
     }
 
     @GetMapping(value = "/getallbyuser/{userid}")

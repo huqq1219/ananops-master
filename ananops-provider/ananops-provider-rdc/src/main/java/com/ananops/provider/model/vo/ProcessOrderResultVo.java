@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Setter;
 
+import java.util.List;
+
 @ApiModel
 @Setter
 public class ProcessOrderResultVo {
@@ -14,5 +16,5 @@ public class ProcessOrderResultVo {
     private DeviceOrder deviceOrderInfo;
     
     @ApiModelProperty("审核信息")
-    private Approve approveInfo;
+    private List<Approve> approveInfo;
 }

@@ -40,5 +40,13 @@ public class TaskLogVo extends BaseVo {
      * ip地址
      */
     private String ipAddress;
+    /**
+     * 当前任务对应的状态
+     */
+    private int status;
+    /**
+     * 当前任务对应的状态名
+     */
+    private String statusMsg;
 
 }

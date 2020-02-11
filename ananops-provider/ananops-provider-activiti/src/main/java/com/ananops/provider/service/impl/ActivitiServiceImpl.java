@@ -197,19 +197,19 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
-    public String getResource(String deploymentId, String fileName, int version) throws Exception {
+    public byte[] getResource(String deploymentId, String fileName, int version) throws Exception {
         List<String> list = processEngine.getRepositoryService()
                 .getDeploymentResourceNames(deploymentId);
         String proversion = String.valueOf(version);
         String resourceName = "";
         if (list != null && list.size() > 0) {
             for (String name : list) {
-                if (name.indexOf("png") > -1) {
+                if (name.contains("png")) {
                     resourceName = name;
                 }
             }
         } else {
-            throw new Exception("该流程不存在！");
+            throw new Exception();
         }
 
         InputStream inputStream = processEngine.getRepositoryService()
@@ -218,7 +218,8 @@ public class ActivitiServiceImpl implements ActivitiService {
         if (!file.exists()) {
             FileUtils.copyInputStreamToFile(inputStream, file);
         }
-        return pngFilePath + fileName + proversion + "." + resourceName;
+        byte[] bytes=new byte[inputStream.available()];
+        return bytes;
     }
 
     @Override

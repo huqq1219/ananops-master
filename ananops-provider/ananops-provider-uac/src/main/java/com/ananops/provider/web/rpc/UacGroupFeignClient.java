@@ -6,8 +6,8 @@ import com.ananops.provider.model.domain.UacGroup;
 import com.ananops.provider.model.domain.UacUser;
 import com.ananops.provider.model.dto.group.GroupSaveDto;
 import com.ananops.provider.model.dto.group.GroupStatusDto;
+import com.ananops.provider.model.vo.GroupZtreeVo;
 import com.ananops.provider.model.dto.user.IdStatusDto;
-import com.ananops.provider.model.dto.user.UserInfoDto;
 import com.ananops.provider.model.service.UacGroupFeignApi;
 import com.ananops.provider.service.UacGroupService;
 import com.ananops.provider.service.UacUserService;
@@ -17,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +46,7 @@ public class UacGroupFeignClient extends BaseController implements UacGroupFeign
     @ApiOperation(httpMethod = "POST", value = "编辑用户组")
     public Wrapper<Long> groupSave(@RequestBody GroupSaveDto groupSaveDto) {
         LoginAuthDto loginAuthDto = super.getLoginAuthDto();
+        logger.info("groupSave - 注册或更新组织. groupSaveDto={}", groupSaveDto);
         UacGroup uacGroup = new UacGroup();
         try {
             BeanUtils.copyProperties(uacGroup, groupSaveDto);
@@ -106,6 +108,28 @@ public class UacGroupFeignClient extends BaseController implements UacGroupFeign
     }
 
     @Override
+    @ApiOperation(httpMethod = "POST", value = "通过公司名称模糊查询Group信息")
+    public Wrapper<List<GroupSaveDto>> getUacGroupByLikeName(String groupName) {
+        logger.info("通过公司名称模糊查询Group信息");
+        List<GroupSaveDto> groupSaveDtos = new ArrayList<>();
+        List<UacGroup> uacGroups = uacGroupService.queryByLikeName(groupName);
+        if (uacGroups != null) {
+            for (UacGroup uacGroup : uacGroups) {
+                GroupSaveDto groupSaveDto = new GroupSaveDto();
+                try {
+                    BeanUtils.copyProperties(groupSaveDto, uacGroup);
+                } catch (Exception e) {
+                    logger.error("用户组Dto与用户组传输Dto属性拷贝异常");
+                    e.printStackTrace();
+                }
+                groupSaveDtos.add(groupSaveDto);
+            }
+
+        }
+        return WrapMapper.ok(groupSaveDtos);
+    }
+
+    @Override
     @ApiOperation(httpMethod = "POST", value = "根据Group的Id查询对应的全部User的Id")
     public Wrapper<List<Long>> getUacUserIdListByGroupId(@RequestParam("groupId")Long groupId){
         logger.info("根据组织Id查询组织对应的全部用户的Id");
@@ -119,5 +143,13 @@ public class UacGroupFeignClient extends BaseController implements UacGroupFeign
             userIdList.add(userId);
         });
         return WrapMapper.ok(userIdList);
+    }
+
+    @Override
+    @ApiOperation(httpMethod = "POST", value = "根据组织Id查询组织列表")
+    public Wrapper<List<GroupZtreeVo>> getGroupTreeById(@PathVariable("groupId") Long groupId) {
+        logger.info("根据组织Id查询组织列表");
+        List<com.ananops.provider.model.vo.GroupZtreeVo> tree = uacGroupService.getGroupTree(groupId);
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, "操作成功", tree);
     }
 }

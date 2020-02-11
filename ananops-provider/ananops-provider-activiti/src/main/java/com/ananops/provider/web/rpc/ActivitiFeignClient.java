@@ -7,10 +7,18 @@ import com.ananops.provider.service.impl.ActivitiServiceImpl;
 import com.ananops.provider.service.impl.ApproveServiceImpl;
 import com.ananops.wrapper.WrapMapper;
 import com.ananops.wrapper.Wrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.activiti.engine.task.Task;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+@RestController
+@Api(value = "API - ActivitiFeignClient", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ActivitiFeignClient extends BaseController implements ActivitiFeignApi {
 
     @Resource
@@ -20,7 +28,8 @@ public class ActivitiFeignClient extends BaseController implements ActivitiFeign
     ApproveServiceImpl approveServiceImpl;
 
     @Override
-    public Wrapper<String> submit(ApproSubmitDto approSubmitDto) {
+    @ApiOperation(httpMethod = "POST", value = "提交审批")
+    public Wrapper<String> submit(@ApiParam(name = "submit",value="提交审批") @RequestBody ApproSubmitDto approSubmitDto) {
         String processInstanceId=null;
         try {
             String Uid = String.valueOf(approSubmitDto.getUserid());

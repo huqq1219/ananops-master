@@ -8,6 +8,9 @@
 
 package com.ananops.provider.web.admin;
 
+import com.ananops.base.dto.BaseQuery;
+import com.ananops.provider.model.dto.user.UserInfoDto;
+import com.ananops.provider.model.service.UacUserFeignApi;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ananops.base.dto.LoginAuthDto;
@@ -33,6 +36,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,6 +55,9 @@ public class UacRoleMainController extends BaseController {
 	@Resource
 	private UacRoleUserService uacRoleUserService;
 
+	@Resource
+	UacUserFeignApi uacUserFeignApi;
+
 	/**
 	 * 分页查询角色信息.
 	 *
@@ -67,6 +74,24 @@ public class UacRoleMainController extends BaseController {
 		role.setOrderBy("created_time desc");
 		List<RoleVo> roleVoList = uacRoleService.queryRoleListWithPage(role);
 		return WrapMapper.ok(new PageInfo<>(roleVoList));
+	}
+
+	/**
+	 * 查询用户可以绑定的角色列表
+	 * @return
+	 */
+	@PostMapping(value = "/queryBindRoleWithPage")
+	@ApiOperation(httpMethod = "POST", value = "查询用户可以绑定的角色列表")
+	public Wrapper<List<UacRole>> queryBindRoleWithPage() {
+		LoginAuthDto loginAuthDto = super.getLoginAuthDto();
+		List<UacRole> uacRoleList = new ArrayList<>();
+		if(loginAuthDto.getLoginName().equals("admin")){
+			uacRoleList = uacRoleService.selectAll();
+		}else{
+			Wrapper<UserInfoDto> wrapper = uacUserFeignApi.getUacUserById(loginAuthDto.getUserId());
+			uacRoleList = uacRoleService.queryBindRoleWithPage(wrapper.getResult().getRoleId());
+		}
+		return WrapMapper.ok(uacRoleList);
 	}
 
 	/**

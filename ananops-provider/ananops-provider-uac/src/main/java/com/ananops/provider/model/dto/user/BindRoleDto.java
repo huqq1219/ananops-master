@@ -37,4 +37,5 @@ public class BindRoleDto implements Serializable {
 	@ApiModelProperty(value = "是否可以操作")
 	private boolean disabled;
 
+	private Long key;
 }

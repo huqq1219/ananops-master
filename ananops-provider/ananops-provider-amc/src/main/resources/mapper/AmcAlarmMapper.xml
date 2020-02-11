@@ -26,7 +26,5 @@
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="group_id" property="groupId" jdbcType="BIGINT" />
     <result column="group_name" property="groupName" jdbcType="VARCHAR" />
-    <result column="project_id" property="projectId" jdbcType="BIGINT" />
-    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>
