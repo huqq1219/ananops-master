@@ -8,6 +8,7 @@
 
 package com.ananops.provider.service.hystrix;
 
+import com.ananops.provider.model.dto.attachment.OptAttachmentUpdateReqDto;
 import com.ananops.provider.model.dto.oss.*;
 import com.ananops.provider.service.OpcOssFeignApi;
 import com.ananops.wrapper.Wrapper;
@@ -40,6 +41,11 @@ public class OpcOssFeignApiHystrix implements OpcOssFeignApi {
 
 	@Override
 	public Wrapper<OptUploadFileRespDto> handleFileUpload(final MultipartFile file) {
+		return null;
+	}
+
+	@Override
+	public Wrapper<String> updateAttachmentInfo(final OptAttachmentUpdateReqDto optAttachmentUpdateReqDto) {
 		return null;
 	}
 

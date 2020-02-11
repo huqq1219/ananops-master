@@ -8,6 +8,7 @@
 
 package com.ananops.provider.service;
 
+import com.ananops.provider.model.dto.attachment.OptAttachmentUpdateReqDto;
 import com.ananops.provider.model.dto.oss.*;
 import com.ananops.provider.service.hystrix.OpcOssFeignApiHystrix;
 import com.ananops.security.feign.OAuth2FeignAutoConfiguration;
@@ -50,6 +51,16 @@ public interface OpcOssFeignApi {
 	 */
 	@PostMapping(value = "/api/opc/oss/getFileUrl")
 	Wrapper<String> getFileUrl(@RequestBody OptGetUrlRequest optGetUrlRequest);
+
+	/**
+	 * 更新附件关联单号
+	 *
+	 * @param optAttachmentUpdateReqDto 更新附件信息
+	 *
+	 * @return 返回空
+	 */
+	@PostMapping(value = "/api/opc/oss/updateAttachmentInfo")
+	Wrapper<String> updateAttachmentInfo(@RequestBody OptAttachmentUpdateReqDto optAttachmentUpdateReqDto);
 
 	/**
 	 * List file url wrapper.

@@ -12,15 +12,16 @@ import com.ananops.base.exception.BusinessException;
 import com.ananops.core.support.BaseController;
 import com.ananops.provider.exceptions.OpcBizException;
 import com.ananops.provider.model.domain.OptAttachment;
+import com.ananops.provider.model.dto.attachment.OptAttachmentUpdateReqDto;
 import com.ananops.provider.model.dto.oss.*;
 import com.ananops.provider.service.OpcAttachmentService;
 import com.ananops.provider.service.OpcOssFeignApi;
-import com.ananops.provider.service.OpcOssService;
 import com.ananops.wrapper.WrapMapper;
 import com.ananops.wrapper.Wrapper;
 import com.qiniu.common.QiniuException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -41,9 +42,6 @@ public class OpcAttachmentFeignClient extends BaseController implements OpcOssFe
 
 	@Resource
 	private OpcAttachmentService opcAttachmentService;
-
-	@Resource
-	private OpcOssService opcOssService;
 
 	@Override
 	@ApiOperation(httpMethod = "POST", value = "上传文件")
@@ -77,6 +75,24 @@ public class OpcAttachmentFeignClient extends BaseController implements OpcOssFe
 			return WrapMapper.error();
 		}
 		return WrapMapper.ok(result);
+	}
+
+	@Override
+	@ApiOperation(httpMethod = "POST", value = "更新附件信息")
+	public Wrapper<String> updateAttachmentInfo(@RequestBody OptAttachmentUpdateReqDto optAttachmentUpdateReqDto) {
+		try {
+			logger.info("updateAttachmentInfo - 更新附件信息. optAttachmentUpdateReqDto={}", optAttachmentUpdateReqDto);
+			OptAttachment optAttachment = new OptAttachment();
+			BeanUtils.copyProperties(optAttachment, optAttachmentUpdateReqDto);
+			opcAttachmentService.saveAttachment(optAttachment, optAttachmentUpdateReqDto.getLoginAuthDto());
+		} catch (BusinessException ex) {
+			logger.error("RPC更新附件信息, 出现异常={}", ex.getMessage(), ex);
+			return WrapMapper.wrap(ex);
+		} catch (Exception e) {
+			logger.error("RPC更新附件信息, 出现异常={}", e.getMessage(), e);
+			return WrapMapper.error();
+		}
+		return WrapMapper.ok();
 	}
 
 	@Override
